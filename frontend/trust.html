@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trust & Security - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .trust-page{max-width:800px;margin:0 auto;padding:var(--spacing-lg);}
+    .hero{text-align:center;padding:2rem 1rem;margin-bottom:2rem;}
+    .hero h1{font-size:1.8rem;margin-bottom:0.5rem;}
+    .hero p{color:var(--text-tertiary);max-width:600px;margin:0 auto;}
+    .trust-section{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0;}
+    .trust-section h2{font-size:1.2rem;margin-bottom:1rem;color:var(--accent-primary);}
+    .trust-item{display:flex;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--border-color);}
+    .trust-item:last-child{border-bottom:none;}
+    .trust-icon{font-size:1.5rem;min-width:2rem;text-align:center;}
+    .trust-content h3{font-size:0.95rem;margin:0 0 0.25rem;}
+    .trust-content p{font-size:0.85rem;color:var(--text-tertiary);margin:0;}
+    .trust-badge{display:inline-block;padding:0.2rem 0.6rem;background:var(--accent-glow);color:var(--accent-primary);border-radius:999px;font-size:0.75rem;font-weight:600;margin:0.2rem;}
+    .faq-item{margin:1rem 0;}
+    .faq-q{font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+    .faq-q::after{content:'+';font-size:1.2rem;color:var(--accent-primary);}
+    .faq-item.open .faq-q::after{content:'-';}
+    .faq-a{display:none;margin-top:0.5rem;font-size:0.9rem;color:var(--text-secondary);line-height:1.7;}
+    .faq-item.open .faq-a{display:block;}
+    .action-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:2rem 0;}
+    .action-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;}
+    .action-card h3{font-size:0.95rem;margin-bottom:0.5rem;}
+    .action-card p{font-size:0.8rem;color:var(--text-tertiary);margin-bottom:1rem;}
+    .action-card .btn{width:100%;}
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item active"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Trust & Security</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="trust-page">
+        <div class="hero">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem;"><i data-lucide="shield"></i></div>
+          <h1>Trust & Security</h1>
+          <p>Your privacy, data security, and trust in AI accuracy are our top priorities.</p>
+        </div>
+
+        <div class="trust-section">
+          <h2><i data-lucide="lock"></i> Data Privacy & Security</h2>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="lock"></i></div>
+            <div class="trust-content">
+              <h3>Is my data encrypted?</h3>
+              <p>Yes. All data is stored locally on your server. Communication uses HTTPS. Passwords are hashed with bcrypt.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="trash-2"></i></div>
+            <div class="trust-content">
+              <h3>Can I delete my data?</h3>
+              <p>Yes. Go to Settings &rarr; Clear All History to delete all your conversations, searches, and bookmarks. You can also delete individual items.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="eye-off"></i></div>
+            <div class="trust-content">
+              <h3>Is my information private?</h3>
+              <p>Yes. Your data stays on your server. We don't share it with third parties. Your queries are processed by Groq AI and are not stored by them.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="download"></i></div>
+            <div class="trust-content">
+              <h3>Can I export my data?</h3>
+              <p>Yes. Go to Settings &rarr; Export My Data to download all your conversations, bookmarks, and search history as JSON.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="trust-section">
+          <h2><i data-lucide="bot"></i> AI Transparency</h2>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="book-open"></i></div>
+            <div class="trust-content">
+              <h3>Does AI explain its sources?</h3>
+              <p>Yes. Every answer includes [Source N] citations that link directly to the original legal documents. You can click any source to view the original text.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="check-circle"></i></div>
+            <div class="trust-content">
+              <h3>Can I verify every citation?</h3>
+              <p>Yes. Every source citation is clickable and links to the original document chunk. You can always verify what the AI cited.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="help-circle"></i></div>
+            <div class="trust-content">
+              <h3>Can AI admit when it doesn't know?</h3>
+              <p>Yes. The AI is programmed to say "I don't have enough information" when it cannot find verified information from the sources. It will never guess or hallucinate.</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="alert-triangle"></i></div>
+            <div class="trust-content">
+              <h3>Does the app warn that it's not legal advice?</h3>
+              <p>Yes. Every AI response includes a disclaimer: "This is AI-generated information from legal documents. It is not legal advice."</p>
+            </div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon"><i data-lucide="target"></i></div>
+            <div class="trust-content">
+              <h3>How accurate is the AI?</h3>
+              <p>Every response includes a confidence score (0-100%) based on source quality. Official sources (Constitution, SC) get higher trust. You always know how confident the AI is.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="trust-section">
+          <h2><i data-lucide="shield-check"></i> Source Trust Levels</h2>
+          <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:1rem;">Our AI prioritizes sources by authority:</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+            <span class="trust-badge"><i data-lucide="circle-dot"></i> Official Constitution</span>
+            <span class="trust-badge"><i data-lucide="circle-dot"></i> Supreme Court</span>
+            <span class="trust-badge"><i data-lucide="circle-dot"></i> India Code</span>
+            <span class="trust-badge"><i data-lucide="circle-dot"></i> ECourts</span>
+            <span class="trust-badge"><i data-lucide="circle-dot"></i> Gazette of India</span>
+            <span class="trust-badge"><i data-lucide="scale"></i> Parliament Records</span>
+            <span class="trust-badge"><i data-lucide="scale"></i> Trusted Legal Sites</span>
+            <span class="trust-badge"><i data-lucide="globe"></i> Web Sources</span>
+          </div>
+        </div>
+
+        <div class="trust-section">
+          <h2> Frequently Asked Questions</h2>
+          <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">Is LawLens a substitute for a lawyer?</div>
+            <div class="faq-a">No. LawLens is a research tool that helps you understand legal documents and concepts. It is not legal advice and should not replace consultation with a qualified legal professional.</div>
+          </div>
+          <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">Can I use LawLens answers in court?</div>
+            <div class="faq-a">AI-generated answers should not be directly submitted in court. They are research aids. Always verify citations with official sources and consult your lawyer.</div>
+          </div>
+          <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">How does the AI avoid hallucinations?</div>
+            <div class="faq-a">The AI only answers from retrieved legal documents. If information is not found, it explicitly says so. Every fact must have a citation from the source documents.</div>
+          </div>
+          <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">What if I find an incorrect answer?</div>
+            <div class="faq-a">You can report incorrect answers by clicking the "Report" button on any AI response. This helps us improve the system. Always verify with official sources.</div>
+          </div>
+          <div class="faq-item" onclick="this.classList.toggle('open')">
+            <div class="faq-q">Is my data sent to AI companies?</div>
+            <div class="faq-a">Your queries are sent to Groq AI for processing. Groq does not store your queries after processing. Your stored data (conversations, bookmarks) stays on your server.</div>
+          </div>
+        </div>
+
+        <div class="action-cards">
+          <div class="action-card">
+            <div style="font-size:2rem;margin-bottom:0.5rem;"><i data-lucide="download"></i></div>
+            <h3>Export My Data</h3>
+            <p>Download all your data</p>
+            <a href="./settings.html" class="btn btn-ghost btn-sm">Go to Settings</a>
+          </div>
+          <div class="action-card">
+            <div style="font-size:2rem;margin-bottom:0.5rem;"><i data-lucide="trash-2"></i></div>
+            <h3>Delete My Data</h3>
+            <p>Clear all history</p>
+            <a href="./settings.html" class="btn btn-ghost btn-sm">Go to Settings</a>
+          </div>
+          <div class="action-card">
+            <div style="font-size:2rem;margin-bottom:0.5rem;"><i data-lucide="flag"></i></div>
+            <h3>Report an Issue</h3>
+            <p>Found an incorrect answer?</p>
+            <a href="./chat.html" class="btn btn-ghost btn-sm">Go to Chat</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
+

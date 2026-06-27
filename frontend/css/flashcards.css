@@ -1,0 +1,393 @@
+/* ═══ FLASHCARDS PAGE — Premium UX ═══ */
+
+/* Config Panel */
+.fc-config-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 680px;
+  margin: 0 auto;
+  transition: border-color 0.3s;
+}
+.fc-config-card:hover {
+  border-color: var(--accent-glow);
+}
+
+.fc-config-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.fc-config-title h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.fc-config-title p {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
+.fc-config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.fc-config-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fc-config-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.fc-config-options {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.fc-config-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.9rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  min-width: 44px;
+}
+.fc-config-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+.fc-config-btn.active {
+  background: var(--accent-glow);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  font-weight: 600;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.fc-generate-btn {
+  display: block;
+  margin: 0 auto;
+  min-width: 220px;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  background: var(--gradient-primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+.fc-generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--accent-glow);
+}
+.fc-generate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Progress */
+.fc-progress-section {
+  margin-bottom: 1.25rem;
+}
+.fc-progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.fc-progress-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.fc-progress-hint {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+.fc-progress-track {
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.fc-progress-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Card */
+.fc-card-area {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flashcard-3d {
+  width: 100%;
+  max-width: 520px;
+  height: 300px;
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.flashcard-3d-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flashcard-3d.flipped .flashcard-3d-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.flashcard-face.front {
+  background: linear-gradient(145deg, var(--bg-card), var(--bg-elevated));
+  border: 1px solid var(--border-color);
+}
+.flashcard-face.back {
+  background: linear-gradient(145deg, var(--bg-card), var(--accent-glow));
+  border: 1px solid var(--accent-glow);
+  transform: rotateY(180deg);
+}
+
+.flashcard-face-label {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.fc-term {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.fc-definition {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.fc-hint {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-top: 1rem;
+  opacity: 0.7;
+}
+
+/* Source & Related */
+.fc-meta {
+  margin-top: 1rem;
+  text-align: center;
+}
+.fc-source {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+.fc-related {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.fc-related-tag {
+  display: inline-flex;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  background: var(--accent-glow);
+  color: var(--accent-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: inherit;
+}
+.fc-related-tag:hover {
+  background: var(--accent-primary);
+  color: #fff;
+}
+
+/* Nav */
+.fc-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.fc-nav-btn {
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: inherit;
+  min-width: 80px;
+}
+.fc-nav-btn.prev-next {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+.fc-nav-btn.prev-next:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+.fc-nav-btn.shuffle {
+  background: transparent;
+  color: var(--text-tertiary);
+  border: 1px dashed var(--border-color);
+  min-width: auto;
+}
+.fc-nav-btn.shuffle:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Control Buttons */
+.fc-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.fc-control-btn {
+  padding: 0.65rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  border: none;
+  font-family: inherit;
+  min-width: 140px;
+}
+.fc-control-btn.known {
+  background: var(--success);
+  color: #fff;
+}
+.fc-control-btn.known:hover {
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+  transform: translateY(-1px);
+}
+.fc-control-btn.unknown {
+  background: var(--error);
+  color: #fff;
+}
+.fc-control-btn.unknown:hover {
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Summary */
+.fc-summary-card {
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  animation: fcFadeIn 0.4s ease;
+}
+@keyframes fcFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fc-summary-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+.fc-summary-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.fc-summary-sub {
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+
+.fc-summary-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.fc-summary-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.fc-summary-stat-label {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-top: 0.15rem;
+}
+
+.fc-summary-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .fc-config-grid { grid-template-columns: 1fr; }
+  .flashcard-3d { height: 240px; }
+  .flashcard-face { padding: 1.25rem; }
+  .fc-term { font-size: 1.1rem; }
+  .fc-definition { font-size: 0.9rem; }
+  .fc-control-btn { min-width: 120px; padding: 0.55rem 1rem; }
+  .fc-summary-stats { gap: 1.5rem; }
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal Research - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .research-page{max-width:1000px;margin:0 auto;padding:var(--spacing-lg);}
+    .hero{text-align:center;padding:2rem 1rem;margin-bottom:2rem;}
+    .hero h1{font-size:1.8rem;margin-bottom:0.5rem;}
+    .hero p{color:var(--text-tertiary);max-width:600px;margin:0 auto;}
+    .research-modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.75rem;margin:2rem 0;}
+    .mode-card{padding:1rem;background:var(--bg-card);border:2px solid var(--border-color);border-radius:var(--radius-lg);cursor:pointer;text-align:center;transition:all 0.2s;}
+    .mode-card:hover,.mode-card.active{border-color:var(--accent-primary);background:var(--accent-glow);}
+    .mode-card-icon{font-size:1.8rem;margin-bottom:0.5rem;}
+    .mode-card h3{font-size:0.9rem;margin:0 0 0.25rem;}
+    .mode-card p{font-size:0.75rem;color:var(--text-tertiary);margin:0;}
+    .search-box{margin:1.5rem 0;}
+    .search-box input,.search-box textarea{width:100%;padding:1rem;border-radius:var(--radius-lg);font-size:0.95rem;resize:vertical;}
+    .search-actions{display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap;}
+    .filter-row{display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap;align-items:center;}
+    .filter-chip{padding:0.3rem 0.8rem;border:1px solid var(--border-color);border-radius:999px;font-size:0.8rem;cursor:pointer;transition:all 0.2s;}
+    .filter-chip.active{border-color:var(--accent-primary);background:var(--accent-glow);color:var(--accent-primary);}
+    .results-section{margin-top:2rem;}
+    .result-item{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;transition:border-color 0.2s;}
+    .result-item:hover{border-color:var(--accent-primary);}
+    .result-item h3{font-size:1rem;margin-bottom:0.5rem;color:var(--accent-primary);}
+    .result-item p{font-size:0.9rem;line-height:1.7;color:var(--text-secondary);margin:0;}
+    .result-meta{display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap;}
+    .result-tag{font-size:0.7rem;padding:0.15rem 0.5rem;border-radius:999px;background:var(--bg-secondary);color:var(--text-tertiary);}
+    .result-actions{display:flex;gap:0.4rem;margin-top:0.75rem;}
+    .ai-result{background:var(--bg-card);border:1px solid var(--accent-primary);border-radius:var(--radius-lg);padding:1.5rem;margin:1rem 0;white-space:pre-wrap;line-height:1.8;}
+    .ai-result h3{color:var(--accent-primary);margin-bottom:1rem;}
+    .example-queries{margin:2rem 0;}
+    .example-queries h3{font-size:1rem;margin-bottom:0.75rem;}
+    .example-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0.5rem;}
+    .example-btn{padding:0.6rem 1rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:var(--radius-md);cursor:pointer;text-align:left;font-size:0.85rem;color:var(--text-secondary);transition:all 0.2s;}
+    .example-btn:hover{border-color:var(--accent-primary);color:var(--accent-primary);}
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item active"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Legal Research</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="research-page">
+        <div class="hero">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem;"><i data-lucide="scale"></i></div>
+          <h1>Legal Research</h1>
+          <p>Search judgments, acts, sections, and legal terms. Get AI-powered summaries with citations.</p>
+        </div>
+
+        <div class="research-modes">
+          <div class="mode-card active" data-mode="judgment">
+            <div class="mode-card-icon"><i data-lucide="gavel"></i></div>
+            <h3>Judgments</h3>
+            <p>Search SC & HC judgments</p>
+          </div>
+          <div class="mode-card" data-mode="act">
+            <div class="mode-card-icon"><i data-lucide="scroll-text"></i></div>
+            <h3>Acts & Laws</h3>
+            <p>Search central & state acts</p>
+          </div>
+          <div class="mode-card" data-mode="section">
+            <div class="mode-card-icon"><i data-lucide="list"></i></div>
+            <h3>Sections</h3>
+            <p>Search specific sections</p>
+          </div>
+          <div class="mode-card" data-mode="term">
+            <div class="mode-card-icon"><i data-lucide="book-open"></i></div>
+            <h3>Legal Terms</h3>
+            <p>Understand legal terminology</p>
+          </div>
+          <div class="mode-card" data-mode="compare">
+            <div class="mode-card-icon"><i data-lucide="columns"></i></div>
+            <h3>Compare</h3>
+            <p>Compare two legal concepts</p>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <textarea id="researchInput" rows="2" placeholder="Search judgments, acts, sections, or legal terms..."></textarea>
+          <div class="filter-row">
+            <span style="font-size:0.8rem;color:var(--text-tertiary);">Filter:</span>
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="sc">Supreme Court</button>
+            <button class="filter-chip" data-filter="hc">High Court</button>
+            <button class="filter-chip" data-filter="central">Central Acts</button>
+            <button class="filter-chip" data-filter="constitutional">Constitutional</button>
+          </div>
+          <div class="search-mode-selector" style="margin-top:0.75rem;">
+            <span style="font-size:0.8rem;color:var(--text-tertiary);">Source:</span>
+            <button class="search-mode-btn active" data-mode="strict"><i data-lucide="circle-dot"></i> Official Only</button>
+            <button class="search-mode-btn" data-mode="extended"><i data-lucide="circle-dot"></i> Official + Legal</button>
+            <button class="search-mode-btn" data-mode="general"><i data-lucide="globe"></i> Web Search</button>
+          </div>
+          <div class="search-actions">
+            <button class="btn btn-primary" id="researchBtn"><i data-lucide="search"></i> Research</button>
+            <button class="btn btn-ghost" id="aiSummarizeBtn"><i data-lucide="bot"></i> AI Summarize</button>
+            <button class="btn btn-ghost" id="clearResearchBtn">Clear</button>
+          </div>
+        </div>
+
+        <div id="researchResults" style="display:none;"></div>
+
+        <div class="example-queries">
+          <h3><i data-lucide="search"></i> Example Queries</h3>
+          <div class="example-grid">
+            <button class="example-btn" onclick="setQuery('Maneka Gandhi v. Union of India')">Maneka Gandhi v. Union of India</button>
+            <button class="example-btn" onclick="setQuery('Right to Privacy in India')">Right to Privacy in India</button>
+            <button class="example-btn" onclick="setQuery('Indian Penal Section 302')">IPC Section 302</button>
+            <button class="example-btn" onclick="setQuery('What is Habeas Corpus?')">What is Habeas Corpus?</button>
+            <button class="example-btn" onclick="setQuery('Companies Act 2013 section 135')">Companies Act S.135</button>
+            <button class="example-btn" onclick="setQuery('Kesavananda Bharati case')">Kesavananda Bharati</button>
+            <button class="example-btn" onclick="setQuery('What is res judicata?')">What is res judicata?</button>
+            <button class="example-btn" onclick="setQuery('CompareArticle14 and Article15')">Compare Article 14 vs 15</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/legal-research.js"></script>
+</body>
+</html>
+

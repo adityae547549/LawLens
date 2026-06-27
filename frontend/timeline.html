@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .timeline-filter-row{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+    .timeline-filter{padding:0.4rem 0.9rem;border:1px solid var(--border-color);border-radius:999px;font-size:0.82rem;cursor:pointer;background:var(--bg-secondary);color:var(--text-secondary);transition:all 0.2s;}
+    .timeline-filter:hover,.timeline-filter.active{border-color:var(--accent-primary);background:var(--accent-glow);color:var(--accent-primary);}
+    .timeline-search{width:100%;padding:0.75rem 1rem;border-radius:var(--radius-lg);font-size:0.9rem;margin-bottom:1rem;background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-primary);}
+    .timeline-vertical{position:relative;padding-left:3rem;}
+    .timeline-year-group{margin-bottom:2rem;position:relative;}
+    .timeline-year-marker{position:absolute;left:-3rem;top:0;display:flex;align-items:center;gap:0.75rem;}
+    .timeline-year-dot{width:14px;height:14px;border-radius:50%;background:var(--accent-primary);border:3px solid var(--bg-primary);box-shadow:0 0 0 2px var(--accent-primary);z-index:1;}
+    .timeline-year-label{font-size:1.2rem;font-weight:700;color:var(--accent-primary);white-space:nowrap;}
+    .timeline-year-events{display:flex;flex-direction:column;gap:0.75rem;padding-left:1.5rem;border-left:2px solid var(--border-color);padding-top:0.5rem;}
+    .timeline-event{display:flex;gap:0.75rem;padding:0.85rem 1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);cursor:pointer;transition:all 0.2s;}
+    .timeline-event:hover{border-color:var(--accent-primary);transform:translateX(4px);}
+    .event-badge{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+    .event-content{flex:1;min-width:0;}
+    .event-title{font-weight:600;font-size:0.9rem;color:var(--text-primary);margin-bottom:0.25rem;}
+    .event-summary{font-size:0.82rem;color:var(--text-tertiary);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item active"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Timeline</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="page-content" id="timelinePage">
+        <div style="padding:2rem;max-width:1000px;margin:0 auto;">
+          <div style="margin-bottom:2rem;">
+            <h1 style="font-size:1.8rem;font-weight:700;margin-bottom:0.5rem;color:var(--text-primary);"><i data-lucide="calendar"></i> Constitutional Timeline</h1>
+            <p style="color:var(--text-secondary);font-size:0.95rem;">Verified data from official sources — not AI-generated</p>
+          </div>
+
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+            <div style="display:flex;flex-direction:column;gap:0.35rem;">
+              <label for="startYear" style="font-size:0.8rem;color:var(--text-secondary);">From</label>
+              <input id="startYear" type="number" min="1950" max="2025" value="1950" class="input" style="width:100px;">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.35rem;">
+              <label for="endYear" style="font-size:0.8rem;color:var(--text-secondary);">To</label>
+              <input id="endYear" type="number" min="1950" max="2025" value="2025" class="input" style="width:100px;">
+            </div>
+            <div style="display:flex;align-items:flex-end;">
+              <button id="generateBtn" class="btn btn-primary"><i data-lucide="refresh-cw"></i> Load</button>
+            </div>
+          </div>
+
+          <div class="timeline-filter-row">
+            <button class="timeline-filter active" data-category="all">All</button>
+            <button class="timeline-filter" data-category="amendment"><i data-lucide="file-text"></i> Amendments</button>
+            <button class="timeline-filter" data-category="judgment"><i data-lucide="gavel"></i> Judgments</button>
+            <button class="timeline-filter" data-category="act"><i data-lucide="scroll-text"></i> Acts</button>
+            <button class="timeline-filter" data-category="emergency"><i data-lucide="alert-triangle"></i> Emergency</button>
+          </div>
+
+          <input type="text" id="timelineSearch" class="timeline-search" placeholder="Search timeline... (e.g., GST, Article 21, 1975)">
+
+          <div id="timelineContainer" style="position:relative;">
+            <div id="timelineLoading" style="display:none;text-align:center;padding:3rem;color:var(--text-secondary);">
+              <div class="spinner"></div>
+              <p style="margin-top:1rem;">Loading verified data...</p>
+            </div>
+            <div id="timelineItems"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/timeline.js"></script>
+</body>
+</html>
+

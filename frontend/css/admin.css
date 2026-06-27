@@ -1,0 +1,203 @@
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.admin-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.admin-stat-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.admin-stat-label {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  margin-top: var(--spacing-xs);
+}
+
+.admin-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.admin-section-header {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-section-header h3 {
+  font-size: 1.1rem;
+}
+
+.admin-section-body {
+  padding: var(--spacing-lg);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-secondary);
+}
+
+.admin-table tr:hover td {
+  background: var(--bg-hover);
+}
+
+.prompt-editor {
+  width: 100%;
+  min-height: 300px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  resize: vertical;
+}
+
+.admin-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.log-viewer {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  max-height: 400px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  color: var(--text-secondary);
+}
+
+.admin-dataset-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.5rem;
+  transition: border-color 0.2s;
+}
+.admin-dataset-item:hover {
+  border-color: var(--accent-glow);
+}
+.admin-dataset-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.admin-dataset-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.admin-dataset-meta {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+.admin-dataset-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+.admin-dataset-badge {
+  display: inline-flex;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.admin-dataset-badge.indexed {
+  background: rgba(16,185,129,0.15);
+  color: var(--success);
+}
+.admin-dataset-badge.not-indexed {
+  background: rgba(239,68,68,0.1);
+  color: var(--error);
+}
+
+.admin-confidence-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  text-align: center;
+}
+.admin-confidence-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+.admin-confidence-label {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  margin-top: 0.25rem;
+}
+
+.admin-chunk-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.admin-chunk-table th {
+  text-align: left;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+.admin-chunk-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-secondary);
+}
+
+.admin-tab-content.active {
+  display: block !important;
+}
+
+@media (max-width: 768px) {
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

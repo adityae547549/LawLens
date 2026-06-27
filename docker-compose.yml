@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  lawlens:
+    build: .
+    container_name: lawlens
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - JWT_SECRET=${JWT_SECRET:-lawlens-jwt-secret-change-in-production}
+      - CORS_ORIGIN=http://localhost:3000
+      - DB_PATH=./database
+      - UPLOAD_DIR=./uploads
+      - VECTOR_DB_PATH=./vector/index.json
+      - RATE_LIMIT_WINDOW_MS=900000
+      - RATE_LIMIT_MAX=100
+    volumes:
+      - lawlens_data:/app/backend/database
+      - lawlens_uploads:/app/backend/uploads
+      - lawlens_vector:/app/backend/vector
+      - lawlens_datafiles:/app/backend/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  lawlens_data:
+  lawlens_uploads:
+  lawlens_vector:
+  lawlens_datafiles:

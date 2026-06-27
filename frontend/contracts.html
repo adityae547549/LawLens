@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract Analysis - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .contracts-page{max-width:1000px;margin:0 auto;padding:var(--spacing-lg);}
+    .hero{text-align:center;padding:2rem 1rem;margin-bottom:2rem;}
+    .hero h1{font-size:1.8rem;margin-bottom:0.5rem;}
+    .hero p{color:var(--text-tertiary);max-width:600px;margin:0 auto;}
+    .tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:2rem 0;}
+    .tool-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;cursor:pointer;transition:all 0.2s;}
+    .tool-card:hover{border-color:var(--accent-primary);transform:translateY(-2px);}
+    .tool-card.active{border-color:var(--accent-primary);background:var(--accent-glow);}
+    .tool-card-icon{font-size:2rem;margin-bottom:0.75rem;}
+    .tool-card h3{font-size:1rem;margin-bottom:0.5rem;}
+    .tool-card p{font-size:0.85rem;color:var(--text-tertiary);margin:0;}
+    .upload-area{border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:2rem;text-align:center;margin:1.5rem 0;transition:border-color 0.2s;cursor:pointer;}
+    .upload-area:hover,.upload-area.dragover{border-color:var(--accent-primary);background:var(--accent-glow);}
+    .upload-area input[type="file"]{display:none;}
+    .upload-icon{font-size:2.5rem;margin-bottom:0.75rem;}
+    .upload-text{color:var(--text-tertiary);font-size:0.9rem;}
+    .upload-text strong{color:var(--accent-primary);}
+    .text-area-input{width:100%;min-height:200px;padding:1rem;border-radius:var(--radius-lg);font-size:0.9rem;line-height:1.7;resize:vertical;font-family:inherit;}
+    .analysis-result{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0;white-space:pre-wrap;line-height:1.8;}
+    .analysis-result h3{color:var(--accent-primary);margin-bottom:1rem;}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+    .compare-col textarea{width:100%;min-height:150px;padding:1rem;border-radius:var(--radius-lg);font-size:0.9rem;resize:vertical;font-family:inherit;}
+    @media(max-width:768px){.compare-grid{grid-template-columns:1fr;}}
+    .action-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin:1rem 0;}
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item active"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Contract Analysis</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="contracts-page">
+        <div class="hero">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem;"><i data-lucide="pen-line"></i></div>
+          <h1>Contract Analysis</h1>
+          <p>Upload or paste a contract. AI will analyze clauses, detect risks, find deadlines, and more.</p>
+        </div>
+
+        <div class="tool-grid">
+          <div class="tool-card active" data-tool="summarize" onclick="selectTool('summarize')">
+            <div class="tool-card-icon"><i data-lucide="landmark"></i></div>
+            <h3>Summarize Contract</h3>
+            <p>Get a clear summary of all key terms and obligations</p>
+          </div>
+          <div class="tool-card" data-tool="risk" onclick="selectTool('risk')">
+            <div class="tool-card-icon"><i data-lucide="alert-triangle"></i></div>
+            <h3>Detect Risky Clauses</h3>
+            <p>Identify potentially unfavorable or dangerous terms</p>
+          </div>
+          <div class="tool-card" data-tool="explain" onclick="selectTool('explain')">
+            <div class="tool-card-icon"><i data-lucide="lightbulb"></i></div>
+            <h3>Explain Each Clause</h3>
+            <p>Plain-language explanation of every clause</p>
+          </div>
+          <div class="tool-card" data-tool="obligations" onclick="selectTool('obligations')">
+            <div class="tool-card-icon"><i data-lucide="pin"></i></div>
+            <h3>Highlight Obligations</h3>
+            <p>Extract all duties and obligations for each party</p>
+          </div>
+          <div class="tool-card" data-tool="deadlines" onclick="selectTool('deadlines')">
+            <div class="tool-card-icon"><i data-lucide="clock"></i></div>
+            <h3>Find Deadlines</h3>
+            <p>Extract all dates, deadlines, and time-bound clauses</p>
+          </div>
+          <div class="tool-card" data-tool="checklist" onclick="selectTool('checklist')">
+            <div class="tool-card-icon"><i data-lucide="clipboard-check"></i></div>
+            <h3>Generate Checklist</h3>
+            <p>Create an action checklist from the contract</p>
+          </div>
+          <div class="tool-card" data-tool="missing" onclick="selectTool('missing')">
+            <div class="tool-card-icon"><i data-lucide="search-x"></i></div>
+            <h3>Missing Clauses</h3>
+            <p>Check what important clauses might be missing</p>
+          </div>
+          <div class="tool-card" data-tool="unusual" onclick="selectTool('unusual')">
+            <div class="tool-card-icon"><i data-lucide="flag"></i></div>
+            <h3>Detect Unusual Terms</h3>
+            <p>Find non-standard or unusual provisions</p>
+          </div>
+          <div class="tool-card" data-tool="compare" onclick="selectTool('compare')">
+            <div class="tool-card-icon"><i data-lucide="scale"></i></div>
+            <h3>Compare Two Contracts</h3>
+            <p>Side-by-side comparison of two agreements</p>
+          </div>
+        </div>
+
+        <div id="inputSection">
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon"><i data-lucide="upload"></i></div>
+            <div class="upload-text">
+              <strong>Click to upload</strong> or drag and drop<br>
+              <span style="font-size:0.8rem;">PDF, DOCX, or TXT (max 10MB)</span>
+            </div>
+            <input type="file" id="contractFile" accept=".pdf,.docx,.txt">
+          </div>
+          <div style="text-align:center;margin:1rem 0;color:var(--text-tertiary);font-size:0.85rem;"> OR paste contract text </div>
+          <textarea class="text-area-input" id="contractText" placeholder="Paste your contract text here..."></textarea>
+        </div>
+
+        <div id="compareSection" style="display:none;">
+          <div class="compare-grid">
+            <div>
+              <label style="font-size:0.85rem;color:var(--text-tertiary);display:block;margin-bottom:0.5rem;">Contract A</label>
+              <textarea class="text-area-input" id="contractA" placeholder="Paste first contract..."></textarea>
+            </div>
+            <div>
+              <label style="font-size:0.85rem;color:var(--text-tertiary);display:block;margin-bottom:0.5rem;">Contract B</label>
+              <textarea class="text-area-input" id="contractB" placeholder="Paste second contract..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-primary" id="analyzeBtn" onclick="analyzeContract()"><i data-lucide="bot"></i> Analyze Contract</button>
+          <button class="btn btn-ghost" onclick="clearContract()">Clear</button>
+        </div>
+
+        <div id="analysisResults"></div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/contracts.js"></script>
+</body>
+</html>
+

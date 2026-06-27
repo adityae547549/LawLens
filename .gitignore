@@ -1,0 +1,12 @@
+node_modules/
+.env
+uploads/
+vector/
+database/
+*.log
+.DS_Store
+Thumbs.db
+server.err
+server.log
+eng.traineddata
+fix-encoding.js

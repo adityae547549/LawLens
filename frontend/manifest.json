@@ -1,0 +1,17 @@
+{
+  "name": "LawLens — AI-Powered Legal Research",
+  "short_name": "LawLens",
+  "description": "The Perplexity for Indian Law — AI-powered legal research with RAG, document upload, and verified constitutional data.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#0d9488",
+  "orientation": "any",
+  "icons": [
+    { "src": "/logo.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "categories": ["legal", "education", "research"],
+  "lang": "en",
+  "dir": "ltr"
+}

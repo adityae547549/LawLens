@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/feedback.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item active"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Feedback</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="page-content" id="feedbackPage">
+        <div class="fb-header">
+          <div class="fb-header-icon"><i data-lucide="lightbulb" style="width:32px;height:32px;"></i></div>
+          <h1>Help Shape LawLens</h1>
+          <p>Rate each aspect of the app below. The 200 questions are prompts to guide your thinking — share whatever matters most to you. Every response helps us improve.</p>
+        </div>
+
+        <div id="feedbackSuccess" class="fb-success" style="display:none;">
+          <div class="fb-success-icon"><i data-lucide="check" style="width:32px;height:32px;"></i></div>
+          <h3>Thank You!</h3>
+          <p>Your comprehensive feedback has been received. We review every submission to make LawLens better for everyone.</p>
+          <p style="color:var(--accent-primary);font-weight:600;margin-top:var(--spacing-sm);">+50 XP</p>
+          <button class="btn btn-secondary mt-md" onclick="resetFeedback()">Submit More Feedback</button>
+        </div>
+
+        <form id="feedbackForm" class="fb-form" novalidate>
+          <div class="fb-card fb-overall-card">
+            <div class="fb-card-title" style="font-size:1.05rem;">Overall Experience</div>
+            <p style="color:var(--text-tertiary);font-size:0.88rem;margin-bottom:var(--spacing-md);">How would you rate LawLens overall?</p>
+            <div class="fb-stars" id="overallStars">
+              <button type="button" class="fb-star" data-value="1" aria-label="1 star">★</button>
+              <button type="button" class="fb-star" data-value="2" aria-label="2 stars">★</button>
+              <button type="button" class="fb-star" data-value="3" aria-label="3 stars">★</button>
+              <button type="button" class="fb-star" data-value="4" aria-label="4 stars">★</button>
+              <button type="button" class="fb-star" data-value="5" aria-label="5 stars">★</button>
+            </div>
+            <input type="hidden" id="fbOverallRating" value="0">
+            <div class="fb-rating-labels" style="margin-bottom:var(--spacing-md);">
+              <span>Needs work</span>
+              <span>Amazing</span>
+            </div>
+            <textarea id="fbOverallComment" class="fb-section-textarea" placeholder="Any general thoughts about your experience?" rows="3" maxlength="10000" style="min-height:80px;"></textarea>
+          </div>
+
+          <div class="fb-card">
+            <div class="fb-card-title" style="font-size:1.05rem;">Detailed Feedback by Area</div>
+            <p style="color:var(--text-tertiary);font-size:0.88rem;margin-bottom:var(--spacing-sm);">Click a section to expand it, rate the area, and leave comments. The 10 questions in each section are prompts to guide your thinking.</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+              <div class="fb-progress" id="fbProgress">
+                <span id="fbProgressCount">0</span>/20 areas rated
+              </div>
+              <div style="display:flex;gap:0.5rem;">
+                <button type="button" class="btn btn-ghost btn-sm" id="expandAllBtn" style="font-size:0.78rem;padding:0.3rem 0.7rem;">Expand All</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="collapseAllBtn" style="font-size:0.78rem;padding:0.3rem 0.7rem;">Collapse All</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="fbAccordion" class="fb-accordion"></div>
+
+          <div class="fb-card">
+            <div class="fb-card-title" style="font-size:1.05rem;">Optional</div>
+            <label class="form-label" for="fbEmail" style="margin-bottom:0.35rem;">Email (if you'd like a follow-up about your feedback)</label>
+            <input type="email" id="fbEmail" class="form-input" placeholder="you@example.com" autocomplete="email">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block" id="fbSubmitBtn">Submit Comprehensive Feedback</button>
+        </form>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/feedback.js"></script>
+</body>
+</html>

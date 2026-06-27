@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constitution AI - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .constitution-page{max-width:1200px;margin:0 auto;padding:var(--spacing-lg);}
+    .hero{text-align:center;padding:3rem 1rem 2rem;margin-bottom:2rem;}
+    .hero h1{font-size:2rem;margin-bottom:0.5rem;}
+    .hero p{color:var(--text-tertiary);max-width:600px;margin:0 auto;}
+    .search-tabs{display:flex;gap:0;border:1px solid var(--border-color);border-radius:var(--radius-md);overflow:hidden;width:fit-content;margin:0 auto 2rem;}
+    .search-tab{padding:0.6rem 1.5rem;font-size:0.85rem;border:none;background:transparent;color:var(--text-secondary);cursor:pointer;font-weight:500;}
+    .search-tab.active{background:var(--accent-glow);color:var(--accent-primary);}
+    .search-panel{display:none;max-width:700px;margin:0 auto 2rem;}
+    .search-panel.active{display:block;}
+    .search-row{display:flex;gap:var(--spacing-sm);}
+    .search-row input{flex:1;padding:0.8rem 1rem;border-radius:var(--radius-md);font-size:0.95rem;}
+    .search-row button{padding:0.8rem 1.5rem;border-radius:var(--radius-md);white-space:nowrap;}
+    .amendment-list{max-height:400px;overflow-y:auto;padding:0.5rem;}
+    .amendment-item{display:flex;gap:1rem;padding:0.8rem;border:1px solid var(--border-color);border-radius:var(--radius-md);margin-bottom:0.5rem;cursor:pointer;transition:all 0.2s;}
+    .amendment-item:hover{border-color:var(--accent-primary);background:var(--accent-glow);}
+    .amendment-num{font-size:1.1rem;font-weight:700;color:var(--accent-primary);min-width:30px;}
+    .amendment-info{flex:1;}
+    .amendment-info h4{font-size:0.9rem;margin:0 0 0.2rem;}
+    .amendment-info p{font-size:0.8rem;color:var(--text-tertiary);margin:0;}
+    .amendment-year{font-size:0.75rem;color:var(--text-tertiary);white-space:nowrap;}
+    .results-grid{display:grid;gap:1rem;}
+    .result-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.25rem;transition:border-color 0.2s;}
+    .result-card:hover{border-color:var(--accent-primary);}
+    .result-card h3{font-size:1rem;margin-bottom:0.5rem;color:var(--accent-primary);}
+    .result-card p{font-size:0.9rem;line-height:1.7;color:var(--text-secondary);margin:0;}
+    .quick-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:2rem 0;}
+    .quick-link{display:flex;align-items:center;gap:0.75rem;padding:1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);cursor:pointer;transition:all 0.2s;text-decoration:none;color:var(--text-primary);}
+    .quick-link:hover{border-color:var(--accent-primary);transform:translateY(-2px);}
+    .quick-link-icon{font-size:1.5rem;}
+    .quick-link-text h3{font-size:0.9rem;margin:0;}
+    .quick-link-text p{font-size:0.75rem;color:var(--text-tertiary);margin:0.2rem 0 0;}
+    .article-display{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin:1rem 0;white-space:pre-wrap;font-size:0.9rem;line-height:1.8;}
+    .related-articles{margin-top:1rem;}
+    .related-chip{display:inline-block;padding:0.3rem 0.8rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:999px;font-size:0.8rem;margin:0.2rem;cursor:pointer;transition:all 0.2s;}
+    .related-chip:hover{border-color:var(--accent-primary);color:var(--accent-primary);}
+    .back-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--text-tertiary);text-decoration:none;font-size:0.85rem;margin-bottom:1rem;}
+    .back-link:hover{color:var(--accent-primary);}
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item active"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Constitution AI</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="constitution-page">
+        <div class="hero">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem;"><i data-lucide="scroll-text"></i></div>
+          <h1>Constitution AI</h1>
+          <p>Search by article number, topic, or browse amendments. Every answer backed by the Constitution of India.</p>
+        </div>
+
+        <div class="search-tabs">
+          <button class="search-tab active" data-tab="article">Article Search</button>
+          <button class="search-tab" data-tab="topic">Topic Search</button>
+          <button class="search-tab" data-tab="amendments">Amendments</button>
+        </div>
+
+        <div class="search-panel active" id="panel-article">
+          <div class="search-row">
+            <input type="number" id="articleInput" placeholder="Enter article number (e.g. 21)" min="1" max="395">
+            <button class="btn btn-primary" id="searchArticleBtn">Search Article</button>
+          </div>
+        </div>
+
+        <div class="search-panel" id="panel-topic">
+          <div class="search-row">
+            <input type="text" id="topicInput" placeholder="Enter topic (e.g. fundamental rights, equality, freedom)">
+            <button class="btn btn-primary" id="searchTopicBtn">Search Topic</button>
+          </div>
+        </div>
+
+        <div class="search-panel" id="panel-amendments">
+          <div style="display:flex;gap:var(--spacing-sm);margin-bottom:1rem;">
+            <input type="text" id="amendmentSearch" placeholder="Filter amendments..." style="flex:1;">
+          </div>
+          <div class="amendment-list" id="amendmentList"></div>
+        </div>
+
+        <div id="searchResults" style="display:none;">
+          <a href="#" class="back-link" onclick="hideResults();return false;"><i data-lucide="arrow-left"></i> Back to search</a>
+          <div id="resultsContent"></div>
+        </div>
+
+        <div class="quick-links">
+          <a class="quick-link" onclick="quickSearch(14)">
+            <span class="quick-link-icon"><i data-lucide="scale"></i></span>
+            <div class="quick-link-text"><h3>Article 14</h3><p>Right to Equality</p></div>
+          </a>
+          <a class="quick-link" onclick="quickSearch(19)">
+            <span class="quick-link-icon"><i data-lucide="message-circle"></i></span>
+            <div class="quick-link-text"><h3>Article 19</h3><p>Freedoms & Rights</p></div>
+          </a>
+          <a class="quick-link" onclick="quickSearch(21)">
+            <span class="quick-link-icon"><i data-lucide="shield"></i></span>
+            <div class="quick-link-text"><h3>Article 21</h3><p>Right to Life</p></div>
+          </a>
+          <a class="quick-link" onclick="quickSearch(32)">
+            <span class="quick-link-icon"><i data-lucide="arrow-right"></i></span>
+            <div class="quick-link-text"><h3>Article 32</h3><p>Constitutional Remedies</p></div>
+          </a>
+          <a class="quick-link" onclick="quickSearch(44)">
+            <span class="quick-link-icon"><i data-lucide="arrow-right"></i></span>
+            <div class="quick-link-text"><h3>Article 44</h3><p>Uniform Civil Code</p></div>
+          </a>
+          <a class="quick-link" onclick="quickSearch(243)">
+            <span class="quick-link-icon"><i data-lucide="arrow-right"></i></span>
+            <div class="quick-link-text"><h3>Article 243</h3><p>Panchayati Raj</p></div>
+          </a>
+        </div>
+
+        <div style="margin-top:2rem;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);">
+          <h3 style="margin-bottom:1rem;"><i data-lucide="arrow-right"></i> Quick Actions</h3>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <a href="./quiz.html" class="btn btn-ghost btn-sm"><i data-lucide="brain"></i> Quiz Yourself</a>
+            <a href="./flashcards.html" class="btn btn-ghost btn-sm"><i data-lucide="layers"></i> Flashcards</a>
+            <a href="./compare.html" class="btn btn-ghost btn-sm"><i data-lucide="scale"></i> Compare Articles</a>
+            <a href="./timeline.html" class="btn btn-ghost btn-sm"><i data-lucide="calendar"></i> Constitutional Timeline</a>
+            <a href="./chat.html" class="btn btn-ghost btn-sm"><i data-lucide="message-square"></i> AI About Constitution</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/constitution.js"></script>
+</body>
+</html>
+

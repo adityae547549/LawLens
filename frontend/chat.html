@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chat - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/chat.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item active"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">AI Chat</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="chat-page">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-welcome">
+            <div class="chat-welcome-icon"><i data-lucide="message-square" style="width:48px;height:48px;"></i></div>
+            <h2>The Perplexity for Indian Law</h2>
+            <p>Ask questions naturally. Get answers backed by authoritative sources. Every response includes citations.</p>
+
+            <input type="hidden" id="searchMode" value="legal">
+            <input type="hidden" id="explainLevel" value="general">
+            <input type="hidden" id="responseLanguage" value="auto">
+
+            <div class="chat-suggestions">
+              <button class="chat-suggestion-btn" data-query="Explain Article 21 in simple terms">Explain Article 21</button>
+              <button class="chat-suggestion-btn" data-query="What are the Fundamental Rights under Part III of the Constitution?">Fundamental Rights</button>
+              <button class="chat-suggestion-btn" data-query="Explain Right to Equality under Articles 14-18">Right to Equality</button>
+              <button class="chat-suggestion-btn" data-query="What is the difference between Article 19 and Article 21?">Article 19 vs 21</button>
+              <button class="chat-suggestion-btn" data-query="Explain the Right to Constitutional Remedies under Article 32">Article 32</button>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-container">
+          <div style="max-width:800px;margin:0 auto;">
+            <div id="activeDocBar" style="display:none;padding:0.6rem 1rem;background:var(--accent-glow);border:1px solid var(--accent-primary);border-radius:var(--radius-md);margin-bottom:0.5rem;display:none;align-items:center;gap:0.5rem;font-size:0.85rem;">
+              <span><i data-lucide="file-text" style="width:16px;height:16px;"></i></span>
+              <span id="activeDocName" style="flex:1;font-weight:500;color:var(--accent-primary);"></span>
+              <span style="font-size:0.75rem;color:var(--text-tertiary);">Active Document</span>
+              <button onclick="clearActiveDoc()" style="background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text-tertiary);">&times;</button>
+            </div>
+
+            <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem;flex-wrap:wrap;align-items:center;">
+              <span style="font-size:0.75rem;color:var(--text-tertiary);padding:0.3rem 0;">Mode:</span>
+              <button class="mode-btn" data-mode="legal" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;"><i data-lucide="scale"></i> Legal</button>
+              <button class="mode-btn" data-mode="web" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;"><i data-lucide="globe"></i> Web</button>
+              <button class="mode-btn" data-mode="hybrid" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;"><i data-lucide="layers"></i> Hybrid</button>
+              <span style="font-size:0.75rem;color:var(--text-tertiary);padding:0.3rem 0;margin-left:0.3rem;">Level:</span>
+              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="child">12yo</button>
+              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="general">General</button>
+              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="student">Student</button>
+              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="upsc">UPSC</button>
+              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="lawyer">Lawyer</button>
+              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="judge">Judge</button>
+            </div>
+            <form id="chatForm" class="chat-input-wrapper">
+              <button type="button" class="chat-upload-btn" id="chatUploadBtn" title="Upload a document to search within"><i data-lucide="paperclip" style="width:18px;height:18px;"></i></button>
+              <input type="file" id="chatFileInput" accept=".pdf,.txt,.doc,.docx,.png,.jpg,.jpeg,.webp,.tiff,.bmp" style="display:none;">
+              <textarea id="chatInput" placeholder="Ask a legal question or attach a document..." rows="1"></textarea>
+              <button type="submit" class="chat-send-btn" id="chatSendBtn"><i data-lucide="send" style="width:18px;height:18px;"></i></button>
+            </form>
+            <div id="chatUploadStatus" style="display:none;padding:0.3rem 0.5rem;font-size:0.75rem;color:var(--text-tertiary);"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/chat.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Manager - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <style>
+    .case-page{max-width:1000px;margin:0 auto;padding:var(--spacing-lg);}
+    .hero{text-align:center;padding:2rem 1rem;margin-bottom:2rem;}
+    .hero h1{font-size:1.8rem;margin-bottom:0.5rem;}
+    .hero p{color:var(--text-tertiary);max-width:600px;margin:0 auto;}
+    .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.75rem;margin:2rem 0;}
+    .tool-btn{padding:1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);cursor:pointer;text-align:center;transition:all 0.2s;}
+    .tool-btn:hover{border-color:var(--accent-primary);transform:translateY(-1px);}
+    .tool-btn.active{border-color:var(--accent-primary);background:var(--accent-glow);}
+    .tool-btn-icon{font-size:1.5rem;margin-bottom:0.5rem;}
+    .tool-btn h3{font-size:0.85rem;margin:0;}
+    .input-section{margin:1.5rem 0;}
+    .upload-zone{border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;cursor:pointer;transition:border-color 0.2s;}
+    .upload-zone:hover{border-color:var(--accent-primary);}
+    .upload-zone input[type="file"]{display:none;}
+    .text-input{width:100%;min-height:150px;padding:1rem;border-radius:var(--radius-lg);font-size:0.9rem;resize:vertical;font-family:inherit;}
+    .results-area{margin:2rem 0;}
+    .result-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;white-space:pre-wrap;line-height:1.8;}
+    .result-card h3{color:var(--accent-primary);margin-bottom:0.75rem;}
+    .timeline-visual{position:relative;padding-left:2rem;margin:1rem 0;}
+    .timeline-visual::before{content:'';position:absolute;left:0.75rem;top:0;bottom:0;width:2px;background:var(--accent-primary);}
+    .timeline-item{position:relative;margin-bottom:1.5rem;padding-left:1.5rem;}
+    .timeline-item::before{content:'';position:absolute;left:-0.5rem;top:0.5rem;width:12px;height:12px;border-radius:50%;background:var(--accent-primary);border:2px solid var(--bg-primary);}
+    .timeline-date{display:inline-block;padding:0.2rem 0.6rem;background:var(--accent-glow);color:var(--accent-primary);border-radius:999px;font-size:0.75rem;font-weight:600;margin-bottom:0.25rem;}
+    .names-list{display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.5rem 0;}
+    .name-tag{padding:0.2rem 0.6rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:999px;font-size:0.8rem;}
+    .deadline-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border:1px solid var(--border-color);border-radius:var(--radius-md);margin-bottom:0.5rem;}
+    .deadline-item.urgent{border-color:var(--error);background:rgba(239,68,68,0.05);}
+    .deadline-date{font-weight:600;color:var(--accent-primary);min-width:100px;}
+    .action-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin:1rem 0;}
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item active"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Case Manager</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="case-page">
+        <div class="hero">
+          <div style="font-size:2.5rem;margin-bottom:0.5rem;"><i data-lucide="folder"></i></div>
+          <h1>Case Manager</h1>
+          <p>Upload case files, organize evidence, create timelines, extract key information.</p>
+        </div>
+
+        <div class="tools-grid">
+          <div class="tool-btn active" data-tool="summarize" onclick="selectCaseTool('summarize')">
+            <div class="tool-btn-icon"><i data-lucide="landmark"></i></div>
+            <h3>Summarize Case</h3>
+          </div>
+          <div class="tool-btn" data-tool="timeline" onclick="selectCaseTool('timeline')">
+            <div class="tool-btn-icon"><i data-lucide="calendar"></i></div>
+            <h3>Create Timeline</h3>
+          </div>
+          <div class="tool-btn" data-tool="dates" onclick="selectCaseTool('dates')">
+            <div class="tool-btn-icon"><i data-lucide="clock"></i></div>
+            <h3>Key Dates</h3>
+          </div>
+          <div class="tool-btn" data-tool="names" onclick="selectCaseTool('names')">
+            <div class="tool-btn-icon"><i data-lucide="users"></i></div>
+            <h3>Extract Names</h3>
+          </div>
+          <div class="tool-btn" data-tool="evidence" onclick="selectCaseTool('evidence')">
+            <div class="tool-btn-icon"><i data-lucide="book-open"></i></div>
+            <h3>Summarize Evidence</h3>
+          </div>
+          <div class="tool-btn" data-tool="search" onclick="selectCaseTool('search')">
+            <div class="tool-btn-icon"><i data-lucide="search"></i></div>
+            <h3>Search in Case</h3>
+          </div>
+          <div class="tool-btn" data-tool="hearing" onclick="selectCaseTool('hearing')">
+            <div class="tool-btn-icon"><i data-lucide="pen-line"></i></div>
+            <h3>Hearing Notes</h3>
+          </div>
+          <div class="tool-btn" data-tool="deadlines" onclick="selectCaseTool('deadlines')">
+            <div class="tool-btn-icon"><i data-lucide="bell"></i></div>
+            <h3>Find Deadlines</h3>
+          </div>
+        </div>
+
+        <div class="input-section">
+          <div class="upload-zone" id="caseUploadZone">
+            <div style="font-size:1.5rem;margin-bottom:0.5rem;"><i data-lucide="upload"></i></div>
+            <div style="color:var(--text-tertiary);font-size:0.9rem;"><strong style="color:var(--accent-primary);">Click to upload</strong> case files or drag & drop</div>
+            <div style="font-size:0.8rem;color:var(--text-tertiary);margin-top:0.25rem;">PDF, DOCX, TXT (max 10MB)</div>
+            <input type="file" id="caseFile" accept=".pdf,.docx,.txt">
+          </div>
+          <div style="text-align:center;margin:0.75rem 0;color:var(--text-tertiary);font-size:0.85rem;"> OR paste case text </div>
+          <textarea class="text-input" id="caseText" placeholder="Paste case file content, FIR, charge sheet, judgment, or any case-related text..."></textarea>
+          <div id="searchInCase" style="display:none;margin-top:0.75rem;">
+            <input type="text" id="caseSearchQuery" placeholder="What to search for in this case..." style="width:100%;padding:0.75rem;border-radius:var(--radius-md);">
+          </div>
+          <div class="action-bar">
+            <button class="btn btn-primary" onclick="analyzeCase()"><i data-lucide="bot"></i> Analyze</button>
+            <button class="btn btn-ghost" onclick="clearCase()">Clear</button>
+          </div>
+        </div>
+
+        <div class="results-area" id="caseResults"></div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/case-management.js"></script>
+</body>
+</html>
+

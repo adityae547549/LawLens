@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - LawLens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
+          <a href="./chat.html" class="nav-item"><i data-lucide="message-square" class="nav-icon"></i> AI Chat</a>
+          <a href="./search.html" class="nav-item"><i data-lucide="search" class="nav-icon"></i> Search</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Constitution</div>
+          <a href="./constitution.html" class="nav-item"><i data-lucide="book-open" class="nav-icon"></i> Constitution AI</a>
+          <a href="./compare.html" class="nav-item"><i data-lucide="columns" class="nav-icon"></i> Compare</a>
+          <a href="./timeline.html" class="nav-item"><i data-lucide="calendar" class="nav-icon"></i> Timeline</a>
+          <a href="./article.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Article Viewer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Learning</div>
+          <a href="./study.html" class="nav-item"><i data-lucide="graduation-cap" class="nav-icon"></i> Study Hub</a>
+          <a href="./quiz.html" class="nav-item"><i data-lucide="brain" class="nav-icon"></i> AI Quiz</a>
+          <a href="./flashcards.html" class="nav-item"><i data-lucide="layers" class="nav-icon"></i> Flashcards</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Research</div>
+          <a href="./legal-research.html" class="nav-item"><i data-lucide="scale" class="nav-icon"></i> Legal Research</a>
+          <a href="./summarizer.html" class="nav-item"><i data-lucide="file-text" class="nav-icon"></i> Summarizer</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Documents</div>
+          <a href="./contracts.html" class="nav-item"><i data-lucide="scroll-text" class="nav-icon"></i> Contracts</a>
+          <a href="./documents.html" class="nav-item"><i data-lucide="file" class="nav-icon"></i> Documents</a>
+          <a href="./case-management.html" class="nav-item"><i data-lucide="folder-open" class="nav-icon"></i> Case Management</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Workspace</div>
+          <a href="./bookmarks.html" class="nav-item"><i data-lucide="bookmark" class="nav-icon"></i> Bookmarks</a>
+          <a href="./history.html" class="nav-item"><i data-lucide="clock" class="nav-icon"></i> History</a>
+          <a href="./workspaces.html" class="nav-item"><i data-lucide="briefcase" class="nav-icon"></i> Workspaces</a>
+          <a href="./trust.html" class="nav-item"><i data-lucide="shield" class="nav-icon"></i> Trust & Safety</a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">Account</div>
+          <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
+          <a href="./settings.html" class="nav-item active"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
+          <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
+          <a href="./admin.html" class="nav-item"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+        </div>
+      </nav>
+      </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Settings</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
+      </div>
+      <div class="page-content" id="settingsPage">
+        <div class="page-header">
+          <h1>Settings</h1>
+          <p>Customize your LawLens experience</p>
+        </div>
+
+        <div class="card" style="max-width:600px;margin-bottom:var(--spacing-xl);">
+          <h3 style="margin-bottom:var(--spacing-lg);font-size:1.1rem;">Appearance</h3>
+          <form id="settingsForm">
+            <div class="form-group">
+              <label class="form-label" for="settingsTheme">Theme</label>
+              <select id="settingsTheme">
+                <option value="dark">Dark Mode</option>
+                <option value="light">Light Mode</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="settingsFontSize">Font Size</label>
+              <select id="settingsFontSize">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="settingsLanguage">UI Language</label>
+              <select id="settingsLanguage">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="bn">Bengali</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="mr">Marathi</option>
+                <option value="kn">Kannada</option>
+                <option value="gu">Gujarati</option>
+                <option value="pa">Punjabi</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display:flex;align-items:center;gap:var(--spacing-sm);cursor:pointer;">
+                <input type="checkbox" id="settingsNotifications" checked>
+                <span>Enable notifications</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display:flex;align-items:center;gap:var(--spacing-sm);cursor:pointer;">
+                <input type="checkbox" id="settingsStudyReminders">
+                <span>Daily study reminders</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display:flex;align-items:center;gap:var(--spacing-sm);cursor:pointer;">
+                <input type="checkbox" id="settingsAutoSave" checked>
+                <span>Auto-save conversations</span>
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+          </form>
+        </div>
+
+        <div class="card" style="max-width:600px;margin-bottom:var(--spacing-xl);">
+          <h3 style="margin-bottom:var(--spacing-lg);font-size:1.1rem;">Learning Stats</h3>
+          <div id="settingsLearningStats" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div style="text-align:center;padding:1rem;background:var(--bg-tertiary);border-radius:var(--radius-md);">
+              <div style="font-size:1.3rem;font-weight:700;color:var(--warning);" id="setXP">0</div>
+              <div style="font-size:0.75rem;color:var(--text-tertiary);">Total XP</div>
+            </div>
+            <div style="text-align:center;padding:1rem;background:var(--bg-tertiary);border-radius:var(--radius-md);">
+              <div style="font-size:1.3rem;font-weight:700;color:var(--accent-primary);" id="setLevel">1</div>
+              <div style="font-size:0.75rem;color:var(--text-tertiary);">Level</div>
+            </div>
+            <div style="text-align:center;padding:1rem;background:var(--bg-tertiary);border-radius:var(--radius-md);">
+              <div style="font-size:1.3rem;font-weight:700;color:var(--error);" id="setStreak">0</div>
+              <div style="font-size:0.75rem;color:var(--text-tertiary);">Day Streak</div>
+            </div>
+            <div style="text-align:center;padding:1rem;background:var(--bg-tertiary);border-radius:var(--radius-md);">
+              <div style="font-size:1.3rem;font-weight:700;color:var(--success);" id="setAchieve">0</div>
+              <div style="font-size:0.75rem;color:var(--text-tertiary);">Achievements</div>
+            </div>
+          </div>
+          <div class="xp-bar-container" style="margin-top:0.75rem;">
+            <div class="xp-bar-fill" id="setXPBar" style="width:0%;"></div>
+          </div>
+          <a href="./study.html" class="btn btn-secondary btn-sm" style="margin-top:0.75rem;font-size:0.85rem;">View Study Hub <i data-lucide="arrow-right" style="width:14px;height:14px;vertical-align:middle;"></i></a>
+        </div>
+
+        <div class="card" style="max-width:600px;">
+          <h3 style="margin-bottom:var(--spacing-lg);font-size:1.1rem;">Data Management</h3>
+          <div style="display:flex;gap:var(--spacing-sm);flex-wrap:wrap;">
+            <button class="btn btn-secondary" onclick="exportData()">Export My Data</button>
+            <button class="btn btn-danger" onclick="clearAllHistory()">Clear All History</button>
+            <button class="btn btn-danger" onclick="resetLearning()"><i data-lucide="refresh-cw"></i> Reset Learning Progress</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/settings.js"></script>
+</body>
+</html>
+
