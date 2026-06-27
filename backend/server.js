@@ -87,45 +87,57 @@ app.use('/api/workspaces', workspaceRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/config', configRoutes);
 
-app.use(express.static(path.join(__dirname, '..', 'frontend'), {
-  maxAge: process.env.NODE_ENV === 'production' ? '7d' : 0,
-  setHeaders: (res, filePath) => {
-    if (filePath.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'no-cache');
-    }
-    if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
-    }
-    if (filePath.endsWith('.json') && filePath.includes('manifest')) {
-      res.setHeader('Content-Type', 'application/manifest+json');
-    }
-  }
-}));
+const FRONTEND_DIR = path.join(__dirname, '..', 'frontend');
+const hasFrontend = fs.existsSync(FRONTEND_DIR);
 
-app.get('/sw.js', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'sw.js'), {
-    headers: { 'Content-Type': 'application/javascript', 'Cache-Control': 'no-cache' }
+if (hasFrontend) {
+  app.use(express.static(FRONTEND_DIR, {
+    maxAge: process.env.NODE_ENV === 'production' ? '7d' : 0,
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+      if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000');
+      }
+      if (filePath.endsWith('.json') && filePath.includes('manifest')) {
+        res.setHeader('Content-Type', 'application/manifest+json');
+      }
+    }
+  }));
+
+  app.get('/sw.js', (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIR, 'sw.js'), {
+      headers: { 'Content-Type': 'application/javascript', 'Cache-Control': 'no-cache' }
+    });
   });
-});
 
-app.get('/manifest.json', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'manifest.json'), {
-    headers: { 'Content-Type': 'application/manifest+json', 'Cache-Control': 'public, max-age=3600' }
+  app.get('/manifest.json', (req, res) => {
+    res.sendFile(path.join(FRONTEND_DIR, 'manifest.json'), {
+      headers: { 'Content-Type': 'application/manifest+json', 'Cache-Control': 'public, max-age=3600' }
+    });
   });
-});
 
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api/')) {
-    return res.status(404).json({ error: 'API endpoint not found' });
-  }
-  const cleanPath = req.path.split('?')[0];
-  const fileName = cleanPath === '/' ? 'index.html' : `${cleanPath.slice(1)}.html`;
-  const filePath = path.join(__dirname, '..', 'frontend', fileName);
-  if (fs.existsSync(filePath)) {
-    return res.sendFile(filePath);
-  }
-  res.sendFile(path.join(__dirname, '..', 'frontend', '404.html'));
-});
+  app.get('*', (req, res) => {
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    const cleanPath = req.path.split('?')[0];
+    const fileName = cleanPath === '/' ? 'index.html' : `${cleanPath.slice(1)}.html`;
+    const filePath = path.join(FRONTEND_DIR, fileName);
+    if (fs.existsSync(filePath)) {
+      return res.sendFile(filePath);
+    }
+    res.sendFile(path.join(FRONTEND_DIR, '404.html'));
+  });
+} else {
+  app.get('*', (req, res) => {
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    res.json({ message: 'LawLens API is running. Frontend is hosted separately on Firebase.' });
+  });
+}
 
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
