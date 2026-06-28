@@ -44,8 +44,8 @@ app.use(helmet({
 }));
 app.use(cors({
   origin: (origin, callback) => {
-    const allowed = (process.env.CORS_ORIGIN || 'http://localhost:3000').split(',').map(s => s.trim());
-    if (!origin || allowed.includes(origin) || allowed.includes('*')) {
+    const allowed = (process.env.CORS_ORIGIN || '*').split(',').map(s => s.trim());
+    if (!origin || allowed.includes('*') || allowed.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('CORS: origin not allowed'));

@@ -2,8 +2,10 @@ let firebaseConfig = {};
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const API_BASE = window.location.port === '3000' ? `http://localhost:3000` : '';
-    const res = await fetch(`${API_BASE}/api/config/firebase`);
+    const apiBase = (window.location.hostname === 'localhost' || window.location.port === '3000')
+      ? 'http://localhost:3000'
+      : 'https://lawlens-p15c.onrender.com';
+    const res = await fetch(`${apiBase}/api/config/firebase`);
     if (res.ok) firebaseConfig = await res.json();
   } catch (e) {}
 

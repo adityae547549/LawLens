@@ -168,7 +168,7 @@ function initChatUpload() {
       formData.append('document', file);
       formData.append('temporary', 'true');
 
-      const response = await fetch('/api/upload', {
+      const response = await fetch(`${API_BASE}/upload`, {
         method: 'POST',
         headers: Utils.getToken() ? { 'Authorization': 'Bearer ' + Utils.getToken() } : {},
         body: formData
@@ -299,7 +299,7 @@ async function streamChat(message, typingEl, statusEl) {
   };
   updateStatus(statusEl, statusMessages[mode] || statusMessages.legal);
 
-  const response = await fetch('/api/chat/stream', {
+  const response = await fetch(`${API_BASE}/chat/stream`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
