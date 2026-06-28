@@ -418,10 +418,10 @@ function finalizeMessage(msgDiv, content, citations, confidence, confidenceLabel
         const trustLabel = c.trustLabel || 'Legal Document';
         const trustColor = c.trust === 'high' ? 'var(--success)' : c.trust === 'medium' ? 'var(--warning)' : 'var(--text-tertiary)';
         return `
-        <span class="source-chip source-chip-local" onclick="viewSource('${c.articleId || c.name}')" title="${Utils.escapeHtml(c.text || '')}">
+        <span class="source-chip source-chip-local" data-view-source="${Utils.escapeHtml(c.articleId || c.name || '')}" title="${Utils.escapeHtml(c.text || '')}">
           ${badge} ${Utils.escapeHtml(c.fileName || 'Document')}
-          <span style="font-size:0.6rem;color:${trustColor};margin-left:4px;">${trustLabel}</span>
-          ${c.confidence ? `<span style="font-size:0.65rem;opacity:0.7;margin-left:4px;">${c.confidence}%</span>` : ''}
+          <span style="font-size:0.6rem;color:${trustColor};margin-left:4px;">${Utils.escapeHtml(trustLabel)}</span>
+          ${c.confidence ? `<span style="font-size:0.65rem;opacity:0.7;margin-left:4px;">${Utils.escapeHtml(String(c.confidence))}%</span>` : ''}
         </span>
       `}).join('');
     }
@@ -433,9 +433,9 @@ function finalizeMessage(msgDiv, content, citations, confidence, confidenceLabel
         const trustLabel = c.trustLabel || 'Web Source';
         const trustColor = c.trust === 'high' ? 'var(--success)' : c.trust === 'medium' ? 'var(--warning)' : 'var(--text-tertiary)';
         return `
-        <span class="source-chip source-chip-web" onclick="window.open('${c.url || c.name}', '_blank')" title="${Utils.escapeHtml(c.snippet || c.text || '')}">
+        <span class="source-chip source-chip-web" data-open-url="${Utils.escapeHtml(c.url || c.name || '')}" role="link" tabindex="0" title="${Utils.escapeHtml(c.snippet || c.text || '')}">
           ${badge} ${Utils.escapeHtml(c.title || 'Web Source')}
-          <span style="font-size:0.6rem;color:${trustColor};margin-left:4px;">${trustLabel}</span>
+          <span style="font-size:0.6rem;color:${trustColor};margin-left:4px;">${Utils.escapeHtml(trustLabel)}</span>
         </span>
       `}).join('');
     }
@@ -500,9 +500,9 @@ function appendMessage(role, content, citations = [], confidence = 0) {
           const trustLabel = c.trustLabel || '';
           const trustColor = c.trust === 'high' ? 'var(--success)' : c.trust === 'medium' ? 'var(--warning)' : 'var(--text-tertiary)';
           if (c.type === 'web') {
-            return `<span class="source-chip source-chip-web" onclick="window.open('${c.url || ''}', '_blank')">${badge} ${Utils.escapeHtml(c.title || c.fileName || 'Web Source')} ${trustLabel ? `<span style="font-size:0.6rem;color:${trustColor};margin-left:4px;">${trustLabel}</span>` : ''}</span>`;
+            return `<span class="source-chip source-chip-web" data-open-url="${Utils.escapeHtml(c.url || '')}" role="link" tabindex="0">${badge} ${Utils.escapeHtml(c.title || c.fileName || 'Web Source')} ${trustLabel ? `<span style="font-size:0.6rem;color:${trustColor};margin-left:4px;">${Utils.escapeHtml(trustLabel)}</span>` : ''}</span>`;
           }
-          return `<span class="source-chip source-chip-local" onclick="viewSource('${c.articleId || c.name}')">${badge} ${Utils.escapeHtml(c.fileName || 'Document')} ${trustLabel ? `<span style="font-size:0.6rem;color:${trustColor};margin-left:4px;">${trustLabel}</span>` : ''}</span>`;
+          return `<span class="source-chip source-chip-local" data-view-source="${Utils.escapeHtml(c.articleId || c.name || '')}">${badge} ${Utils.escapeHtml(c.fileName || 'Document')} ${trustLabel ? `<span style="font-size:0.6rem;color:${trustColor};margin-left:4px;">${Utils.escapeHtml(trustLabel)}</span>` : ''}</span>`;
         }).join('')}
        </div>`
     : '';
@@ -696,8 +696,15 @@ function newChat() {
 }
 
 function viewSource(id) {
-  if (id) window.location.href = `./article.html?id=${id}`;
+  if (id) window.location.href = `./article.html?id=${encodeURIComponent(id)}`;
 }
+
+// Delegated handler for local source chips (replaces inline onclick to avoid
+// attribute injection from user-supplied document names).
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-view-source]');
+  if (el) viewSource(el.dataset.viewSource);
+});
 
 function copyMessage(btn) {
   const msgDiv = btn.closest('.message');

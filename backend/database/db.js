@@ -33,7 +33,13 @@ class Database {
 
   _writeCollection(collection, data) {
     const filePath = this._getFilePath(collection);
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    const tempPath = filePath + '.tmp';
+    const content = JSON.stringify(data, null, 2);
+
+    // Write to temp file, then atomically rename to avoid partial writes
+    // under concurrent access or crash mid-write.
+    fs.writeFileSync(tempPath, content, 'utf-8');
+    fs.renameSync(tempPath, filePath);
   }
 
   findAll(collection, query = {}) {

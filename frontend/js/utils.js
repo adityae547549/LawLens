@@ -352,8 +352,26 @@ const Utils = {
 
   escapeHtml(text) {
     const div = document.createElement('div');
-    div.textContent = text;
+    div.textContent = text == null ? '' : text;
     return div.innerHTML;
+  },
+
+  // Returns a navigable URL only for safe protocols, otherwise '#'.
+  // Prevents javascript:/data: URLs from external/scraped sources being opened.
+  safeUrl(url) {
+    if (!url) return '#';
+    try {
+      const u = new URL(url, window.location.origin);
+      return ['http:', 'https:', 'mailto:'].includes(u.protocol) ? u.href : '#';
+    } catch {
+      return '#';
+    }
+  },
+
+  // Opens a link in a new tab safely (validates protocol, sets noopener).
+  openExternal(url) {
+    const safe = this.safeUrl(url);
+    if (safe !== '#') window.open(safe, '_blank', 'noopener,noreferrer');
   },
 
   async downloadBrandedPDF(content, title, citations = []) {
@@ -449,9 +467,9 @@ const Utils = {
       const label = trust.label || 'Web Source';
       const trustClass = level === 'official' ? 'trust-official' : level === 'trusted' ? 'trust-trusted' : 'trust-web';
 
-      return `<span class="citation-chip ${trustClass}" onclick="window.open('${c.url || '#'}', '_blank')" title="${this.escapeHtml(c.snippet || '')}">
+      return `<span class="citation-chip ${trustClass}" data-open-url="${this.escapeHtml(c.url || '')}" role="link" tabindex="0" title="${this.escapeHtml(c.snippet || '')}">
         ${badge} ${this.escapeHtml(c.title || label)}
-        <span class="citation-trust">${label}</span>
+        <span class="citation-trust">${this.escapeHtml(label)}</span>
       </span>`;
     }).join('');
 
@@ -463,3 +481,22 @@ const Utils = {
 };
 
 window.Utils = Utils;
+
+// Global delegated handler for elements opting into safe external navigation
+// via a `data-open-url` attribute (replaces inline onclick="window.open(...)"
+// which was vulnerable to attribute injection from scraped/user-supplied URLs).
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-open-url]');
+  if (el) {
+    e.preventDefault();
+    Utils.openExternal(el.dataset.openUrl);
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const el = e.target.closest('[data-open-url][role="link"]');
+  if (el) {
+    e.preventDefault();
+    Utils.openExternal(el.dataset.openUrl);
+  }
+});

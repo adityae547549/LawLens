@@ -17,7 +17,7 @@
   --radius-xl: 24px;
 
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.08);
   --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
   --shadow-xl: 0 20px 60px rgba(0,0,0,0.18);
 
@@ -32,21 +32,21 @@
   --bg-primary: #0a0a0f;
   --bg-secondary: #12121a;
   --bg-tertiary: #1a1a2e;
-  --bg-card: #16162a;
+  --bg-card: rgba(255, 255, 255, 0.04);
   --bg-elevated: #1e1e36;
   --bg-hover: #252545;
 
   --text-primary: #e8e8f0;
-  --text-secondary: #9d9db5;
+  --text-secondary: rgba(255, 255, 255, 0.68);
   --text-tertiary: #6b6b85;
   --text-inverse: #0a0a0f;
 
-  --border-color: #2a2a45;
+  --border-color: rgba(255, 255, 255, 0.12);
   --border-light: #1e1e35;
 
   --accent-primary: #6366f1;
   --accent-secondary: #818cf8;
-  --accent-glow: rgba(99, 102, 241, 0.25);
+  --accent-glow: rgba(99, 102, 241, 0.18);
 
   --success: #22c55e;
   --warning: #f59e0b;
@@ -148,10 +148,18 @@ input, textarea, select {
 input:focus, textarea:focus, select:focus {
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px var(--accent-glow);
+  outline: none;
+  transition: box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
+}
+
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: -2px;
 }
 
 input::placeholder, textarea::placeholder {
   color: var(--text-tertiary);
+  opacity: 0.7;
 }
 
 button {
@@ -169,6 +177,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .btn {
@@ -217,6 +230,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .btn-primary:active {
   transform: translateY(0) scale(0.98);
   box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.btn-primary:focus-visible {
+  box-shadow: 0 0 0 4px var(--accent-glow), 0 6px 24px var(--accent-glow);
 }
 
 .btn-secondary {
@@ -286,9 +303,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .btn-round { border-radius: 999px; }
 
 .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
   transform: none !important;
+  filter: grayscale(0.5);
 }
 
 .card {
@@ -300,9 +318,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .card:hover {
-  border-color: var(--accent-primary);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(99, 102, 241, 0.1);
+  transform: translateY(-3px);
 }
 
 .card:active {
@@ -314,8 +332,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .card-interactive:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(99, 102, 241, 0.2);
 }
 
 .card-interactive:active {
@@ -338,6 +356,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   font-weight: 500;
   background: var(--bg-tertiary);
   color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+.badge:hover {
+  transform: translateY(-1px);
 }
 
 .badge-primary { background: var(--accent-glow); color: var(--accent-primary); }
@@ -1744,4 +1767,90 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .cell-diff {
   background: rgba(239, 68, 68, 0.08) !important;
+}
+
+/* Skip Link for Accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 var(--radius-md) 0;
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 10000;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Loading States */
+.skeleton-card {
+  background: linear-gradient(
+    90deg,
+    var(--bg-card) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    var(--bg-card) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-lg);
+  height: 120px;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.btn.loading svg {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 0.75rem 1rem;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+  30% { transform: translateY(-8px); opacity: 1; }
+}
+
+/* Enhanced Result Cards */
+.result-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 3px solid transparent;
+}
+
+.result-card:hover {
+  border-left-color: var(--accent-primary);
+  padding-left: calc(var(--spacing-lg) + 3px);
+  background: var(--bg-secondary);
 }

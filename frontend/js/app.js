@@ -92,6 +92,22 @@ function initGlobalErrorHandler() {
   });
 }
 
+// Service Worker update notification
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    if (event.data?.type === 'SW_UPDATED') {
+      const toastEl = Utils.showToast('App updated! Refresh to see changes.', 'info', 10000);
+      if (toastEl) {
+        const btn = document.createElement('button');
+        btn.textContent = 'Refresh';
+        btn.style.cssText = 'margin-left:0.5rem;padding:0.25rem 0.75rem;background:var(--accent-primary);border:none;border-radius:4px;color:white;cursor:pointer;font-size:0.85rem;';
+        btn.onclick = () => window.location.reload();
+        toastEl.appendChild(btn);
+      }
+    }
+  });
+}
+
 function initConversationSearch() {
   const searchInput = document.getElementById('conversationSearch');
   if (!searchInput) return;

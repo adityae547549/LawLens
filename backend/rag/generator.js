@@ -201,34 +201,31 @@ ${ownKnowledgeInstruction}`;
         try {
           const res = await this._callGroqAPI(messages, true);
           let buffer = '';
-          await new Promise((resolve, reject) => {
-            res.on('data', (chunk) => {
-              buffer += chunk.toString();
-              const lines = buffer.split('\n');
-              buffer = lines.pop();
-              for (const line of lines) {
-                const trimmed = line.trim();
-                if (!trimmed || !trimmed.startsWith('data: ')) continue;
-                const data = trimmed.slice(6);
-                if (data === '[DONE]') continue;
-                try {
-                  const parsed = JSON.parse(data);
-                  const delta = parsed.choices?.[0]?.delta?.content;
-                  if (delta) fullContent += delta;
-                } catch (e) { /* skip unparseable chunks */ }
-              }
-            });
-            res.on('end', resolve);
-            res.on('error', reject);
-          });
-          if (fullContent) {
-            yield { type: 'content', content: fullContent };
+          // Stream each token delta as it arrives (true incremental streaming).
+          for await (const chunk of res) {
+            buffer += chunk.toString();
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed || !trimmed.startsWith('data: ')) continue;
+              const data = trimmed.slice(6);
+              if (data === '[DONE]') continue;
+              try {
+                const parsed = JSON.parse(data);
+                const delta = parsed.choices?.[0]?.delta?.content;
+                if (delta) {
+                  fullContent += delta;
+                  yield { type: 'content', content: delta };
+                }
+              } catch (e) { /* skip unparseable chunks */ }
+            }
           }
           yield { type: 'done', sources: [{ name: 'AI Knowledge', index: 0, type: 'general' }], confidence: 40, sourceType: 'general' };
         } catch (error) {
           console.error('Groq streaming error (own knowledge):', error.message);
+          // Deltas already streamed; just close out (or report error if nothing sent).
           if (fullContent) {
-            yield { type: 'content', content: fullContent };
             yield { type: 'done', sources: [{ name: 'AI Knowledge', index: 0, type: 'general' }], confidence: 40, sourceType: 'general' };
           } else {
             yield { type: 'error', message: 'AI service unavailable. Please try again later.' };
@@ -266,37 +263,32 @@ ${ownKnowledgeInstruction}`;
       const res = await this._callGroqAPI(messages, true);
       let buffer = '';
 
-      await new Promise((resolve, reject) => {
-        res.on('data', (chunk) => {
-          buffer += chunk.toString();
-          const lines = buffer.split('\n');
-          buffer = lines.pop();
-          for (const line of lines) {
-            const trimmed = line.trim();
-            if (!trimmed || !trimmed.startsWith('data: ')) continue;
-            const data = trimmed.slice(6);
-            if (data === '[DONE]') continue;
-            try {
-              const parsed = JSON.parse(data);
-              const delta = parsed.choices?.[0]?.delta?.content;
-              if (delta) {
-                fullContent += delta;
-              }
-            } catch (e) { /* skip unparseable chunks */ }
-          }
-        });
-        res.on('end', resolve);
-        res.on('error', reject);
-      });
-
-      if (fullContent) {
-        yield { type: 'content', content: fullContent };
+      // Stream each token delta as it arrives (true incremental streaming).
+      for await (const chunk of res) {
+        buffer += chunk.toString();
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith('data: ')) continue;
+          const data = trimmed.slice(6);
+          if (data === '[DONE]') continue;
+          try {
+            const parsed = JSON.parse(data);
+            const delta = parsed.choices?.[0]?.delta?.content;
+            if (delta) {
+              fullContent += delta;
+              yield { type: 'content', content: delta };
+            }
+          } catch (e) { /* skip unparseable chunks */ }
+        }
       }
+
       yield { type: 'done', sources, confidence: this._calculateConfidence(fullContent, context) };
     } catch (error) {
       console.error('Groq streaming error:', error.message);
+      // Deltas already streamed; just close out (or report error if nothing sent).
       if (fullContent) {
-        yield { type: 'content', content: fullContent };
         yield { type: 'done', sources, confidence: this._calculateConfidence(fullContent, context) };
       } else {
         yield { type: 'error', message: 'AI service unavailable. Please try again later.' };

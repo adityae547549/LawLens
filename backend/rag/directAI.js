@@ -165,40 +165,37 @@ SUPPORTED LANGUAGES: English, Hindi, Bengali, Tamil, Telugu, Marathi, Kannada, G
       const res = await this._callGroqAPI(messages, true);
       let buffer = '';
 
-      await new Promise((resolve, reject) => {
-        res.on('data', (chunk) => {
-          buffer += chunk.toString();
-          const lines = buffer.split('\n');
-          buffer = lines.pop();
-          for (const line of lines) {
-            const trimmed = line.trim();
-            if (!trimmed || !trimmed.startsWith('data: ')) continue;
-            const data = trimmed.slice(6);
-            if (data === '[DONE]') continue;
-            try {
-              const parsed = JSON.parse(data);
-              const delta = parsed.choices?.[0]?.delta?.content;
-              if (delta) fullContent += delta;
-            } catch (e) {}
-          }
-        });
-        res.on('end', resolve);
-        res.on('error', reject);
-      });
+      // Stream each token delta as it arrives (true incremental streaming).
+      for await (const chunk of res) {
+        buffer += chunk.toString();
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith('data: ')) continue;
+          const data = trimmed.slice(6);
+          if (data === '[DONE]') continue;
+          try {
+            const parsed = JSON.parse(data);
+            const delta = parsed.choices?.[0]?.delta?.content;
+            if (delta) {
+              fullContent += delta;
+              yield { type: 'content', content: delta };
+            }
+          } catch (e) { /* skip unparseable chunks */ }
+        }
+      }
 
       const citations = webSearch.getWebCitations(webResults);
 
-      if (fullContent) {
-        yield { type: 'content', content: fullContent };
-      }
       yield { type: 'citations', citations };
       yield { type: 'searchStrategy', searchStrategy };
       yield { type: 'done' };
     } catch (error) {
       console.error('Direct AI stream error:', error.message);
+      // Deltas already streamed; just close out (or report error if nothing sent).
       if (fullContent) {
         const citations = webSearch.getWebCitations(webResults);
-        yield { type: 'content', content: fullContent };
         yield { type: 'citations', citations };
         yield { type: 'searchStrategy', searchStrategy };
         yield { type: 'done' };

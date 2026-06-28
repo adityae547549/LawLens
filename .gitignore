@@ -6,7 +6,9 @@ database/*.json
 *.log
 .DS_Store
 Thumbs.db
-server.err
-server.log
 eng.traineddata
 fix-encoding.js
+LawLens-Backend-deploy/
+frontend-deploy.zip
+firebase-debug.log
+*.tmp

@@ -75,7 +75,7 @@ async function handleSearch(e) {
     if (webResults.length > 0) {
       html += '<div style="margin:var(--spacing-lg) 0 var(--spacing-sm);"><h3 style="font-size:0.9rem;color:var(--text-tertiary);margin-bottom:var(--spacing-sm);text-transform:uppercase;letter-spacing:0.05em;">🌐 Web Sources</h3></div>';
       html += webResults.map((r, i) => `
-        <div class="card" style="margin-bottom:var(--spacing-md);animation:fadeIn 0.3s ease ${(localResults.length + i) * 0.05}s both;cursor:pointer;border-left:3px solid var(--success);" onclick="window.open('${r.url || '#'}', '_blank')">
+        <div class="card" style="margin-bottom:var(--spacing-md);animation:fadeIn 0.3s ease ${(localResults.length + i) * 0.05}s both;cursor:pointer;border-left:3px solid var(--success);" data-open-url="${Utils.escapeHtml(r.url || '')}" role="link" tabindex="0">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--spacing-md);margin-bottom:var(--spacing-sm);">
             <div>
               <span class="badge badge-success">Web</span>
@@ -85,7 +85,7 @@ async function handleSearch(e) {
           <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;line-height:1.6;">
             ${Utils.escapeHtml(r.text.slice(0, 300))}${r.text.length > 300 ? '...' : ''}
           </p>
-          ${r.url ? `<p style="font-size:0.75rem;color:var(--info);margin-top:0.5rem;margin-bottom:0;">🔗 ${r.url}</p>` : ''}
+          ${r.url ? `<p style="font-size:0.75rem;color:var(--info);margin-top:0.5rem;margin-bottom:0;">🔗 ${Utils.escapeHtml(r.url)}</p>` : ''}
         </div>
       `).join('');
     }
