@@ -11,6 +11,11 @@
   --dh-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+[data-theme="light"] {
+  --dh-border: rgba(0, 0, 0, 0.08);
+  --dh-border-hover: rgba(0, 0, 0, 0.14);
+}
+
 /* ─── Layout ─── */
 #dashboardPage {
   max-width: 960px;
@@ -49,3 +54,742 @@
 }
 
 @keyframes dhBgShift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(3%, -3%) rotate(2deg); }
+}
+
+.dh-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Greeting ─── */
+.dh-greeting {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.dh-greeting-wave {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  animation: dhWave 2s ease-in-out infinite;
+}
+
+@keyframes dhWave {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-8deg); }
+  40% { transform: rotate(14deg); }
+  50% { transform: rotate(-4deg); }
+  60% { transform: rotate(10deg); }
+  70%, 100% { transform: rotate(0deg); }
+}
+
+.dh-greeting-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.dh-greeting-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 0.15rem;
+}
+
+/* ─── Search ─── */
+.dh-search {
+  display: flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--dh-border);
+  border-radius: var(--dh-radius);
+  padding: 0 var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  transition: all 0.3s var(--dh-ease);
+  backdrop-filter: blur(12px);
+}
+
+.dh-search:focus-within {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--dh-glow), 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.dh-search-icon {
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  margin-right: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.dh-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 1rem 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: var(--font-primary);
+  outline: none;
+}
+
+.dh-search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.dh-search-input:focus {
+  box-shadow: none;
+  border: none;
+}
+
+.dh-search-shortcut {
+  background: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+/* ─── Hero Actions (Chips) ─── */
+.dh-hero-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.dh-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: var(--bg-card);
+  border: 1px solid var(--dh-border);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.25s var(--dh-ease);
+  cursor: pointer;
+}
+
+.dh-chip:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.dh-chip-primary {
+  background: var(--gradient-primary);
+  color: white;
+  border-color: transparent;
+}
+
+.dh-chip-primary:hover {
+  color: white;
+  background: var(--gradient-primary);
+  box-shadow: 0 4px 20px var(--dh-glow);
+  transform: translateY(-2px);
+}
+
+/* ─── Sections ─── */
+.dh-section {
+  margin-bottom: var(--spacing-2xl);
+  animation: fadeIn 0.5s var(--dh-ease);
+}
+
+.dh-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+}
+
+.dh-section-title {
+  font-size: 1.1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.dh-section-link {
+  font-size: 0.85rem;
+  color: var(--accent-primary);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.dh-section-link:hover {
+  color: var(--accent-secondary);
+}
+
+/* ─── Continue Working ─── */
+.dh-continue {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.dh-continue-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--dh-border);
+  border-radius: var(--dh-radius-sm);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.25s var(--dh-ease);
+  cursor: pointer;
+}
+
+.dh-continue-card:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-glow);
+  transform: translateX(4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dh-continue-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.dh-continue-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.dh-continue-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dh-continue-meta {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.dh-continue-arrow {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.dh-continue-card:hover .dh-continue-arrow {
+  transform: translateX(4px);
+  color: var(--accent-primary);
+}
+
+/* ─── Quick Actions Grid ─── */
+.dh-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.dh-action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--dh-border);
+  border-radius: var(--dh-radius-sm);
+  text-decoration: none;
+  color: var(--text-secondary);
+  transition: all 0.25s var(--dh-ease);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dh-action-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-subtle);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.dh-action-card:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.dh-action-card:hover::before {
+  opacity: 1;
+}
+
+.dh-action-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.25s var(--dh-ease);
+}
+
+.dh-action-card:hover .dh-action-icon {
+  background: var(--accent-glow);
+  color: var(--accent-primary);
+}
+
+.dh-action-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* ─── Learning Progress ─── */
+.dh-progress {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 1fr;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.dh-progress-ring-card {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  background: var(--bg-card);
+  border: 1px solid var(--dh-border);
+  border-radius: var(--dh-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dh-ring {
+  width: 100px;
+  height: 100px;
+  transform: rotate(-90deg);
+}
+
+.dh-ring-bg {
+  fill: none;
+  stroke: var(--bg-tertiary);
+  stroke-width: 6;
+}
+
+.dh-ring-fill {
+  fill: none;
+  stroke: url(#dhGradient);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s var(--dh-ease);
+}
+
+.dh-ring-label {
+  position: absolute;
+  text-align: center;
+}
+
+.dh-ring-value {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.dh-ring-meta {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dh-progress-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--dh-border);
+  border-radius: var(--dh-radius-sm);
+  padding: var(--spacing-lg);
+  text-align: center;
+  transition: all 0.25s var(--dh-ease);
+}
+
+.dh-progress-stat:hover {
+  border-color: var(--dh-border-hover);
+  transform: translateY(-2px);
+}
+
+.dh-progress-stat-icon {
+  color: var(--accent-primary);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  justify-content: center;
+}
+
+.dh-progress-stat-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+
+.dh-progress-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+/* ─── Recommended ─── */
+.dh-recommended {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.dh-recommended-card {
+  background: var(--bg-card);
+  border: 1px solid var(--dh-border);
+  border-radius: var(--dh-radius-sm);
+  padding: var(--spacing-lg);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.25s var(--dh-ease);
+  position: relative;
+  overflow: hidden;
+}
+
+.dh-recommended-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.dh-recommended-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.dh-recommended-card:hover::before {
+  opacity: 1;
+}
+
+.dh-rec-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--accent-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.dh-rec-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+.dh-rec-desc {
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+/* ─── Recent Activity ─── */
+.dh-activity {
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-activity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--dh-border);
+  transition: background 0.15s;
+}
+
+.dh-activity-item:last-child {
+  border-bottom: none;
+}
+
+.dh-activity-item:hover {
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+.dh-activity-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.dh-activity-dot.chat {
+  background: var(--accent-primary);
+}
+
+.dh-activity-dot.search {
+  background: var(--success);
+}
+
+.dh-activity-dot.upload {
+  background: var(--warning);
+}
+
+.dh-activity-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dh-activity-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.dh-activity-time {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ─── Activity Empty State ─── */
+.dh-activity-empty {
+  text-align: center;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+}
+
+.dh-activity-empty-icon {
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  justify-content: center;
+}
+
+.dh-activity-empty p {
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ─── Back to Top ─── */
+.back-to-top {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  right: var(--spacing-xl);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 20px var(--dh-glow);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s var(--dh-ease);
+  z-index: 40;
+  border: none;
+  cursor: pointer;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px var(--dh-glow-intense);
+}
+
+/* ─── Skeleton overrides ─── */
+.skeleton-card {
+  height: 120px;
+  border-radius: var(--dh-radius-sm);
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 768px) {
+  #dashboardPage {
+    max-width: 100%;
+  }
+
+  .dh-hero {
+    padding: var(--spacing-xl) var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .dh-greeting-name {
+    font-size: 1.35rem;
+  }
+
+  .dh-greeting-wave {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dh-search {
+    border-radius: var(--dh-radius-sm);
+  }
+
+  .dh-search-shortcut {
+    display: none;
+  }
+
+  .dh-hero-actions {
+    gap: 0.4rem;
+  }
+
+  .dh-chip {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .dh-actions-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.4rem;
+  }
+
+  .dh-action-card {
+    padding: var(--spacing-md) var(--spacing-xs);
+  }
+
+  .dh-action-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .dh-action-label {
+    font-size: 0.7rem;
+  }
+
+  .dh-progress {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .dh-progress-ring-card {
+    grid-column: span 2;
+    justify-self: center;
+  }
+
+  .dh-recommended {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .dh-activity-time {
+    display: none;
+  }
+
+  .dh-section-title {
+    font-size: 1rem;
+  }
+
+  .back-to-top {
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dh-greeting {
+    gap: var(--spacing-sm);
+  }
+
+  .dh-greeting-wave {
+    width: 36px;
+    height: 36px;
+  }
+
+  .dh-greeting-wave i {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .dh-greeting-text {
+    font-size: 0.85rem;
+  }
+
+  .dh-greeting-name {
+    font-size: 1.2rem;
+  }
+
+  .dh-actions-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .dh-progress {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-progress-ring-card {
+    grid-column: span 1;
+  }
+}
+
+/* ─── Pulse animation for the ring ─── */
+@keyframes dhRingPulse {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(99, 102, 241, 0.3)); }
+  50% { filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5)); }
+}
+
+.dh-ring-fill {
+  animation: dhRingPulse 3s ease-in-out infinite;
+}

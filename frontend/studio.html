@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LawLens Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/studio.css">
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#studioContent" class="skip-link">Skip to main content</a>
+
+  <div class="studio-layout" id="studioApp" role="application" aria-label="LawLens Studio Admin Panel">
+    <!-- Sidebar -->
+    <aside class="studio-sidebar" id="studioSidebar" role="navigation" aria-label="Studio Navigation">
+      <div class="studio-sidebar-header">
+        <a href="/" class="studio-sidebar-brand">
+          <img src="./logo.png" alt="LawLens" class="studio-sidebar-logo">
+          <span class="studio-sidebar-title">Studio</span>
+        </a>
+        <button class="studio-sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+          <i data-lucide="panel-left-close" class="studio-sidebar-toggle-icon"></i>
+        </button>
+      </div>
+
+      <div class="studio-sidebar-search" id="sidebarSearch">
+        <i data-lucide="search" class="studio-sidebar-search-icon"></i>
+        <input type="text" placeholder="Search... (⌘K)" class="studio-sidebar-search-input" id="sidebarSearchInput" readonly>
+      </div>
+
+      <nav class="studio-sidebar-nav" id="sidebarNav">
+        <!-- Overview -->
+        <div class="studio-nav-section">
+          <div class="studio-nav-section-title">Overview</div>
+          <a href="#/dashboard" class="studio-nav-item active" data-module="dashboard" data-icon="layout-dashboard">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <!-- Content -->
+        <div class="studio-nav-section">
+          <div class="studio-nav-section-title">Content</div>
+          <a href="#/knowledge-os" class="studio-nav-item" data-module="knowledge-os" data-icon="database">
+            <i data-lucide="database"></i>
+            <span>Knowledge OS</span>
+          </a>
+          <a href="#/knowledge" class="studio-nav-item" data-module="knowledge" data-icon="layers">
+            <i data-lucide="layers"></i>
+            <span>Source Registry</span>
+          </a>
+          <a href="#/cases" class="studio-nav-item" data-module="cases" data-icon="briefcase">
+            <i data-lucide="briefcase"></i>
+            <span>Cases</span>
+          </a>
+          <a href="#/acts" class="studio-nav-item" data-module="acts" data-icon="book-open">
+            <i data-lucide="book-open"></i>
+            <span>Acts</span>
+          </a>
+          <a href="#/rules" class="studio-nav-item" data-module="rules" data-icon="scroll-text">
+            <i data-lucide="scroll-text"></i>
+            <span>Rules</span>
+          </a>
+          <a href="#/gazette" class="studio-nav-item" data-module="gazette" data-icon="newspaper">
+            <i data-lucide="newspaper"></i>
+            <span>Gazette</span>
+          </a>
+        </div>
+
+        <!-- Graph & Data -->
+        <div class="studio-nav-section">
+          <div class="studio-nav-section-title">Graph & Data</div>
+          <a href="#/source-tracker" class="studio-nav-item" data-module="source-tracker" data-icon="radio">
+            <i data-lucide="radio"></i>
+            <span>Source Tracker</span>
+          </a>
+          <a href="#/graph" class="studio-nav-item" data-module="graph" data-icon="git-branch">
+            <i data-lucide="git-branch"></i>
+            <span>Knowledge Graph</span>
+          </a>
+          <a href="#/imports" class="studio-nav-item" data-module="imports" data-icon="download">
+            <i data-lucide="download"></i>
+            <span>Import Center</span>
+          </a>
+          <a href="#/search-builder" class="studio-nav-item" data-module="search-builder" data-icon="search-code">
+            <i data-lucide="search-code"></i>
+            <span>Search Builder</span>
+          </a>
+        </div>
+
+        <!-- AI & Config -->
+        <div class="studio-nav-section">
+          <div class="studio-nav-section-title">AI & Config</div>
+          <a href="#/ai-config" class="studio-nav-item" data-module="ai-config" data-icon="cpu">
+            <i data-lucide="cpu"></i>
+            <span>AI Config</span>
+          </a>
+          <a href="#/prompts" class="studio-nav-item" data-module="prompts" data-icon="message-square">
+            <i data-lucide="message-square"></i>
+            <span>Prompt Manager</span>
+          </a>
+          <a href="#/workspaces" class="studio-nav-item" data-module="workspaces" data-icon="briefcase">
+            <i data-lucide="briefcase"></i>
+            <span>Workspaces</span>
+          </a>
+        </div>
+
+        <!-- Media -->
+        <div class="studio-nav-section">
+          <div class="studio-nav-section-title">Media</div>
+          <a href="#/media" class="studio-nav-item" data-module="media" data-icon="image">
+            <i data-lucide="image"></i>
+            <span>Media Library</span>
+          </a>
+        </div>
+
+        <!-- Insights -->
+        <div class="studio-nav-section">
+          <div class="studio-nav-section-title">Insights</div>
+          <a href="#/analytics" class="studio-nav-item" data-module="analytics" data-icon="bar-chart-3">
+            <i data-lucide="bar-chart-3"></i>
+            <span>Analytics</span>
+          </a>
+          <a href="#/benchmarks" class="studio-nav-item" data-module="benchmarks" data-icon="gauge">
+            <i data-lucide="gauge"></i>
+            <span>Benchmarks</span>
+          </a>
+        </div>
+
+        <!-- Admin -->
+        <div class="studio-nav-section">
+          <div class="studio-nav-section-title">Admin</div>
+          <a href="#/users" class="studio-nav-item" data-module="users" data-icon="users">
+            <i data-lucide="users"></i>
+            <span>Users & Roles</span>
+          </a>
+          <a href="#/page-builder" class="studio-nav-item" data-module="page-builder" data-icon="layout">
+            <i data-lucide="layout"></i>
+            <span>Page Builder</span>
+          </a>
+          <a href="#/settings" class="studio-nav-item" data-module="settings" data-icon="settings">
+            <i data-lucide="settings"></i>
+            <span>Settings</span>
+          </a>
+        </div>
+
+        <!-- System -->
+        <div class="studio-nav-section">
+          <div class="studio-nav-section-title">System</div>
+          <a href="#/audit-logs" class="studio-nav-item" data-module="audit-logs" data-icon="scroll-text">
+            <i data-lucide="scroll-text"></i>
+            <span>Audit Logs</span>
+          </a>
+          <a href="#/background-jobs" class="studio-nav-item" data-module="background-jobs" data-icon="layers">
+            <i data-lucide="layers"></i>
+            <span>Background Jobs</span>
+          </a>
+          <a href="#/developer" class="studio-nav-item" data-module="developer" data-icon="terminal">
+            <i data-lucide="terminal"></i>
+            <span>Developer</span>
+          </a>
+          <a href="#/health" class="studio-nav-item" data-module="health" data-icon="activity">
+            <i data-lucide="activity"></i>
+            <span>System Health</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="studio-sidebar-footer">
+        <a href="./dashboard.html" class="studio-nav-item studio-sidebar-exit">
+          <i data-lucide="arrow-left"></i>
+          <span>Back to LawLens</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Area -->
+    <div class="studio-main">
+      <!-- Top Bar -->
+      <header class="studio-topbar" id="studioTopbar">
+        <div class="studio-topbar-left">
+          <button class="studio-topbar-hamburger" id="mobileMenuBtn">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="studio-breadcrumb" id="studioBreadcrumb">
+            <span class="studio-breadcrumb-item">Studio</span>
+            <i data-lucide="chevron-right" class="studio-breadcrumb-sep"></i>
+            <span class="studio-breadcrumb-item active" id="breadcrumbCurrent">Dashboard</span>
+          </div>
+        </div>
+        <div class="studio-topbar-right">
+          <div class="studio-topbar-status" id="topbarStatus">
+            <span class="studio-status-dot" id="statusDot"></span>
+            <span class="studio-status-text" id="statusText">All systems operational</span>
+          </div>
+          <div class="studio-topbar-actions">
+            <button class="studio-topbar-btn" id="undoBtn" title="Undo (⌘Z)" disabled>
+              <i data-lucide="undo-2"></i>
+            </button>
+            <button class="studio-topbar-btn" id="redoBtn" title="Redo (⌘⇧Z)" disabled>
+              <i data-lucide="redo-2"></i>
+            </button>
+            <button class="studio-topbar-btn" id="searchBtn" title="Search (⌘K)">
+              <i data-lucide="search"></i>
+            </button>
+            <div class="studio-topbar-divider"></div>
+            <button class="studio-topbar-btn" id="themeToggle" title="Toggle theme">
+              <i data-lucide="moon"></i>
+            </button>
+            <div class="studio-topbar-user" id="userMenu">
+              <div class="studio-topbar-avatar" id="userAvatar">A</div>
+              <span class="studio-topbar-username" id="userName">Admin</span>
+              <i data-lucide="chevron-down" class="studio-topbar-chevron"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <main class="studio-content" id="studioContent" role="main" aria-label="Main Content">
+        <div class="studio-loading" id="studioLoading">
+          <div class="studio-loading-spinner"></div>
+          <p>Loading Studio...</p>
+        </div>
+      </main>
+
+      <!-- Status Bar -->
+      <footer class="studio-statusbar" id="studioStatusbar">
+        <div class="studio-statusbar-left">
+          <span class="studio-statusbar-item" id="autosaveStatus">
+            <i data-lucide="check-circle" style="width:12px;height:12px;"></i>
+            Saved
+          </span>
+          <span class="studio-statusbar-item" id="syncStatus">
+            <i data-lucide="refresh-cw" style="width:12px;height:12px;"></i>
+            Synced
+          </span>
+        </div>
+        <div class="studio-statusbar-right">
+          <span class="studio-statusbar-item" id="shortcutsHint">
+            <kbd>⌘</kbd><kbd>K</kbd> Search &nbsp; <kbd>⌘</kbd><kbd>Z</kbd> Undo
+          </span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Command Palette Overlay -->
+  <div class="command-palette-overlay" id="commandPaletteOverlay" role="dialog" aria-label="Command Palette" aria-modal="true">
+    <div class="command-palette" id="commandPalette">
+      <div class="command-palette-header">
+        <i data-lucide="search" class="command-palette-icon"></i>
+        <input type="text" class="command-palette-input" id="commandPaletteInput" placeholder="Search modules, commands, actions..." autofocus aria-label="Search modules and commands">
+        <kbd class="command-palette-esc">ESC</kbd>
+      </div>
+      <div class="command-palette-results" id="commandPaletteResults"></div>
+      <div class="command-palette-footer">
+        <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> Navigate</span>
+        <span><kbd>Enter</kbd> Select</span>
+        <span><kbd>Esc</kbd> Close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer" role="alert" aria-live="polite"></div>
+
+  <!-- Modal Host -->
+  <div class="studio-modal-host" id="modalHost" role="dialog" aria-modal="true"></div>
+
+  <!-- Scripts -->
+  <script src="./js/utils.js"></script>
+  <script src="https://unpkg.com/lucide@0.300.0/dist/umd/lucide.min.js"></script>
+  <script src="./js/studio/core.js"></script>
+  <script src="./js/studio/shortcuts.js"></script>
+  <!-- Components -->
+  <script src="./js/studio/components/rich-editor.js"></script>
+  <!-- Modules -->
+  <script src="./js/studio/modules/dashboard.js"></script>
+  <script src="./js/studio/modules/knowledge.js"></script>
+  <script src="./js/studio/modules/graph.js"></script>
+  <script src="./js/studio/modules/cases.js"></script>
+  <script src="./js/studio/modules/acts.js"></script>
+  <script src="./js/studio/modules/rules.js"></script>
+  <script src="./js/studio/modules/gazette.js"></script>
+  <script src="./js/studio/modules/imports.js"></script>
+  <script src="./js/studio/modules/search-builder.js"></script>
+  <script src="./js/studio/modules/ai-config.js"></script>
+  <script src="./js/studio/modules/prompts.js"></script>
+  <script src="./js/studio/modules/workspaces.js"></script>
+  <script src="./js/studio/modules/media.js"></script>
+  <script src="./js/studio/modules/analytics.js"></script>
+  <script src="./js/studio/modules/benchmarks.js"></script>
+  <script src="./js/studio/modules/users.js"></script>
+  <script src="./js/studio/modules/settings.js"></script>
+  <script src="./js/studio/modules/developer.js"></script>
+  <script src="./js/studio/modules/health.js"></script>
+  <script src="./js/studio/modules/audit-logs.js"></script>
+  <script src="./js/studio/modules/background-jobs.js"></script>
+  <script src="./js/studio/modules/page-builder.js"></script>
+  <script src="./js/studio/modules/knowledge-os.js"></script>
+  <script src="./js/studio/modules/source-tracker.js"></script>
+  <!-- App Init -->
+  <script src="./js/studio/app.js"></script>
+</body>
+</html>

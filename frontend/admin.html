@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
@@ -63,7 +63,11 @@
           <a href="./admin.html" class="nav-item active"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
         </div>
       </nav>
-      </aside>
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
+      </div>
+    </aside>
+
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
@@ -74,38 +78,57 @@
           <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
+
       <div class="page-content" id="adminPage">
         <div class="page-header">
           <h1>Administration</h1>
-          <p>Manage users, datasets, prompts, and system settings</p>
+          <p>Manage users, datasets, prompts, knowledge, and system settings</p>
         </div>
 
         <div id="adminStats" class="admin-stats"></div>
 
-        <div style="display:flex;gap:var(--spacing-sm);margin-bottom:var(--spacing-xl);flex-wrap:wrap;">
-          <button class="btn btn-secondary admin-tab active" data-tab="users" style="border-color:var(--accent-primary);">Users</button>
-          <button class="btn btn-secondary admin-tab" data-tab="datasets">Datasets</button>
-          <button class="btn btn-secondary admin-tab" data-tab="vector">Vector DB</button>
-          <button class="btn btn-secondary admin-tab" data-tab="prompt">Prompt Editor</button>
-          <button class="btn btn-secondary admin-tab" data-tab="confidence">Confidence</button>
-          <button class="btn btn-secondary admin-tab" data-tab="logs">Logs</button>
-          <button class="btn btn-secondary admin-tab" data-tab="metrics">Metrics</button>
+        <!-- Tab Navigation -->
+        <div class="admin-tabs-scroll">
+          <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="overview">Overview</button>
+            <button class="admin-tab" data-tab="users">Users</button>
+            <button class="admin-tab" data-tab="datasets">Datasets</button>
+            <button class="admin-tab" data-tab="vector">Vector DB</button>
+            <button class="admin-tab" data-tab="knowledge">Knowledge</button>
+            <button class="admin-tab" data-tab="prompt">Prompts</button>
+            <button class="admin-tab" data-tab="ai-config">AI Config</button>
+            <button class="admin-tab" data-tab="analytics">Analytics</button>
+            <button class="admin-tab" data-tab="benchmarks">Benchmarks</button>
+            <button class="admin-tab" data-tab="imports">Imports</button>
+            <button class="admin-tab" data-tab="sources">Sources</button>
+            <button class="admin-tab" data-tab="jobs">Jobs</button>
+            <button class="admin-tab" data-tab="audit">Audit Log</button>
+            <button class="admin-tab" data-tab="graph">Graph</button>
+            <button class="admin-tab" data-tab="settings">Settings</button>
+            <button class="admin-tab" data-tab="logs">Logs</button>
+          </div>
         </div>
 
-        <div id="users" class="admin-tab-content active">
+        <!-- ═══ Overview ═══ -->
+        <div id="overview" class="admin-tab-content active">
           <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Users</h3>
-            </div>
+            <div class="admin-section-header"><h3>System Overview</h3></div>
+            <div class="admin-section-body" id="overviewContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Users ═══ -->
+        <div id="users" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header"><h3>User Management</h3></div>
             <div class="admin-section-body" id="usersList"></div>
           </div>
         </div>
 
+        <!-- ═══ Datasets ═══ -->
         <div id="datasets" class="admin-tab-content" style="display:none;">
           <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Upload Dataset</h3>
-            </div>
+            <div class="admin-section-header"><h3>Upload Dataset</h3></div>
             <div class="admin-section-body">
               <form id="datasetUploadForm">
                 <div class="form-group">
@@ -119,43 +142,42 @@
             </div>
           </div>
           <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Vector Database</h3>
-            </div>
-            <div class="admin-section-body">
-              <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:var(--spacing-md);">Rebuild the vector database from all documents in the data directory. Use this after adding new documents.</p>
-              <button class="btn btn-secondary" data-action="rebuild" onclick="rebuildVectorDB()">Rebuild Vector DB</button>
-            </div>
+            <div class="admin-section-header"><h3>Existing Datasets</h3></div>
+            <div class="admin-section-body" id="datasetsList"></div>
           </div>
         </div>
 
+        <!-- ═══ Vector DB ═══ -->
         <div id="vector" class="admin-tab-content" style="display:none;">
           <div class="admin-section">
             <div class="admin-section-header">
-              <h3>Vector Database Stats</h3>
+              <h3>Vector Database</h3>
               <div class="admin-actions">
-                <button class="btn btn-secondary btn-sm" data-action="rebuild" onclick="rebuildVectorDB()">Rebuild Vector DB</button>
+                <button class="btn btn-secondary btn-sm" onclick="rebuildVectorDB()">Rebuild Vector DB</button>
               </div>
             </div>
             <div class="admin-section-body" id="vectorStatsContent"></div>
           </div>
+        </div>
+
+        <!-- ═══ Knowledge Management ═══ -->
+        <div id="knowledge" class="admin-tab-content" style="display:none;">
           <div class="admin-section">
             <div class="admin-section-header">
-              <h3>Document Chunks</h3>
+              <h3>Knowledge Items</h3>
+              <div class="admin-actions">
+                <button class="btn btn-primary btn-sm" id="addKnowledgeBtn">+ Add Item</button>
+              </div>
             </div>
-            <div class="admin-section-body" id="vectorChunksContent"></div>
+            <div class="admin-section-body" id="knowledgeList"></div>
+          </div>
+          <div class="admin-section">
+            <div class="admin-section-header"><h3>Knowledge Stats</h3></div>
+            <div class="admin-section-body" id="knowledgeStats"></div>
           </div>
         </div>
 
-        <div id="confidence" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>AI Confidence Dashboard</h3>
-            </div>
-            <div class="admin-section-body" id="confidenceContent"></div>
-          </div>
-        </div>
-
+        <!-- ═══ Prompt Editor ═══ -->
         <div id="prompt" class="admin-tab-content" style="display:none;">
           <div class="admin-section">
             <div class="admin-section-header">
@@ -174,30 +196,118 @@
           </div>
         </div>
 
-        <div id="logs" class="admin-tab-content" style="display:none;">
+        <!-- ═══ AI Configuration ═══ -->
+        <div id="ai-config" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header"><h3>AI Configuration</h3></div>
+            <div class="admin-section-body" id="aiConfigContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Analytics ═══ -->
+        <div id="analytics" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header"><h3>Analytics Dashboard</h3></div>
+            <div class="admin-section-body" id="analyticsContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Benchmarks ═══ -->
+        <div id="benchmarks" class="admin-tab-content" style="display:none;">
           <div class="admin-section">
             <div class="admin-section-header">
-              <h3>Server Logs</h3>
+              <h3>Benchmark Center</h3>
+              <div class="admin-actions">
+                <button class="btn btn-primary btn-sm" id="runBenchmarkBtn">Run Benchmark</button>
+              </div>
             </div>
+            <div class="admin-section-body" id="benchmarkContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Import Center ═══ -->
+        <div id="imports" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header">
+              <h3>Import Center — Legal Acts</h3>
+              <div class="admin-actions">
+                <button class="btn btn-primary btn-sm" id="addActBtn">+ Add Act</button>
+              </div>
+            </div>
+            <div class="admin-section-body" id="importsContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Source Registry ═══ -->
+        <div id="sources" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header">
+              <h3>Source Registry</h3>
+              <div class="admin-actions">
+                <button class="btn btn-secondary btn-sm" id="checkAllSourcesBtn">Check All</button>
+                <button class="btn btn-primary btn-sm" id="addSourceBtn">+ Add Source</button>
+              </div>
+            </div>
+            <div class="admin-section-body" id="sourcesContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Background Jobs ═══ -->
+        <div id="jobs" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header">
+              <h3>Background Jobs</h3>
+              <div class="admin-actions">
+                <button class="btn btn-primary btn-sm" id="createJobBtn">+ Create Job</button>
+              </div>
+            </div>
+            <div class="admin-section-body" id="jobsContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Audit Log ═══ -->
+        <div id="audit" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header"><h3>Audit Log</h3></div>
+            <div class="admin-section-body" id="auditContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Graph Explorer ═══ -->
+        <div id="graph" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header">
+              <h3>Knowledge Graph Explorer</h3>
+              <div class="admin-actions">
+                <button class="btn btn-secondary btn-sm" id="refreshGraphBtn">Refresh</button>
+              </div>
+            </div>
+            <div class="admin-section-body" id="graphContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Settings ═══ -->
+        <div id="settings" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header"><h3>System Settings</h3></div>
+            <div class="admin-section-body" id="settingsContent"></div>
+          </div>
+        </div>
+
+        <!-- ═══ Logs ═══ -->
+        <div id="logs" class="admin-tab-content" style="display:none;">
+          <div class="admin-section">
+            <div class="admin-section-header"><h3>Server Logs</h3></div>
             <div class="admin-section-body" id="logsViewer"></div>
           </div>
         </div>
 
-        <div id="metrics" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>API Metrics</h3>
-            </div>
-            <div class="admin-section-body" id="metricsContent"></div>
-          </div>
-        </div>
       </div>
     </main>
   </div>
-  <div id="sidebarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:45;"></div>
+  <div id="sidebarOverlay"></div>
   <script src="./js/utils.js"></script>
   <script src="./js/app.js"></script>
   <script src="./js/admin.js"></script>
 </body>
 </html>
-

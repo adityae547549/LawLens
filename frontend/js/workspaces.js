@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('workspacesPage')) return;
-  if (!Utils.isAuthenticated()) { window.location.href = '/login'; return; }
+  if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
   initWorkspaceUI();
   loadWorkspaces();
 });

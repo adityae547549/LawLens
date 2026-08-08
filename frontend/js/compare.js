@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('comparePage')) return;
+if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
 
   const compareBtn = document.getElementById('compareBtn');
   if (compareBtn) {

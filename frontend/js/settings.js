@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('settingsPage')) return;
 
+  if (!Utils.isAuthenticated()) {
+    window.location.href = './login.html';
+    return;
+  }
+
   loadSettings();
   loadLearningStats();
 

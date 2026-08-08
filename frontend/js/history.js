@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('historyPage')) return;
 
   if (!Utils.isAuthenticated()) {
-    window.location.href = '/login';
+    window.location.href = './login.html';
     return;
   }
 

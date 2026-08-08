@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('summarizerPage')) return;
+if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
   initSummarizerTabs();
   initTextSummarizer();
   loadDocLibrary();

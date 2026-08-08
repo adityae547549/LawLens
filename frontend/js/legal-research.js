@@ -4,6 +4,7 @@ let currentSearchMode = 'strict';
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.querySelector('.research-page')) return;
+if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
 
   initModeCards();
   initFilters();

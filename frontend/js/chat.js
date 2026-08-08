@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.querySelector('.chat-page')) return;
 
+  if (!Utils.isAuthenticated()) {
+    window.location.href = './login.html';
+    return;
+  }
+
   const chatForm = document.getElementById('chatForm');
   const chatInput = document.getElementById('chatInput');
 

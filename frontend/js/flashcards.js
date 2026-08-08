@@ -2,6 +2,7 @@ let flashState = { cards: [], current: 0, flipped: false, known: 0, unknown: 0 }
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('flashcardsPage')) return;
+if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
 
   let selectedTopic = 'all';
   let selectedCount = 10;

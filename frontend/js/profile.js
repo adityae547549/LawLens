@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('profilePage')) return;
 
   if (!Utils.isAuthenticated()) {
-    window.location.href = '/login';
+    window.location.href = './login.html';
     return;
   }
 

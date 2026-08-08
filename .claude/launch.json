@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "LawLens Dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["backend/server.js"],
+      "port": 3000,
+      "url": "http://localhost:3000",
+      "autoPort": true
+    }
+  ]
+}

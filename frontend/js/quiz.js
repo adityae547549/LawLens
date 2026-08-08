@@ -2,6 +2,7 @@ let quizState = { questions: [], current: 0, score: 0, answers: [], started: fal
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('quizPage')) return;
+if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
 
   let selectedCount = 10;
   let selectedDifficulty = 'medium';

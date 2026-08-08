@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.location.pathname.includes('study.html')) return;
+if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
   loadStudyHub();
 });
 

@@ -165,7 +165,8 @@ function updateAuthUI() {
 function initAdminUI() {
   const user = Utils.getUser();
   const isAdmin = user && user.role === 'admin';
-  document.querySelectorAll('.nav-item[href="./admin.html"]').forEach(el => {
+  // Hide admin links for non-admin users
+  document.querySelectorAll('.nav-item[href="./admin.html"], .admin-only').forEach(el => {
     el.style.display = isAdmin ? '' : 'none';
   });
 }

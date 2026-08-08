@@ -2,6 +2,7 @@ let currentFilter = 'all';
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.querySelector('.docs-page')) return;
+if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
 
   initUpload();
   loadLibrary();

@@ -4,6 +4,7 @@ let currentSearchMode = 'strict';
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.querySelector('.contracts-page')) return;
+if (!Utils.isAuthenticated()) { window.location.href = './login.html'; return; }
   initUpload();
 });
 

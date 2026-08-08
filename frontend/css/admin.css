@@ -1,3 +1,52 @@
+/* ═══ Admin Panel Styles ═══ */
+
+/* ─── Tab Navigation ─── */
+.admin-tabs-scroll {
+  margin-bottom: var(--spacing-xl);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.admin-tabs-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.35rem;
+  min-width: max-content;
+  padding-bottom: 2px;
+}
+
+.admin-tab {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-tab:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+}
+
+.admin-tab.active {
+  background: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+/* ─── Stats Grid ─── */
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -11,6 +60,12 @@
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   text-align: center;
+  transition: all 0.25s var(--ease-out);
+}
+
+.admin-stat:hover {
+  transform: translateY(-2px);
+  border-color: var(--dh-border-hover);
 }
 
 .admin-stat-value {
@@ -25,6 +80,7 @@
   margin-top: var(--spacing-xs);
 }
 
+/* ─── Sections ─── */
 .admin-section {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -49,6 +105,7 @@
   padding: var(--spacing-lg);
 }
 
+/* ─── Tables ─── */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
@@ -76,6 +133,7 @@
   background: var(--bg-hover);
 }
 
+/* ─── Prompt Editor ─── */
 .prompt-editor {
   width: 100%;
   min-height: 300px;
@@ -90,12 +148,14 @@
   resize: vertical;
 }
 
+/* ─── Actions ─── */
 .admin-actions {
   display: flex;
   gap: var(--spacing-sm);
   flex-wrap: wrap;
 }
 
+/* ─── Log Viewer ─── */
 .log-viewer {
   background: var(--bg-tertiary);
   border-radius: var(--radius-md);
@@ -107,8 +167,10 @@
   overflow-y: auto;
   white-space: pre-wrap;
   color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
 }
 
+/* ─── Dataset Items ─── */
 .admin-dataset-item {
   display: flex;
   align-items: center;
@@ -155,6 +217,7 @@
   color: var(--error);
 }
 
+/* ─── Confidence Cards ─── */
 .admin-confidence-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -172,6 +235,7 @@
   margin-top: 0.25rem;
 }
 
+/* ─── Chunk Table ─── */
 .admin-chunk-table {
   width: 100%;
   border-collapse: collapse;
@@ -192,12 +256,47 @@
   color: var(--text-secondary);
 }
 
+/* ─── Tab Content ─── */
 .admin-tab-content.active {
   display: block !important;
+  animation: fadeIn 0.3s ease;
 }
 
+/* ═══ Responsive ═══ */
 @media (max-width: 768px) {
   .admin-stats {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-section-header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+  }
+
+  .admin-dataset-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-tabs {
+    gap: 0.25rem;
+  }
+
+  .admin-tab {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
   }
 }
