@@ -1,6 +1,42 @@
 const vectorStore = require('./vectorStore');
 const reranker = require('./reranker');
 const webSearch = require('./webSearch');
+const legalSynonyms = require('./legalSynonyms');
+
+// Lazy-load knowledge graph
+let knowledgeGraph = null;
+let synonymEngine = null;
+async function getKnowledgeGraph() {
+  if (!knowledgeGraph) {
+    try {
+      const LegalKnowledgeGraph = require('../knowledge/graph/legalKnowledgeGraph');
+      const path = require('path');
+      knowledgeGraph = new LegalKnowledgeGraph({
+        dataDir: path.join(__dirname, '..', 'data')
+      });
+      await knowledgeGraph.initialize();
+    } catch (err) {
+      console.error('Failed to load knowledge graph:', err.message);
+    }
+  }
+  return knowledgeGraph;
+}
+
+async function getSynonymEngine() {
+  if (!synonymEngine) {
+    try {
+      const LegalSynonymEngine = require('../knowledge/synonyms/legalSynonymEngine');
+      const path = require('path');
+      synonymEngine = new LegalSynonymEngine({
+        dataDir: path.join(__dirname, '..', 'data')
+      });
+      await synonymEngine.initialize();
+    } catch (err) {
+      console.error('Failed to load synonym engine:', err.message);
+    }
+  }
+  return synonymEngine;
+}
 
 const SOURCE_TRUST = {
   'constitution_of_india.pdf': { level: 1, badge: '🟢', label: 'Official Constitution', trust: 'high' },
@@ -61,6 +97,19 @@ class Retriever {
     const searchK = k || this._getOptimalK(query);
     const searchMode = useWebSearch ? mode : 'legal';
 
+    // Use enhanced synonym expansion from LKOS if available
+    let expandedQuery;
+    try {
+      const synEngine = await getSynonymEngine();
+      if (synEngine) {
+        expandedQuery = synEngine.expandQuery(query);
+      } else {
+        expandedQuery = legalSynonyms.expandQuery(query);
+      }
+    } catch {
+      expandedQuery = legalSynonyms.expandQuery(query);
+    }
+
     let localResults = [];
     let webResults = [];
 
@@ -68,10 +117,10 @@ class Retriever {
       let results;
       switch (searchMode) {
         case 'keyword':
-          results = await vectorStore.keywordSearch(query, searchK + 3);
+          results = await vectorStore.keywordSearch(expandedQuery, searchK + 3);
           break;
         default:
-          results = await vectorStore.hybridSearch(query, searchK + 3);
+          results = await vectorStore.hybridSearch(expandedQuery, searchK + 3);
       }
 
       if (fileId) {
@@ -95,6 +144,17 @@ class Retriever {
       localResults = this._enforceDiversity(localResults, 2).slice(0, searchK);
     }
 
+    // Also query knowledge graph for additional context
+    let graphResults = [];
+    try {
+      const kg = await getKnowledgeGraph();
+      if (kg) {
+        graphResults = await kg.query(query, { maxDepth: 1, maxResults: 5 });
+      }
+    } catch (err) {
+      // Knowledge graph not available, continue without it
+    }
+
     if (searchMode === 'web' || searchMode === 'hybrid') {
       try {
         webResults = await webSearch.search(query);
@@ -103,7 +163,7 @@ class Retriever {
       }
     }
 
-    return { localResults, webResults };
+    return { localResults, webResults, graphResults };
   }
 
   async retrieveByArticleId(articleId) {
@@ -117,7 +177,7 @@ class Retriever {
     return results.filter(d => d.id !== articleId).slice(0, k);
   }
 
-  formatContext(localResults, webResults = []) {
+  formatContext(localResults, webResults = [], graphResults = []) {
     let context = '';
 
     if (localResults && localResults.length > 0) {
@@ -129,6 +189,20 @@ class Retriever {
         const chunkInfo = chunkIdx !== undefined ? ` (Chunk ${chunkIdx + 1})` : '';
         const text = r.text.length > 1500 ? r.text.slice(0, 1500) + '...' : r.text;
         return `[Source ${i + 1}: ${trust.badge} ${source}${chunkInfo} — ${trust.label}]\n${text}\n`;
+      }).join('\n');
+    }
+
+    // Add knowledge graph context
+    if (graphResults && graphResults.length > 0) {
+      if (context) context += '\n\n';
+      context += 'KNOWLEDGE GRAPH:\n\n';
+      context += graphResults.map((r, i) => {
+        const node = r.node;
+        const title = node.title || node.id;
+        const type = node.type || 'legal_provision';
+        const act = node.act || '';
+        const connections = r.connections?.slice(0, 3)?.map(c => `${c.node?.title || c.node?.id} (${c.relationship})`).join(', ') || '';
+        return `[Graph ${i + 1}: ${title} — ${type}${act ? ` (${act})` : ''}]\n${connections ? `Connected to: ${connections}\n` : ''}`;
       }).join('\n');
     }
 

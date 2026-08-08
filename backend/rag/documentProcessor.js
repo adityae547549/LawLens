@@ -106,6 +106,18 @@ class DocumentProcessor {
     return '';
   }
 
+  _extractLegalMetadata(text) {
+    const articleMatch = text.match(/Article\s+(\d+[A-Z]?)/i);
+    const sectionMatch = text.match(/Section\s+(\d+[A-Z]?)/i);
+    const chapterMatch = text.match(/Chapter\s+([IVXLCDM\d]+)/i);
+
+    const meta = {};
+    if (articleMatch) meta.article = articleMatch[1];
+    if (sectionMatch) meta.section = sectionMatch[1];
+    if (chapterMatch) meta.chapter = chapterMatch[1];
+    return meta;
+  }
+
   chunkText(text, metadata = {}) {
     const chunks = [];
     const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
@@ -114,10 +126,12 @@ class DocumentProcessor {
 
     for (const sentence of sentences) {
       if ((currentChunk + sentence).length > this.chunkSize && currentChunk.length > 0) {
+        const trimmed = currentChunk.trim();
+        const legalMeta = this._extractLegalMetadata(trimmed);
         chunks.push({
           id: `chunk_${metadata.fileId || 'doc'}_${chunkIndex}`,
-          text: currentChunk.trim(),
-          metadata: { ...metadata, chunkIndex }
+          text: trimmed,
+          metadata: { ...metadata, ...legalMeta, chunkIndex }
         });
         chunkIndex++;
         const overlap = currentChunk.slice(-this.chunkOverlap);
@@ -128,10 +142,12 @@ class DocumentProcessor {
     }
 
     if (currentChunk.trim().length > 0) {
+      const trimmed = currentChunk.trim();
+      const legalMeta = this._extractLegalMetadata(trimmed);
       chunks.push({
         id: `chunk_${metadata.fileId || 'doc'}_${chunkIndex}`,
-        text: currentChunk.trim(),
-        metadata: { ...metadata, chunkIndex }
+        text: trimmed,
+        metadata: { ...metadata, ...legalMeta, chunkIndex }
       });
     }
 
@@ -157,12 +173,16 @@ class DocumentProcessor {
     return this.chunkText(text, metadata);
   }
 
-  async processDirectory(dirPath) {
+  async processDirectory(dirPath, allowedFiles = null) {
     const files = fs.readdirSync(dirPath);
     const allChunks = [];
     const errors = [];
 
     for (const file of files) {
+      if (allowedFiles && Array.isArray(allowedFiles) && !allowedFiles.includes(file)) {
+        console.log(`Skipped unregistered file: ${file}`);
+        continue;
+      }
       const filePath = path.join(dirPath, file);
       const stat = fs.statSync(filePath);
       if (stat.isFile()) {

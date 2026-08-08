@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database/db');
 const { optionalAuth, authenticate } = require('../middleware/auth');
+const validate = require('../middleware/validate');
+const { feedbackSchema } = require('../validators');
 
-router.post('/', optionalAuth, async (req, res) => {
+router.post('/', optionalAuth, validate(feedbackSchema), async (req, res) => {
   try {
     const { overallRating, overallComment, categories, email } = req.body;
 

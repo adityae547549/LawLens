@@ -16,34 +16,36 @@ class Reranker {
     return matches / Math.max(queryTokens.length, 1);
   }
 
-  _proximityScore(queryTokens, docTokens) {
+  _buildPosMap(docTokens) {
+    const map = new Map();
+    for (let i = 0; i < docTokens.length; i++) {
+      const t = docTokens[i];
+      if (!map.has(t)) map.set(t, i);
+    }
+    return map;
+  }
+
+  _proximityScore(queryTokens, posMap) {
     if (queryTokens.length < 2) return 0.5;
     let totalDist = 0;
     let pairs = 0;
     for (let i = 0; i < queryTokens.length - 1; i++) {
-      let bestA = Infinity, bestB = Infinity;
-      for (let j = 0; j < docTokens.length; j++) {
-        if (docTokens[j] === queryTokens[i]) bestA = Math.min(bestA, j);
-        if (docTokens[j] === queryTokens[i + 1]) bestB = Math.min(bestB, j);
-      }
-      if (bestA !== Infinity && bestB !== Infinity) {
-        totalDist += 1 / (Math.abs(bestA - bestB) + 1);
+      const posA = posMap.get(queryTokens[i]);
+      const posB = posMap.get(queryTokens[i + 1]);
+      if (posA !== undefined && posB !== undefined) {
+        totalDist += 1 / (Math.abs(posA - posB) + 1);
         pairs++;
       }
     }
     return pairs > 0 ? totalDist / pairs : 0;
   }
 
-  _positionScore(queryTokens, docTokens) {
+  _positionScore(queryTokens, posMap) {
     let score = 0;
     for (let i = 0; i < Math.min(queryTokens.length, 5); i++) {
-      const term = queryTokens[i];
-      let bestPos = Infinity;
-      for (let j = 0; j < docTokens.length; j++) {
-        if (docTokens[j] === term) bestPos = Math.min(bestPos, j);
-      }
-      if (bestPos !== Infinity) {
-        score += 1 / (bestPos + 1);
+      const pos = posMap.get(queryTokens[i]);
+      if (pos !== undefined) {
+        score += 1 / (pos + 1);
       }
     }
     return Math.min(score, 1);
@@ -77,10 +79,11 @@ class Reranker {
 
     return results.map(doc => {
       const docTokens = this._tokenize(doc.text);
+      const posMap = this._buildPosMap(docTokens);
 
       const overlap = this._termOverlapScore(queryTokens, docTokens);
-      const proximity = this._proximityScore(queryTokens, docTokens);
-      const position = this._positionScore(queryTokens, docTokens);
+      const proximity = this._proximityScore(queryTokens, posMap);
+      const position = this._positionScore(queryTokens, posMap);
       const exact = this._exactPhraseScore(query, doc.text);
       const semantic = maxSemantic > 0 ? Math.min((doc.score || 0) / maxSemantic, 1) : 0;
       const legal = this._legalBoost(doc);

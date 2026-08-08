@@ -6,33 +6,43 @@ const { authenticate } = require('../middleware/auth');
 const passport = require('../middleware/googleAuth');
 const db = require('../database/db');
 
+const validate = require('../middleware/validate');
+const { registerSchema, loginSchema, profileUpdateSchema, googleAuthSchema } = require('../validators');
+
 const hasGoogleOAuth = process.env.GOOGLE_CLIENT_ID
   && process.env.GOOGLE_CLIENT_SECRET
   && process.env.GOOGLE_CLIENT_ID !== 'your-google-client-id-here';
 
-router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/register', validate(registerSchema), authController.register);
+router.post('/login', validate(loginSchema), authController.login);
 router.get('/profile', authenticate, authController.profile);
-router.put('/profile', authenticate, authController.updateProfile);
+router.put('/profile', authenticate, validate(profileUpdateSchema), authController.updateProfile);
 
-router.post('/google', async (req, res) => {
+router.post('/google', validate(googleAuthSchema), async (req, res) => {
   try {
     const { idToken } = req.body;
     if (!idToken) {
       return res.status(400).json({ error: 'Firebase ID token is required' });
     }
 
+    // SECURITY: Verify the token with Google's public endpoint rather than
+    // base64-decoding the payload locally. Google's endpoint validates the
+    // cryptographic signature, preventing forged-token attacks.
     let payload;
     try {
-      const parts = idToken.split('.');
-      if (parts.length !== 3) throw new Error('Invalid token format');
-      payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+      const response = await fetch(
+        `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`
+      );
+      if (!response.ok) {
+        return res.status(401).json({ error: 'Invalid or expired Firebase token' });
+      }
+      payload = await response.json();
     } catch (e) {
-      return res.status(401).json({ error: 'Invalid Firebase token' });
+      return res.status(401).json({ error: 'Could not verify Firebase token' });
     }
 
     const email = payload.email;
-    const name = payload.name || payload.email.split('@')[0];
+    const name = payload.name || (email ? email.split('@')[0] : 'User');
     const avatar = payload.picture || null;
     const googleId = payload.sub;
 

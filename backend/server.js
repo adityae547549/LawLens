@@ -7,6 +7,11 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 const https = require('https');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
+const crypto = require('crypto');
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = crypto.randomBytes(64).toString('hex');
+  console.warn('[WARN] JWT_SECRET not set in .env — using random secret (tokens will not survive restarts)');
+}
 const fs = require('fs');
 const passport = require('./middleware/googleAuth');
 
@@ -26,6 +31,8 @@ const summarizerRoutes = require('./routes/summarizer');
 const workspaceRoutes = require('./routes/workspace');
 const feedbackRoutes = require('./routes/feedback');
 const configRoutes = require('./routes/config');
+const knowledgeRoutes = require('./routes/knowledge');
+const studioRoutes = require('./routes/studio');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -66,9 +73,11 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-app.get('/health', (req, res) => {
+const healthCheck = (req, res) => {
   res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
-});
+};
+app.get('/health', healthCheck);
+app.get('/api/health', healthCheck);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
@@ -86,6 +95,8 @@ app.use('/api/summarizer', summarizerRoutes);
 app.use('/api/workspaces', workspaceRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/config', configRoutes);
+app.use('/api/knowledge', knowledgeRoutes);
+app.use('/api/studio', studioRoutes);
 
 const FRONTEND_DIR = path.join(__dirname, '..', 'frontend');
 const hasFrontend = fs.existsSync(FRONTEND_DIR);
@@ -139,9 +150,25 @@ if (hasFrontend) {
   });
 }
 
+const logger = require('./utils/logger');
+const AppError = require('./utils/AppError');
+
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
-  res.status(500).json({ error: 'Internal server error', message: process.env.NODE_ENV === 'development' ? err.message : undefined });
+  logger.error(err.message || 'Unhandled server error', { stack: err.stack, path: req.path, method: req.method });
+
+  if (err instanceof AppError || err.isOperational) {
+    return res.status(err.statusCode || 400).json({
+      error: err.message,
+      type: err.type || 'BAD_REQUEST',
+      details: err.details || undefined
+    });
+  }
+
+  res.status(500).json({
+    error: 'Internal server error',
+    type: 'SERVER_ERROR',
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
 });
 
 function selfPing() {
@@ -165,3 +192,19 @@ const server = app.listen(PORT, () => {
 
 server.keepAliveTimeout = 65000;
 server.headersTimeout = 66000;
+
+function gracefulShutdown(signal) {
+  logger.info(`Received ${signal}. Shutting down HTTP server gracefully...`);
+  server.close(() => {
+    logger.info('HTTP server closed cleanly.');
+    process.exit(0);
+  });
+
+  setTimeout(() => {
+    logger.error('Could not close connections in time, forcefully shutting down.');
+    process.exit(1);
+  }, 10000);
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));

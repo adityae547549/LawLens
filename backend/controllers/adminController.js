@@ -148,7 +148,9 @@ exports.uploadDataset = async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     const dataDir = path.resolve(__dirname, '..', 'data');
-    const destPath = path.join(dataDir, req.file.originalname);
+    // SECURITY: strip directory components to prevent path traversal (e.g., "../../server.js")
+    const safeFileName = path.basename(req.file.originalname).replace(/[^a-zA-Z0-9._-]/g, '_');
+    const destPath = path.join(dataDir, safeFileName);
     fs.copyFileSync(req.file.path, destPath);
     fs.unlinkSync(req.file.path);
 

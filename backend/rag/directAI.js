@@ -1,58 +1,10 @@
-const https = require('https');
 const webSearch = require('./webSearch');
 const SEARCH_MODES = require('../config/searchModes');
+const ProviderFactory = require('./aiProvider/ProviderFactory');
 
 class DirectAI {
   constructor() {
-    this.model = process.env.GROQ_MODEL || 'llama3-70b-8192';
-    this.temperature = 0.3;
-    this.maxTokens = 3000;
-    this.apiKey = process.env.GROQ_API_KEY;
-  }
-
-  _callGroqAPI(messages, stream = false) {
-    return new Promise((resolve, reject) => {
-      const body = JSON.stringify({
-        messages,
-        model: this.model,
-        temperature: this.temperature,
-        max_tokens: this.maxTokens,
-        stream
-      });
-
-      const req = https.request({
-        hostname: 'api.groq.com',
-        path: '/openai/v1/chat/completions',
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(body)
-        },
-        timeout: 90000
-      }, (res) => {
-        if (stream) {
-          resolve(res);
-        } else {
-          let data = '';
-          res.on('data', chunk => data += chunk);
-          res.on('end', () => {
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.error) reject(new Error(parsed.error.message || 'API error'));
-              else resolve(parsed);
-            } catch (e) {
-              reject(new Error('Failed to parse API response'));
-            }
-          });
-        }
-      });
-
-      req.on('error', reject);
-      req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-      req.write(body);
-      req.end();
-    });
+    this.provider = ProviderFactory.createProvider();
   }
 
   async generate(prompt, options = {}) {
@@ -100,8 +52,8 @@ SUPPORTED LANGUAGES: English, Hindi, Bengali, Tamil, Telugu, Marathi, Kannada, G
     messages.push({ role: 'user', content: prompt });
 
     try {
-      const completion = await this._callGroqAPI(messages, false);
-      const answer = completion.choices?.[0]?.message?.content || 'No response generated.';
+      const res = await this.provider.generate(messages);
+      const answer = res.content || 'No response generated.';
       const citations = webSearch.getWebCitations(webResults);
 
       return {
@@ -162,27 +114,12 @@ SUPPORTED LANGUAGES: English, Hindi, Bengali, Tamil, Telugu, Marathi, Kannada, G
     let fullContent = '';
 
     try {
-      const res = await this._callGroqAPI(messages, true);
-      let buffer = '';
+      const stream = this.provider.generateStream(messages);
 
-      // Stream each token delta as it arrives (true incremental streaming).
-      for await (const chunk of res) {
-        buffer += chunk.toString();
-        const lines = buffer.split('\n');
-        buffer = lines.pop();
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed || !trimmed.startsWith('data: ')) continue;
-          const data = trimmed.slice(6);
-          if (data === '[DONE]') continue;
-          try {
-            const parsed = JSON.parse(data);
-            const delta = parsed.choices?.[0]?.delta?.content;
-            if (delta) {
-              fullContent += delta;
-              yield { type: 'content', content: delta };
-            }
-          } catch (e) { /* skip unparseable chunks */ }
+      for await (const chunk of stream) {
+        if (chunk.type === 'content') {
+          fullContent += chunk.content;
+          yield chunk;
         }
       }
 
@@ -193,7 +130,6 @@ SUPPORTED LANGUAGES: English, Hindi, Bengali, Tamil, Telugu, Marathi, Kannada, G
       yield { type: 'done' };
     } catch (error) {
       console.error('Direct AI stream error:', error.message);
-      // Deltas already streamed; just close out (or report error if nothing sent).
       if (fullContent) {
         const citations = webSearch.getWebCitations(webResults);
         yield { type: 'citations', citations };

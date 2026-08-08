@@ -1,60 +1,9 @@
-const https = require('https');
 const promptEditor = require('./promptEditor');
+const ProviderFactory = require('./aiProvider/ProviderFactory');
 
 class Generator {
   constructor() {
-    this.model = process.env.GROQ_MODEL || 'llama3-70b-8192';
-    this.temperature = 0.1;
-    this.maxTokens = 2048;
-    this.apiKey = process.env.GROQ_API_KEY;
-  }
-
-  _callGroqAPI(messages, stream = false) {
-    return new Promise((resolve, reject) => {
-      const body = JSON.stringify({
-        messages,
-        model: this.model,
-        temperature: this.temperature,
-        max_tokens: this.maxTokens,
-        stream
-      });
-
-      const req = https.request({
-        hostname: 'api.groq.com',
-        path: '/openai/v1/chat/completions',
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(body)
-        },
-        timeout: 60000
-      }, (res) => {
-        if (stream) {
-          resolve(res);
-        } else {
-          let data = '';
-          res.on('data', chunk => data += chunk);
-          res.on('end', () => {
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.error) {
-                reject(new Error(parsed.error.message || 'API error'));
-              } else {
-                resolve(parsed);
-              }
-            } catch (e) {
-              reject(new Error('Failed to parse API response'));
-            }
-          });
-        }
-      });
-
-      req.on('error', reject);
-      req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-      req.write(body);
-      req.end();
-    });
+    this.provider = ProviderFactory.createProvider();
   }
 
   _getExplainLevelPrompt(level) {
@@ -77,8 +26,8 @@ class Generator {
       'auto': 'Detect and match the user\'s language',
       'en': 'English', 'hi': 'Hindi (हिन्दी)', 'bn': 'Bengali (বাংলা)',
       'ta': 'Tamil (தமிழ்)', 'te': 'Telugu (తెలుగు)', 'mr': 'Marathi (मराठी)',
-      'kn': 'Kannada (ಕನ್ನಡ)', 'gu': 'Gujarati (ગુજરાતી)', 'pa': 'Punjabi (ਪੰਜਾਬੀ)',
-      'od': 'Odia (ଓଡ଼ିଆ)', 'as': 'Assamese (অসমীয়া)', 'ml': 'Malayalam (മലയാളം)',
+      'kn': 'Kannada (<ctrl42>ಕನ್ನಡ)', 'gu': 'Gujarati (ગુજરાતી)', 'pa': 'Punjabi (ਪੰਜਾਬੀ)',
+      'od': 'Odia (ଓଡ଼ိଆ)', 'as': 'Assamese (অসমীয়া)', 'ml': 'Malayalam (മലയാളം)',
       'ur': 'Urdu (اردو)'
     };
     const languageInstruction = language && language !== 'auto'
@@ -140,8 +89,8 @@ ${ownKnowledgeInstruction}`;
         }
         messages.push({ role: 'user', content: query });
         try {
-          const completion = await this._callGroqAPI(messages, false);
-          const answer = completion.choices?.[0]?.message?.content || 'No response generated.';
+          const res = await this.provider.generate(messages);
+          const answer = res.content || 'No response generated.';
           return { answer, sources: [{ name: 'AI Knowledge', index: 0, type: 'general' }], confidence: 40, sourceType: 'general' };
         } catch (error) {
           console.error('Groq API error (own knowledge):', error.message);
@@ -171,12 +120,14 @@ ${ownKnowledgeInstruction}`;
     messages.push({ role: 'user', content: userMessage });
 
     try {
-      const completion = await this._callGroqAPI(messages, false);
-      const answer = completion.choices?.[0]?.message?.content || 'No response generated.';
+      const res = await this.provider.generate(messages);
+      const answer = res.content || 'No response generated.';
       const sources = this._extractSources(context);
       return { answer, sources };
     } catch (error) {
       console.error('Groq API error:', error.message);
+      const degraded = this._buildDegradedAnswer(query, context);
+      if (degraded) return degraded;
       return { answer: 'AI service unavailable. Please try again later.', sources: [] };
     }
   }
@@ -199,32 +150,16 @@ ${ownKnowledgeInstruction}`;
         messages.push({ role: 'user', content: query });
         let fullContent = '';
         try {
-          const res = await this._callGroqAPI(messages, true);
-          let buffer = '';
-          // Stream each token delta as it arrives (true incremental streaming).
-          for await (const chunk of res) {
-            buffer += chunk.toString();
-            const lines = buffer.split('\n');
-            buffer = lines.pop();
-            for (const line of lines) {
-              const trimmed = line.trim();
-              if (!trimmed || !trimmed.startsWith('data: ')) continue;
-              const data = trimmed.slice(6);
-              if (data === '[DONE]') continue;
-              try {
-                const parsed = JSON.parse(data);
-                const delta = parsed.choices?.[0]?.delta?.content;
-                if (delta) {
-                  fullContent += delta;
-                  yield { type: 'content', content: delta };
-                }
-              } catch (e) { /* skip unparseable chunks */ }
+          const stream = this.provider.generateStream(messages);
+          for await (const chunk of stream) {
+            if (chunk.type === 'content') {
+              fullContent += chunk.content;
+              yield chunk;
             }
           }
           yield { type: 'done', sources: [{ name: 'AI Knowledge', index: 0, type: 'general' }], confidence: 40, sourceType: 'general' };
         } catch (error) {
           console.error('Groq streaming error (own knowledge):', error.message);
-          // Deltas already streamed; just close out (or report error if nothing sent).
           if (fullContent) {
             yield { type: 'done', sources: [{ name: 'AI Knowledge', index: 0, type: 'general' }], confidence: 40, sourceType: 'general' };
           } else {
@@ -260,38 +195,26 @@ ${ownKnowledgeInstruction}`;
     let fullContent = '';
 
     try {
-      const res = await this._callGroqAPI(messages, true);
-      let buffer = '';
-
-      // Stream each token delta as it arrives (true incremental streaming).
-      for await (const chunk of res) {
-        buffer += chunk.toString();
-        const lines = buffer.split('\n');
-        buffer = lines.pop();
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed || !trimmed.startsWith('data: ')) continue;
-          const data = trimmed.slice(6);
-          if (data === '[DONE]') continue;
-          try {
-            const parsed = JSON.parse(data);
-            const delta = parsed.choices?.[0]?.delta?.content;
-            if (delta) {
-              fullContent += delta;
-              yield { type: 'content', content: delta };
-            }
-          } catch (e) { /* skip unparseable chunks */ }
+      const stream = this.provider.generateStream(messages);
+      for await (const chunk of stream) {
+        if (chunk.type === 'content') {
+          fullContent += chunk.content;
+          yield chunk;
         }
       }
-
       yield { type: 'done', sources, confidence: this._calculateConfidence(fullContent, context) };
     } catch (error) {
       console.error('Groq streaming error:', error.message);
-      // Deltas already streamed; just close out (or report error if nothing sent).
       if (fullContent) {
         yield { type: 'done', sources, confidence: this._calculateConfidence(fullContent, context) };
       } else {
-        yield { type: 'error', message: 'AI service unavailable. Please try again later.' };
+        const degraded = this._buildDegradedAnswer(query, context);
+        if (degraded) {
+          yield { type: 'content', content: degraded.answer };
+          yield { type: 'done', sources: degraded.sources, confidence: 30 };
+        } else {
+          yield { type: 'error', message: 'AI service unavailable. Please try again later.' };
+        }
       }
     }
   }
@@ -315,10 +238,10 @@ User's new message: "${currentQuery}"
 Standalone search query:`;
 
     try {
-      const result = await this._callGroqAPI([
+      const res = await this.provider.generate([
         { role: 'user', content: prompt }
-      ], false);
-      const rewritten = result.choices?.[0]?.message?.content?.trim();
+      ]);
+      const rewritten = res.content?.trim();
       if (rewritten && rewritten.length > 5 && rewritten.length < 200) {
         return rewritten;
       }
@@ -356,6 +279,15 @@ Standalone search query:`;
     return suggestions.slice(0, 3);
   }
 
+  _extractLegalReferences(answer) {
+    if (!answer) return { articles: [], sections: [], acts: [] };
+    const articles = Array.from(new Set(answer.match(/\bArticle\s+\d+[A-Z]?\b/gi) || [])).map(a => a.trim());
+    const sections = Array.from(new Set(answer.match(/\bSection\s+\d+[A-Z]?\b/gi) || [])).map(s => s.trim());
+    const acts = Array.from(new Set(answer.match(/\b(?:Act,\s*\d{4}|Act\s+\d{4}|Constitution|BNS|BNSS|BSA|IPC|CrPC)\b/gi) || [])).map(a => a.trim());
+
+    return { articles, sections, acts };
+  }
+
   _calculateConfidence(answer, context) {
     const sourceMatches = (answer.match(/\[Source \d+\]/g) || []).length;
     const contextLength = context.length;
@@ -363,13 +295,13 @@ Standalone search query:`;
 
     if (contextLength === 0) return 0;
 
-    let confidence = Math.min(15 + sourceMatches * 12, 50);
+    let confidence = Math.min(20 + sourceMatches * 15, 60);
 
-    if (answerLength > 300) confidence = Math.min(confidence + 10, 70);
-    if (answerLength > 800) confidence = Math.min(confidence + 10, 80);
+    if (answerLength > 300) confidence = Math.min(confidence + 10, 75);
+    if (answerLength > 800) confidence = Math.min(confidence + 10, 85);
 
-    const highTrustIndicators = (answer.match(/Supreme Court|Constitution|India Code|Gazette/gi) || []).length;
-    confidence = Math.min(confidence + highTrustIndicators * 3, 85);
+    const highTrustIndicators = (answer.match(/Supreme Court|Constitution|India Code|Gazette|BNS|BNSS|BSA/gi) || []).length;
+    confidence = Math.min(confidence + highTrustIndicators * 3, 90);
 
     if (answer.toLowerCase().includes("couldn't find")) confidence = 10;
     if (answer.toLowerCase().includes("not sufficient")) confidence = 15;
@@ -393,6 +325,36 @@ Standalone search query:`;
       }
     }
     return sources;
+  }
+
+  /**
+   * When the LLM provider is unreachable but retrieval succeeded, build an honest
+   * degraded answer from the verbatim retrieved source excerpts so the user still
+   * gets value (authoritative text) instead of a dead-end error.
+   * Returns null when there is no usable context to fall back on.
+   */
+  _buildDegradedAnswer(query, context) {
+    if (!context || context.trim().length === 0) return null;
+
+    const sourceRegex = /\[Source (\d+): ([^\]]+)\]\n([\s\S]*?)(?=\n\[Source \d+:|$)/g;
+    const excerpts = [];
+    let match;
+    while ((match = sourceRegex.exec(context)) !== null) {
+      const title = match[2].trim();
+      const text = match[3].trim();
+      if (title && text) excerpts.push({ title, text });
+    }
+    if (excerpts.length === 0) return null;
+
+    const top = excerpts.slice(0, 3);
+    const body = top
+      .map((e, i) => `**[Source ${i + 1}] ${e.title}**\n\n${e.text.length > 500 ? e.text.slice(0, 500) + '…' : e.text}`)
+      .join('\n\n');
+
+    return {
+      answer: `⚠️ The AI generation service is temporarily unavailable, so I couldn't write a full answer. The most relevant passages from your legal database are shown below — they directly address **"${query}"**.\n\n${body}\n\n_Retrieved verbatim from your indexed legal documents. Try again shortly for a full AI-written answer._`,
+      sources: excerpts.slice(0, 5).map(e => ({ name: e.title }))
+    };
   }
 }
 

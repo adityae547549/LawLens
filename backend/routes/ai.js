@@ -3,12 +3,13 @@ const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const { optionalAuth } = require('../middleware/auth');
 const directAI = require('../rag/directAI');
+const validate = require('../middleware/validate');
+const { aiGenerateSchema } = require('../validators');
 
 // POST /api/ai/generate — direct AI (no RAG)
-router.post('/generate', optionalAuth, async (req, res) => {
+router.post('/generate', optionalAuth, validate(aiGenerateSchema), async (req, res) => {
   try {
     const { prompt, mode, useWebSearch = false, searchMode = 'general', language = 'auto' } = req.body;
-    if (!prompt) return res.status(400).json({ error: 'Prompt required' });
 
     const result = await directAI.generate(prompt, { mode, useWebSearch, searchMode, language });
     res.json({
@@ -24,10 +25,9 @@ router.post('/generate', optionalAuth, async (req, res) => {
 });
 
 // POST /api/ai/stream — streaming direct AI
-router.post('/stream', optionalAuth, async (req, res) => {
+router.post('/stream', optionalAuth, validate(aiGenerateSchema), async (req, res) => {
   try {
     const { prompt, mode, useWebSearch = false, searchMode = 'general', language = 'auto' } = req.body;
-    if (!prompt) return res.status(400).json({ error: 'Prompt required' });
 
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',

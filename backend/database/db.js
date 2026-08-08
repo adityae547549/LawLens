@@ -2,7 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'database');
+// Resolve DB_PATH relative to the backend directory so data lives in a stable
+// location regardless of the process working directory (previously `./database`
+// resolved against cwd, silently splitting data across folders).
+const BACKEND_DIR = path.resolve(__dirname, '..');
+const DB_PATH = process.env.DB_PATH
+  ? (path.isAbsolute(process.env.DB_PATH) ? process.env.DB_PATH : path.resolve(BACKEND_DIR, process.env.DB_PATH))
+  : path.join(BACKEND_DIR, 'database');
 
 class Database {
   constructor() {
