@@ -14,7 +14,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGIN
-        value: https://lawlens.web.app
+        value: https://lawlens.web.app,https://lawlens-f0ebc.web.app
       - key: DB_PATH
         value: ./database
       - key: UPLOAD_DIR

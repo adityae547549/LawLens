@@ -1,4 +1,6 @@
-const API_BASE = '/api';
+const API_BASE = window.location.hostname === 'localhost'
+  ? '/api'
+  : 'https://lawlens-p15c.onrender.com/api';
 
 const Utils = {
   getToken() {
