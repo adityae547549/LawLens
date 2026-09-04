@@ -1,20 +1,47 @@
 /**
  * LawLens Legal Knowledge Operating System (LKOS) v2
- * Full hierarchy management with versioning, audit, and workflow
+ * Full hierarchy management with versioning, audit, and corpus discovery
  */
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const VERSIONS_DIR = path.join(DATA_DIR, 'versions');
+
+const NON_ACT_FILES = new Set([
+  'benchmark-history.json', 'chunks-index.json', 'knowledge-graph.json',
+  'source-registry.json', 'source-tracker.json', 'pages.json',
+  'observatory-report.json', 'landmark-cases.json', 'legal-maxims.json'
+]);
+
+const FILENAME_TO_ACT_NAME = {
+  'ipc.json': 'Indian Penal Code 1860',
+  'bns.json': 'Bharatiya Nyaya Sanhita 2023',
+  'bnss.json': 'Bharatiya Nagarik Suraksha Sanhita 2023',
+  'bsa.json': 'Bharatiya Sakshya Adhiniyam 2023',
+  'crpc.json': 'Code of Criminal Procedure 1973',
+  'evidence-act.json': 'Indian Evidence Act 1872',
+  'consumer_protection.json': 'Consumer Protection Act 2019',
+  'contract_act.json': 'Indian Contract Act 1872',
+  'environment_act.json': 'Environment (Protection) Act 1986',
+  'gst_act.json': 'Central Goods and Services Tax Act 2017',
+  'it_act.json': 'Information Technology Act 2000',
+  'motor_vehicles.json': 'Motor Vehicles Act 1988',
+  'rti.json': 'Right to Information Act 2005',
+  'companies_act.json': 'Companies Act 2013',
+  'amendments.json': 'Constitutional Amendments'
+};
 
 class LegalKnowledgeOS {
   constructor() {
     if (!fs.existsSync(VERSIONS_DIR)) {
       fs.mkdirSync(VERSIONS_DIR, { recursive: true });
     }
+    this._corpusCache = null;
+    this._corpusHash = null;
   }
 
   // ══════════════════════════════════════════════════════════════
@@ -74,27 +101,40 @@ class LegalKnowledgeOS {
   }
 
   /**
-   * Get full act hierarchy
+   * Get full act hierarchy (supports hierarchy + corpus IDs)
    */
   getAct(actId) {
-    return this._loadAct(actId);
+    const hierarchyAct = this._loadAct(actId);
+    if (hierarchyAct) return hierarchyAct;
+
+    if (actId && actId.startsWith('corpus-')) {
+      const corpus = this.discoverCorpus();
+      return corpus.find(a => a.id === actId) || null;
+    }
+    return null;
   }
 
   /**
-   * List all acts
+   * List all acts (hierarchy + discovered corpus)
    */
   listActs({ status, search } = {}) {
     const dir = path.join(DATA_DIR, 'hierarchy');
-    if (!fs.existsSync(dir)) return [];
+    let hierarchyActs = [];
+    if (fs.existsSync(dir)) {
+      const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+      hierarchyActs = files.map(f => {
+        try {
+          return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+        } catch {
+          return null;
+        }
+      }).filter(Boolean);
+    }
 
-    const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
-    let acts = files.map(f => {
-      try {
-        return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
-      } catch {
-        return null;
-      }
-    }).filter(Boolean);
+    const corpusActs = this.discoverCorpus();
+    const hierarchyIds = new Set(hierarchyActs.map(a => a.id));
+    const uniqueCorpus = corpusActs.filter(a => !hierarchyIds.has(a.id));
+    let acts = [...hierarchyActs, ...uniqueCorpus];
 
     if (status) acts = acts.filter(a => a.status === status);
     if (search) {
@@ -311,6 +351,111 @@ class LegalKnowledgeOS {
   }
 
   // ══════════════════════════════════════════════════════════════
+  // CORPUS DISCOVERY — Scan existing legal source files
+  // ══════════════════════════════════════════════════════════════
+
+  _isLegalCorpusFile(filename) {
+    if (NON_ACT_FILES.has(filename)) return false;
+    if (!filename.endsWith('.json')) return false;
+    if (filename === 'amendments.json') return true;
+    return FILENAME_TO_ACT_NAME.hasOwnProperty(filename);
+  }
+
+  _computeFileHash(filePath) {
+    try {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      return crypto.createHash('sha256').update(content).digest('hex').slice(0, 16);
+    } catch {
+      return null;
+    }
+  }
+
+  _parseCorpusFile(filePath, filename) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      if (!Array.isArray(raw) || raw.length === 0) return null;
+
+      const firstEntry = raw[0];
+      const actName = FILENAME_TO_ACT_NAME[filename] || firstEntry.act || filename.replace('.json', '').replace(/_/g, ' ');
+      const year = firstEntry.year || null;
+
+      let totalSections = 0;
+      const chapters = raw.map((entry, idx) => {
+        const chapterNum = entry.chapter || entry.part || `Group ${idx + 1}`;
+        const chapterTitle = entry.title || `Chapter ${chapterNum}`;
+        const sections = (entry.sections || []).map(s => ({
+          id: `sec-${filename}-${s.num}`,
+          type: 'section',
+          number: String(s.num || ''),
+          title: s.title || `Section ${s.num}`,
+          content: s.text || '',
+          keywords: s.keywords || s.key_topics || s.key_offenses || [],
+          children: [],
+          order: s.num || 0
+        }));
+        totalSections += sections.length;
+        return {
+          id: `ch-${filename}-${idx}`,
+          type: entry.part ? 'part' : 'chapter',
+          number: String(chapterNum),
+          title: chapterTitle,
+          content: '',
+          children: sections,
+          order: idx
+        };
+      });
+
+      const fileId = `corpus-${filename.replace('.json', '')}`;
+      return {
+        id: fileId,
+        type: 'act',
+        title: actName,
+        actNumber: null,
+        year: year,
+        authority: '',
+        description: `${actName} — sourced from ${filename}`,
+        tags: ['corpus'],
+        status: 'published',
+        version: 1,
+        parts: chapters,
+        metadata: {
+          totalSections,
+          sourceFile: filename,
+          contentHash: this._computeFileHash(filePath),
+          lastEditedBy: 'corpus-discovery',
+          createdAt: new Date().toISOString(),
+          discoveredAt: new Date().toISOString()
+        },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+    } catch (err) {
+      return null;
+    }
+  }
+
+  discoverCorpus() {
+    if (this._corpusCache) return this._corpusCache;
+
+    const acts = [];
+    const files = fs.readdirSync(DATA_DIR).filter(f => this._isLegalCorpusFile(f));
+
+    for (const filename of files) {
+      const filePath = path.join(DATA_DIR, filename);
+      const act = this._parseCorpusFile(filePath, filename);
+      if (act) acts.push(act);
+    }
+
+    this._corpusCache = acts.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+    return this._corpusCache;
+  }
+
+  invalidateCorpusCache() {
+    this._corpusCache = null;
+    this._corpusHash = null;
+  }
+
+  // ══════════════════════════════════════════════════════════════
   // TREE HELPERS
   // ══════════════════════════════════════════════════════════════
 
@@ -402,6 +547,160 @@ class LegalKnowledgeOS {
       totalSections,
       totalNodes
     };
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // REBUILD — Reset generated state and rebuild from corpus
+  // ══════════════════════════════════════════════════════════════
+
+  rebuild(onProgress) {
+    const emit = (stage, data) => { if (onProgress) onProgress(stage, data); };
+    const startTime = Date.now();
+    const result = {
+      sourcesDiscovered: 0, created: 0, updated: 0, unchanged: 0, skipped: 0, errors: 0,
+      acts: 0, sections: 0, chunks: 0, graphNodes: 0, graphEdges: 0, duration: 0
+    };
+
+    try {
+      emit('preparing', { message: 'Preparing reset...' });
+
+      // 1. Clear generated hierarchy directory
+      const hierarchyDir = path.join(DATA_DIR, 'hierarchy');
+      if (fs.existsSync(hierarchyDir)) {
+        const existing = fs.readdirSync(hierarchyDir).filter(f => f.endsWith('.json'));
+        for (const f of existing) {
+          fs.unlinkSync(path.join(hierarchyDir, f));
+        }
+      }
+      fs.mkdirSync(hierarchyDir, { recursive: true });
+
+      // 2. Clear generated chunks index
+      const chunksPath = path.join(DATA_DIR, 'chunks-index.json');
+      if (fs.existsSync(chunksPath)) fs.unlinkSync(chunksPath);
+
+      // 3. Clear generated knowledge graph
+      const graphPath = path.join(DATA_DIR, 'knowledge-graph.json');
+      if (fs.existsSync(graphPath)) fs.unlinkSync(graphPath);
+
+      // 4. Invalidate cache and rediscover
+      emit('discovering', { message: 'Discovering legal corpus...' });
+      this.invalidateCorpusCache();
+      const corpus = this.discoverCorpus();
+      result.sourcesDiscovered = corpus.length;
+
+      emit('discovered', { message: `Found ${corpus.length} sources`, count: corpus.length });
+
+      // 5. Process each source
+      const chunksIndex = [];
+      const graphNodes = [];
+      const graphEdges = [];
+
+      for (let i = 0; i < corpus.length; i++) {
+        const act = corpus[i];
+        emit('processing', { message: `Processing ${act.title} (${i + 1}/${corpus.length})`, index: i + 1, total: corpus.length, source: act.title });
+
+        try {
+          // Write act to hierarchy
+          this._saveAct(act.id, act);
+          result.created++;
+          result.acts++;
+          result.sections += act.metadata?.totalSections || 0;
+
+          // Build chunks for this act
+          const actChunks = this._buildChunksForAct(act);
+          chunksIndex.push(...actChunks);
+          result.chunks += actChunks.length;
+
+          // Build graph nodes/edges for this act
+          const actGraph = this._buildGraphForAct(act);
+          graphNodes.push(...actGraph.nodes);
+          graphEdges.push(...actGraph.edges);
+          result.graphNodes += actGraph.nodes.length;
+          result.graphEdges += actGraph.edges.length;
+        } catch (err) {
+          result.errors++;
+          emit('error', { message: `Error processing ${act.title}: ${err.message}`, source: act.title });
+        }
+      }
+
+      // 6. Write chunks index
+      emit('indexing', { message: 'Building chunks index...' });
+      fs.writeFileSync(chunksPath, JSON.stringify(chunksIndex, null, 2));
+
+      // 7. Write knowledge graph
+      emit('graphing', { message: 'Building knowledge graph...' });
+      fs.writeFileSync(graphPath, JSON.stringify({ nodes: graphNodes, edges: graphEdges }, null, 2));
+
+      // 8. Finalize
+      result.duration = Date.now() - startTime;
+      emit('complete', { message: 'Rebuild complete', result });
+
+      return result;
+    } catch (err) {
+      result.duration = Date.now() - startTime;
+      result.errors++;
+      emit('error', { message: `Rebuild failed: ${err.message}` });
+      return result;
+    }
+  }
+
+  _buildChunksForAct(act) {
+    const chunks = [];
+    if (!act.parts) return chunks;
+
+    for (let ci = 0; ci < act.parts.length; ci++) {
+      const chapter = act.parts[ci];
+      if (!chapter.children) continue;
+      for (const section of chapter.children) {
+        if (!section.content) continue;
+        const chunkId = `chunk-${act.id}-ch${ci}-${section.id}`;
+        chunks.push({
+          id: chunkId,
+          sourceId: act.id,
+          sourceFile: act.metadata?.sourceFile,
+          actTitle: act.title,
+          chapterTitle: chapter.title,
+          sectionNumber: section.number,
+          sectionTitle: section.title,
+          content: section.content,
+          keywords: section.keywords || [],
+          contentHash: crypto.createHash('sha256').update(section.content).digest('hex').slice(0, 16),
+          createdAt: new Date().toISOString()
+        });
+      }
+    }
+    return chunks;
+  }
+
+  _buildGraphForAct(act) {
+    const nodes = [];
+    const edges = [];
+
+    // Act node
+    const actNodeId = `graph-${act.id}`;
+    nodes.push({ id: actNodeId, type: 'act', label: act.title, sourceId: act.id });
+
+    if (!act.parts) return { nodes, edges };
+
+    for (let ci = 0; ci < act.parts.length; ci++) {
+      const chapter = act.parts[ci];
+      const chNodeId = `graph-${act.id}-ch${ci}`;
+      nodes.push({ id: chNodeId, type: 'chapter', label: chapter.title, parentId: actNodeId });
+      edges.push({ id: `edge-${actNodeId}-${chNodeId}`, source: actNodeId, target: chNodeId, type: 'contains' });
+
+      if (!chapter.children) continue;
+      for (const section of chapter.children) {
+        const secNodeId = `graph-${act.id}-ch${ci}-${section.id}`;
+        nodes.push({ id: secNodeId, type: 'section', label: `${section.number} ${section.title}`.trim(), parentId: chNodeId, keywords: section.keywords || [] });
+        edges.push({ id: `edge-${chNodeId}-${secNodeId}`, source: chNodeId, target: secNodeId, type: 'contains' });
+
+        // Cross-reference edges via keywords
+        for (const kw of (section.keywords || [])) {
+          edges.push({ id: `edge-${secNodeId}-kw-${kw}`, source: secNodeId, target: `keyword-${kw}`, type: 'references', label: kw });
+        }
+      }
+    }
+    return { nodes, edges };
   }
 }
 

@@ -10,8 +10,8 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - GROQ_API_KEY=${GROQ_API_KEY}
-      - JWT_SECRET=${JWT_SECRET:-lawlens-jwt-secret-change-in-production}
-      - CORS_ORIGIN=http://localhost:3000
+      - JWT_SECRET=${JWT_SECRET}
+      - CORS_ORIGIN=https://lawlens.web.app
       - DB_PATH=./database
       - UPLOAD_DIR=./uploads
       - VECTOR_DB_PATH=./vector/index.json
@@ -23,6 +23,8 @@ services:
       - lawlens_vector:/app/backend/vector
       - lawlens_datafiles:/app/backend/data
     restart: unless-stopped
+    mem_limit: 1g
+    cpus: 1.5
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
       interval: 30s

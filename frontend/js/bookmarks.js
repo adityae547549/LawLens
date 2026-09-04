@@ -77,7 +77,7 @@ async function addBookmark(articleId, title) {
 }
 
 function viewBookmark(id) {
-  if (id) window.location.href = `/article?id=${id}`;
+  if (id) window.location.href = `./article.html?id=${id}`;
 }
 
 window.removeBookmark = removeBookmark;

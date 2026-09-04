@@ -185,8 +185,8 @@ const server = app.listen(PORT, () => {
 
   if (process.env.NODE_ENV === 'production' && SELF_URL && !SELF_URL.includes('localhost')) {
     selfPing();
-    setInterval(selfPing, 10 * 60 * 1000);
-    console.log(`[KeepAlive] Self-ping active every 10 minutes → ${SELF_URL}`);
+    setInterval(selfPing, 1 * 60 * 1000);
+    console.log(`[KeepAlive] Self-ping active every 1 minute → ${SELF_URL}`);
   }
 });
 
@@ -208,3 +208,7 @@ function gracefulShutdown(signal) {
 
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection:', reason);
+});

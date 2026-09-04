@@ -203,17 +203,18 @@ exports.getDatasets = async (req, res) => {
 exports.deleteDataset = async (req, res) => {
   try {
     const { fileName } = req.params;
+    const safeFileName = path.basename(fileName).replace(/[^a-zA-Z0-9._-]/g, '_');
     const dataDir = path.resolve(__dirname, '..', 'data');
-    const filePath = path.join(dataDir, fileName);
+    const filePath = path.join(dataDir, safeFileName);
 
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ error: 'File not found' });
     }
 
     fs.unlinkSync(filePath);
-    await vectorStore.deleteByFileId(fileName);
+    await vectorStore.deleteByFileId(safeFileName);
 
-    res.json({ message: 'Dataset deleted', fileName });
+    res.json({ message: 'Dataset deleted', fileName: safeFileName });
   } catch (error) {
     console.error('Delete dataset error:', error);
     res.status(500).json({ error: 'Failed to delete dataset' });

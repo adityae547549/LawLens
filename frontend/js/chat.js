@@ -763,7 +763,7 @@ function thumbsFeedback(btn, type) {
     localStorage.setItem('lawlense_feedback', JSON.stringify(feedback));
     btn.style.opacity = '1';
     btn.style.transform = 'scale(1.2)';
-    const sibling = type === 'up' ? btn.nextElementSibling?.nextElementSibling : btn.previousElementSibling?.previousElementSibling;
+    const sibling = type === 'up' ? btn.nextElementSibling : btn.previousElementSibling;
     if (sibling) sibling.style.opacity = '0.3';
     Utils.showToast(type === 'up' ? 'Glad this helped!' : 'Thanks, we\'ll improve this.', 'success');
   }

@@ -307,6 +307,22 @@ document.addEventListener('DOMContentLoaded', () => {
   initOverallStars();
   initSectionStars();
   initForm();
+
+  const container = document.getElementById('fbAccordion');
+  const expandAllBtn = document.getElementById('expandAllBtn');
+  const collapseAllBtn = document.getElementById('collapseAllBtn');
+  if (expandAllBtn && container) {
+    expandAllBtn.addEventListener('click', () => {
+      container.querySelectorAll('.fb-accordion-content').forEach(c => c.classList.add('open'));
+      container.querySelectorAll('.fb-accordion-header').forEach(h => h.setAttribute('aria-expanded', 'true'));
+    });
+  }
+  if (collapseAllBtn && container) {
+    collapseAllBtn.addEventListener('click', () => {
+      container.querySelectorAll('.fb-accordion-content').forEach(c => c.classList.remove('open'));
+      container.querySelectorAll('.fb-accordion-header').forEach(h => h.setAttribute('aria-expanded', 'false'));
+    });
+  }
 });
 
 function generateAccordion() {
@@ -392,17 +408,7 @@ function initSectionStars() {
         badge.textContent = val > 0 ? `${val}/5` : '—';
         badge.classList.toggle('has-rating', val > 0);
         highlightStars(stars, val);
-  // Expand / Collapse All
-  document.getElementById('expandAllBtn').addEventListener('click', () => {
-    container.querySelectorAll('.fb-accordion-content').forEach(c => c.classList.add('open'));
-    container.querySelectorAll('.fb-accordion-header').forEach(h => h.setAttribute('aria-expanded', 'true'));
-  });
-  document.getElementById('collapseAllBtn').addEventListener('click', () => {
-    container.querySelectorAll('.fb-accordion-content').forEach(c => c.classList.remove('open'));
-    container.querySelectorAll('.fb-accordion-header').forEach(h => h.setAttribute('aria-expanded', 'false'));
-  });
-
-  updateProgress();
+        updateProgress();
       });
       star.addEventListener('mouseenter', () => highlightStars(stars, parseInt(star.dataset.value)));
       star.addEventListener('mouseleave', () => highlightStars(stars, parseInt(input.value)));

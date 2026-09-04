@@ -196,9 +196,9 @@ const Utils = {
     }
   },
 
-  showToast(message, type = 'info') {
+  showToast(message, type = 'info', duration = 4000) {
     const container = document.querySelector('.toast-container');
-    if (!container) return;
+    if (!container) return null;
 
     const icons = {
       success: '✓',
@@ -218,7 +218,8 @@ const Utils = {
     setTimeout(() => {
       toast.classList.add('removing');
       setTimeout(() => toast.remove(), 300);
-    }, 4000);
+    }, duration);
+    return toast;
   },
 
   formatDate(dateStr) {

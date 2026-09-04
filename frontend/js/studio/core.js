@@ -493,6 +493,47 @@ window.Studio = (() => {
     return Utils.api(path, options);
   };
 
+  // ── SSE Connection ──────────────────────────────────────────
+  const SSE = {
+    _es: null,
+    _retryTimer: null,
+    _retryDelay: 1000,
+    _maxRetry: 30000,
+
+    connect() {
+      if (this._es) this.disconnect();
+      const token = Utils.getToken();
+      if (!token) return;
+      const url = `/api/studio/events?token=${encodeURIComponent(token)}`;
+      this._es = new EventSource(url);
+      this._retryDelay = 1000;
+
+      this._es.onmessage = (e) => {
+        try {
+          const event = JSON.parse(e.data);
+          Events.emit('sse:' + event.type, event);
+          Events.emit('sse:*', event);
+        } catch {}
+      };
+
+      this._es.onerror = () => {
+        this._es.close();
+        this._es = null;
+        this._retryTimer = setTimeout(() => this.connect(), this._retryDelay);
+        this._retryDelay = Math.min(this._retryDelay * 2, this._maxRetry);
+      };
+    },
+
+    disconnect() {
+      if (this._retryTimer) { clearTimeout(this._retryTimer); this._retryTimer = null; }
+      if (this._es) { this._es.close(); this._es = null; }
+    },
+
+    isConnected() {
+      return this._es && this._es.readyState === EventSource.OPEN;
+    }
+  };
+
   // ── Initialize ─────────────────────────────────────────────
   function init() {
     // Auth guard
@@ -566,6 +607,9 @@ window.Studio = (() => {
     window.addEventListener('hashchange', () => Router.handleRoute());
     Router.handleRoute();
 
+    // Connect SSE
+    SSE.connect();
+
     // Init Lucide icons
     if (window.lucide) lucide.createIcons();
   }
@@ -581,6 +625,7 @@ window.Studio = (() => {
     Toast,
     Modal,
     CommandPalette,
+    SSE,
     api,
     init
   };

@@ -12,6 +12,7 @@ Studio.Modules.register('knowledge-os', () => {
   let _view = 'list'; // list, tree, edit
   let _versions = [];
   let _stats = null;
+  let _rebuildUnsub = null;
 
   async function loadActs() {
     try {
@@ -217,6 +218,7 @@ Studio.Modules.register('knowledge-os', () => {
               <option value="archived" ${_filterStatus === 'archived' ? 'selected' : ''}>Archived</option>
             </select>
             ${Studio.UI.btn('Create Act', { icon: 'plus', variant: 'primary', id: 'createActBtn' })}
+            ${Studio.UI.btn('Reset & Rebuild', { icon: 'refresh-cw', variant: 'danger', id: 'rebuildBtn' })}
           </div>
         </div>
 
@@ -229,6 +231,8 @@ Studio.Modules.register('knowledge-os', () => {
             ${Studio.UI.statCard('list', _stats.totalSections, 'Total Sections')}
           </div>
         ` : ''}
+
+        <div id="rebuildProgress" style="display:none;padding:12px;background:var(--bg-secondary);border-radius:8px;margin-bottom:16px;border:1px solid var(--border);"></div>
 
         ${renderActList()}`;
     },
@@ -244,6 +248,71 @@ Studio.Modules.register('knowledge-os', () => {
       document.getElementById('lkosStatusFilter')?.addEventListener('change', (e) => {
         _filterStatus = e.target.value;
         Studio.Router.handleRoute();
+      });
+
+      // Reset & Rebuild
+      document.getElementById('rebuildBtn')?.addEventListener('click', () => {
+        Studio.Modal.confirm(
+          'Reset & Rebuild Knowledge',
+          'This will reset generated Knowledge OS indexes and rebuild them from the current legal source corpus. Original source files will not be deleted.',
+          async () => {
+            const progressEl = document.getElementById('rebuildProgress');
+            if (progressEl) {
+              progressEl.style.display = 'block';
+              progressEl.innerHTML = '<div class="studio-loading-spinner" style="width:20px;height:20px;"></div> <span style="margin-left:8px;">Preparing...</span>';
+            }
+
+            // Listen for SSE rebuild events
+            const onRebuildEvent = (event) => {
+              if (progressEl && event.stage) {
+                const stageLabels = {
+                  preparing: 'Preparing...',
+                  discovering: 'Discovering sources...',
+                  discovered: event.message || 'Sources discovered',
+                  processing: event.message || 'Processing...',
+                  indexing: 'Building chunks index...',
+                  graphing: 'Building knowledge graph...',
+                  complete: 'Rebuild complete!',
+                  error: event.message || 'Error occurred'
+                };
+                const label = stageLabels[event.stage] || event.stage;
+                const spinner = event.stage === 'complete' ? '' : '<div class="studio-loading-spinner" style="width:20px;height:20px;"></div> ';
+                const color = event.stage === 'complete' ? 'color:var(--success)' : event.stage === 'error' ? 'color:var(--error)' : '';
+                progressEl.innerHTML = `${spinner}<span style="margin-left:8px;${color}">${label}</span>`;
+              }
+            };
+            _rebuildUnsub = Studio.Events.on('sse:lkos:rebuild', onRebuildEvent);
+
+            try {
+              const res = await Studio.api('/studio/lkos/rebuild', { method: 'POST' });
+              Studio.Toast.success('Knowledge OS rebuilt successfully');
+              // Show summary
+              if (progressEl && res.data) {
+                const d = res.data;
+                progressEl.innerHTML = `
+                  <div style="padding:12px;background:var(--bg-tertiary);border-radius:8px;margin-top:8px;">
+                    <div style="font-weight:600;margin-bottom:8px;color:var(--text-primary);">Rebuild Complete (${(d.duration / 1000).toFixed(1)}s)</div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;font-size:0.82rem;">
+                      <div><span style="color:var(--text-tertiary);">Sources:</span> <strong>${d.sourcesDiscovered}</strong></div>
+                      <div><span style="color:var(--text-tertiary);">Created:</span> <strong>${d.created}</strong></div>
+                      <div><span style="color:var(--text-tertiary);">Acts:</span> <strong>${d.acts}</strong></div>
+                      <div><span style="color:var(--text-tertiary);">Sections:</span> <strong>${d.sections}</strong></div>
+                      <div><span style="color:var(--text-tertiary);">Chunks:</span> <strong>${d.chunks}</strong></div>
+                      <div><span style="color:var(--text-tertiary);">Graph Nodes:</span> <strong>${d.graphNodes}</strong></div>
+                      <div><span style="color:var(--text-tertiary);">Errors:</span> <strong>${d.errors}</strong></div>
+                    </div>
+                  </div>`;
+              }
+              await loadActs();
+              Studio.Router.handleRoute();
+            } catch (err) {
+              Studio.Toast.error('Rebuild failed: ' + err.message);
+              if (progressEl) progressEl.innerHTML = '<span style="color:var(--error);">Rebuild failed</span>';
+            } finally {
+              if (_rebuildUnsub) { _rebuildUnsub(); _rebuildUnsub = null; }
+            }
+          }
+        );
       });
 
       // Create act
@@ -451,6 +520,7 @@ Studio.Modules.register('knowledge-os', () => {
     },
 
     unmount() {
+      if (_rebuildUnsub) { _rebuildUnsub(); _rebuildUnsub = null; }
       _selectedAct = null; _selectedSection = null; _versions = [];
       _view = 'list'; _searchQuery = ''; _filterStatus = '';
       if (this._richEditor) this._richEditor = null;

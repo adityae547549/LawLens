@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "lawlens-f0ebc"
-  }
+  },
+  "targets": {
+    "lawlens-f0ebc": {
+      "hosting": {
+        "lawlens": [
+          "lawlens"
+        ],
+        "lawlens-f0ebc": [
+          "lawlens-f0ebc"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

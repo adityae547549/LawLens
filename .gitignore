@@ -1,5 +1,6 @@
 node_modules/
 .env
+.env.*
 uploads/
 vector/
 database/*.json
@@ -12,3 +13,5 @@ LawLens-Backend-deploy/
 frontend-deploy.zip
 firebase-debug.log
 *.tmp
+frontend/.firebase/
+fixAuthFirebaseToast.js

@@ -6,4 +6,3 @@ README.md
 .env
 .env.example
 backend/node_modules
-frontend/

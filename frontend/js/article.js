@@ -30,7 +30,7 @@ async function loadArticle(id) {
           <span class="badge">Chunk ${article.chunkIndex + 1}</span>
         </div>
         <h1 style="font-size:1.5rem;margin-bottom:var(--spacing-md);">${Utils.escapeHtml(article.fileName)}</h1>
-        <div style="background:var(--bg-tertiary);border-radius:var(--radius-lg);padding:var(--spacing-lg);line-height:1.8;font-size:0.95rem;">
+        <div id="articleText" style="background:var(--bg-tertiary);border-radius:var(--radius-lg);padding:var(--spacing-lg);line-height:1.8;font-size:0.95rem;">
           ${formatArticleText(article.text)}
         </div>
       </div>
@@ -38,7 +38,7 @@ async function loadArticle(id) {
         <button class="btn btn-primary" onclick="explainArticle('${id}')">
           Explain in Simple Language
         </button>
-        <button class="btn btn-secondary" onclick="addBookmark('${id}', '${Utils.escapeHtml(article.fileName)}')">
+        <button class="btn btn-secondary" onclick="addBookmark('${id}', ${JSON.stringify(article.fileName).replace(/"/g, '&quot;')})">
           Bookmark Article
         </button>
         <button class="btn btn-ghost" onclick="Utils.copyToClipboard(document.getElementById('articleText').textContent)">

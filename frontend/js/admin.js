@@ -598,24 +598,39 @@ async function loadBenchmarks() {
     const latest = bd.latest;
     const history = bd.history || [];
 
+    // Compute aggregates from queries[] array when flat fields aren't present
+    function benchAggregates(run) {
+      if (!run) return { score: 'N/A', totalTests: 0, passed: 0, failed: 0 };
+      if (run.score !== undefined || run.totalTests !== undefined) {
+        return { score: run.score || run.accuracy || 'N/A', totalTests: run.totalTests || run.tests || 0, passed: run.passed || 0, failed: run.failed || 0 };
+      }
+      const queries = run.queries || [];
+      const total = queries.length;
+      const passed = queries.filter(q => (q.metrics?.f1 || 0) >= 0.5).length;
+      const failed = total - passed;
+      const avgF1 = total > 0 ? Math.round(queries.reduce((s, q) => s + (q.metrics?.f1 || 0), 0) / total * 100) : 0;
+      return { score: avgF1, totalTests: total, passed, failed };
+    }
+
     let html = '';
     if (latest) {
+      const agg = benchAggregates(latest);
       html += `
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem;">
           <div class="admin-confidence-card">
-            <div class="admin-confidence-value" style="color:var(--success);">${latest.score || latest.accuracy || 'N/A'}%</div>
+            <div class="admin-confidence-value" style="color:var(--success);">${agg.score}%</div>
             <div class="admin-confidence-label">Latest Score</div>
           </div>
           <div class="admin-confidence-card">
-            <div class="admin-confidence-value">${latest.totalTests || latest.tests || 0}</div>
+            <div class="admin-confidence-value">${agg.totalTests}</div>
             <div class="admin-confidence-label">Total Tests</div>
           </div>
           <div class="admin-confidence-card">
-            <div class="admin-confidence-value">${latest.passed || 0}</div>
+            <div class="admin-confidence-value">${agg.passed}</div>
             <div class="admin-confidence-label">Passed</div>
           </div>
           <div class="admin-confidence-card">
-            <div class="admin-confidence-value">${latest.failed || 0}</div>
+            <div class="admin-confidence-value">${agg.failed}</div>
             <div class="admin-confidence-label">Failed</div>
           </div>
         </div>`;
@@ -625,14 +640,17 @@ async function loadBenchmarks() {
       html += `<h4 style="margin-bottom:0.75rem;">Benchmark History</h4>
         <table class="admin-table">
           <thead><tr><th>Date</th><th>Score</th><th>Tests</th><th>Passed</th><th>Failed</th></tr></thead>
-          <tbody>${history.map(h => `
+          <tbody>${history.map(h => {
+            const a = benchAggregates(h);
+            return `
             <tr>
               <td>${Utils.formatDate(h.date || h.timestamp)}</td>
-              <td>${h.score || h.accuracy || 'N/A'}%</td>
-              <td>${h.totalTests || h.tests || 0}</td>
-              <td style="color:var(--success);">${h.passed || 0}</td>
-              <td style="color:var(--error);">${h.failed || 0}</td>
-            </tr>`).join('')}
+              <td>${a.score}%</td>
+              <td>${a.totalTests}</td>
+              <td style="color:var(--success);">${a.passed}</td>
+              <td style="color:var(--error);">${a.failed}</td>
+            </tr>`;
+          }).join('')}
           </tbody>
         </table>`;
     }
@@ -674,9 +692,9 @@ async function loadImports() {
         <thead><tr><th>Act Name</th><th>Status</th><th>Sections</th><th>Actions</th></tr></thead>
         <tbody>${acts.map(act => `
           <tr>
-            <td><strong>${Utils.escapeHtml(act.name)}</strong></td>
+            <td><strong>${Utils.escapeHtml(act.title || act.name)}</strong></td>
             <td><span class="badge ${act.status === 'published' ? 'badge-success' : act.status === 'archived' ? 'badge-warning' : ''}">${act.status || 'draft'}</span></td>
-            <td>${(act.sections || []).length}</td>
+            <td>${(act.parts || act.sections || []).length}</td>
             <td>
               ${act.status !== 'published' ? `<button class="btn btn-sm btn-success" onclick="publishAct('${act.id}')">Publish</button>` : ''}
               <button class="btn btn-sm btn-danger" onclick="deleteAct('${act.id}')">Delete</button>
@@ -847,12 +865,12 @@ async function loadJobs() {
   container.innerHTML = '<div class="loading-spinner" style="margin:1rem auto;"></div>';
   try {
     const [jobsData, statsData] = await Promise.all([
-      Utils.api('/studio/jobs').catch(() => ({ data: { jobs: [] } })),
+      Utils.api('/studio/jobs').catch(() => ({ data: { items: [] } })),
       Utils.api('/studio/jobs/stats').catch(() => ({ data: {} }))
     ]);
 
-    // Studio returns {success, data: {jobs: [...], total, offset, limit}}
-    const jobs = jobsData.data?.jobs || jobsData.jobs || [];
+    // Studio returns {success, data: {items: [...], total, offset, limit}}
+    const jobs = jobsData.data?.items || jobsData.data?.jobs || jobsData.jobs || [];
     // Studio returns {success, data: {total, pending, running, completed, failed}}
     const stats = statsData.data || statsData.stats || {};
 
@@ -916,12 +934,12 @@ async function loadAuditLogs() {
   container.innerHTML = '<div class="loading-spinner" style="margin:1rem auto;"></div>';
   try {
     const [logsData, statsData] = await Promise.all([
-      Utils.api('/studio/audit').catch(() => ({ data: { logs: [] } })),
+      Utils.api('/studio/audit').catch(() => ({ data: { items: [] } })),
       Utils.api('/studio/audit/stats').catch(() => ({ data: {} }))
     ]);
 
-    // Studio returns {success, data: {logs: [...], total, offset, limit}}
-    const logs = logsData.data?.logs || logsData.logs || [];
+    // Studio returns {success, data: {items: [...], total, offset, limit}}
+    const logs = logsData.data?.items || logsData.data?.logs || logsData.logs || [];
     // Studio returns {success, data: {total, today, byAction, byEntity, ...}}
     const stats = statsData.data || statsData.stats || {};
 

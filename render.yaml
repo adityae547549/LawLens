@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: lawlens-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: GROQ_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://lawlens.web.app
+      - key: DB_PATH
+        value: ./database
+      - key: UPLOAD_DIR
+        value: ./uploads
+      - key: VECTOR_DB_PATH
+        value: ./vector/index.json
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX
+        value: 100
+    healthCheckPath: /health
+    autoDeploy: true

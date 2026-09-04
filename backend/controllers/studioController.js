@@ -6,11 +6,55 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const EventEmitter = require('events');
 const db = require('../database/db');
 const auditLog = require('../utils/auditLog');
 const jobQueue = require('../utils/jobQueue');
 const LegalKnowledgeOS = require('../knowledge/legalKnowledgeOS');
 const SourceTracker = require('../knowledge/sourceTracker');
+
+// ── SSE Event Bus ──────────────────────────────────────────────
+const sseEmitter = new EventEmitter();
+sseEmitter.setMaxListeners(0);
+const sseClients = new Set();
+
+function broadcastSSE(event) {
+  const data = `data: ${JSON.stringify(event)}\n\n`;
+  for (const client of sseClients) {
+    client.res.write(data);
+  }
+}
+
+exports.sseEmitter = sseEmitter;
+exports.broadcastSSE = broadcastSSE;
+
+exports.getStudioEvents = (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders();
+
+  res.write(`data: ${JSON.stringify({ type: 'connected', timestamp: Date.now(), message: 'Studio event stream connected' })}\n\n`);
+
+  const client = { res, id: Date.now() + '-' + Math.random().toString(36).substr(2, 9) };
+  sseClients.add(client);
+
+  const heartbeat = setInterval(() => {
+    res.write(`: heartbeat\n\n`);
+  }, 30000);
+
+  const onEvent = (event) => {
+    res.write(`data: ${JSON.stringify(event)}\n\n`);
+  };
+  sseEmitter.on('studio:event', onEvent);
+
+  req.on('close', () => {
+    clearInterval(heartbeat);
+    sseEmitter.removeListener('studio:event', onEvent);
+    sseClients.delete(client);
+  });
+};
 
 const DATA_DIR = path.resolve(__dirname, '..', 'data');
 const lkos = new LegalKnowledgeOS();
@@ -602,6 +646,7 @@ exports.createJob = async (req, res) => {
       userName: req.user?.name,
       metadata: { jobType: job.type, jobName: job.name }
     });
+    broadcastSSE({ type: 'job:create', jobId: job.id, name: job.name, jobType: job.type });
     res.json({ success: true, data: job });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -629,6 +674,7 @@ exports.cancelJob = async (req, res) => {
       userId: req.user?.id,
       userName: req.user?.name
     });
+    broadcastSSE({ type: 'job:cancel', jobId: job.id, name: job.name });
     res.json({ success: true, data: job });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -648,14 +694,86 @@ exports.retryJob = async (req, res) => {
 // ══════════════════════════════════════════════════════════════
 // PAGE BUILDER
 // ══════════════════════════════════════════════════════════════
+const FRONTEND_DIR = path.join(__dirname, '..', '..', 'frontend');
+
+const APP_PAGE_META = {
+  'index.html': { name: 'Landing', type: 'application', category: 'Core', icon: 'home', description: 'LawLens landing page' },
+  'login.html': { name: 'Login', type: 'system', category: 'Auth', icon: 'log-in', description: 'User login' },
+  'register.html': { name: 'Register', type: 'system', category: 'Auth', icon: 'user-plus', description: 'User registration' },
+  'dashboard.html': { name: 'Dashboard', type: 'application', category: 'Core', icon: 'layout-dashboard', description: 'User dashboard' },
+  'chat.html': { name: 'Chat', type: 'application', category: 'AI', icon: 'message-square', description: 'AI legal chat' },
+  'search.html': { name: 'Search', type: 'application', category: 'Research', icon: 'search', description: 'Legal search' },
+  'constitution.html': { name: 'Constitution', type: 'application', category: 'Research', icon: 'book-open', description: 'Constitution of India' },
+  'compare.html': { name: 'Compare', type: 'application', category: 'Research', icon: 'git-compare', description: 'Compare laws' },
+  'timeline.html': { name: 'Timeline', type: 'application', category: 'Research', icon: 'clock', description: 'Legal timeline' },
+  'article.html': { name: 'Article', type: 'application', category: 'Content', icon: 'file-text', description: 'Article viewer' },
+  'study.html': { name: 'Study', type: 'application', category: 'Education', icon: 'graduation-cap', description: 'Study mode' },
+  'quiz.html': { name: 'Quiz', type: 'application', category: 'Education', icon: 'help-circle', description: 'Legal quiz' },
+  'flashcards.html': { name: 'Flashcards', type: 'application', category: 'Education', icon: 'layers', description: 'Legal flashcards' },
+  'legal-research.html': { name: 'Legal Research', type: 'application', category: 'Research', icon: 'microscope', description: 'Advanced legal research' },
+  'summarizer.html': { name: 'Summarizer', type: 'application', category: 'AI', icon: 'file-text', description: 'Document summarizer' },
+  'contracts.html': { name: 'Contracts', type: 'application', category: 'Practice', icon: 'scroll', description: 'Contract analysis' },
+  'documents.html': { name: 'Documents', type: 'application', category: 'Practice', icon: 'folder', description: 'Document management' },
+  'case-management.html': { name: 'Case Management', type: 'application', category: 'Practice', icon: 'briefcase', description: 'Case management' },
+  'bookmarks.html': { name: 'Bookmarks', type: 'application', category: 'Personal', icon: 'bookmark', description: 'Saved bookmarks' },
+  'history.html': { name: 'History', type: 'application', category: 'Personal', icon: 'history', description: 'Browsing history' },
+  'workspaces.html': { name: 'Workspaces', type: 'application', category: 'Personal', icon: 'folder-open', description: 'Workspaces' },
+  'trust.html': { name: 'Trust & Safety', type: 'application', category: 'Info', icon: 'shield', description: 'Trust and safety information' },
+  'profile.html': { name: 'Profile', type: 'application', category: 'Personal', icon: 'user', description: 'User profile' },
+  'settings.html': { name: 'Settings', type: 'application', category: 'Personal', icon: 'settings', description: 'User settings' },
+  'feedback.html': { name: 'Feedback', type: 'application', category: 'Info', icon: 'message-circle', description: 'Send feedback' },
+  'shared.html': { name: 'Shared Content', type: 'application', category: 'Social', icon: 'share-2', description: 'Shared content viewer' },
+  'studio.html': { name: 'Studio Admin', type: 'system', category: 'Admin', icon: 'settings', description: 'Admin studio panel' },
+  'admin.html': { name: 'Admin Dashboard', type: 'system', category: 'Admin', icon: 'shield', description: 'Admin dashboard' },
+  '404.html': { name: 'Not Found', type: 'system', category: 'System', icon: 'alert-triangle', description: '404 error page' }
+};
+
 exports.getPages = async (req, res) => {
   try {
     const pagesPath = path.join(DATA_DIR, 'pages.json');
-    let pages = [];
+    let cmsPages = [];
     if (fs.existsSync(pagesPath)) {
-      pages = JSON.parse(fs.readFileSync(pagesPath, 'utf-8'));
+      cmsPages = JSON.parse(fs.readFileSync(pagesPath, 'utf-8'));
     }
-    res.json({ success: true, data: pages });
+
+    // Discover existing HTML pages from frontend directory
+    const appPages = [];
+    if (fs.existsSync(FRONTEND_DIR)) {
+      const files = fs.readdirSync(FRONTEND_DIR).filter(f => f.endsWith('.html') && f !== '404.html');
+      for (const file of files) {
+        const meta = APP_PAGE_META[file] || {
+          name: file.replace('.html', '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+          type: 'application',
+          category: 'Other',
+          icon: 'file',
+          description: ''
+        };
+        const stat = fs.statSync(path.join(FRONTEND_DIR, file));
+        appPages.push({
+          id: `app-${file.replace('.html', '')}`,
+          name: meta.name,
+          slug: file.replace('.html', ''),
+          type: meta.type,
+          category: meta.category,
+          icon: meta.icon,
+          description: meta.description,
+          sourceFile: file,
+          blocks: [],
+          metadata: { isSystemPage: meta.type === 'system', isAppPage: meta.type === 'application' },
+          createdAt: stat.birthtime.toISOString(),
+          updatedAt: stat.mtime.toISOString()
+        });
+      }
+    }
+
+    const allPages = [...appPages.map(ap => {
+      const saved = cmsPages.find(sp => sp.id === ap.id);
+      if (saved) {
+        return { ...ap, name: saved.name || ap.name, description: saved.description || ap.description, blocks: saved.blocks || [], metadata: { ...ap.metadata, ...(saved.metadata || {}) }, updatedAt: saved.updatedAt || ap.updatedAt };
+      }
+      return ap;
+    }), ...cmsPages.filter(cp => !cp.id?.startsWith('app-'))];
+    res.json({ success: true, data: allPages, meta: { appPages: appPages.length, cmsPages: cmsPages.length } });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -669,34 +787,62 @@ exports.savePage = async (req, res) => {
       pages = JSON.parse(fs.readFileSync(pagesPath, 'utf-8'));
     }
 
+    const existingIdx = pages.findIndex(p => p.id === req.body.id);
+    const previousState = existingIdx >= 0 ? { ...pages[existingIdx] } : null;
+
     const page = {
       id: req.body.id || `page-${Date.now()}`,
       name: req.body.name || 'Untitled Page',
       slug: req.body.slug || 'untitled',
+      description: req.body.description || '',
+      type: req.body.type || 'cms',
+      sourceFile: req.body.sourceFile || null,
+      category: req.body.category || null,
+      icon: req.body.icon || null,
       blocks: req.body.blocks || [],
       metadata: req.body.metadata || {},
-      createdAt: new Date().toISOString(),
+      createdAt: existingIdx >= 0 ? pages[existingIdx].createdAt : new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    const existing = pages.findIndex(p => p.id === page.id);
-    if (existing >= 0) {
-      page.createdAt = pages[existing].createdAt;
-      pages[existing] = page;
+    if (existingIdx >= 0) {
+      pages[existingIdx] = page;
     } else {
       pages.push(page);
     }
 
     fs.writeFileSync(pagesPath, JSON.stringify(pages, null, 2));
 
+    if (previousState) {
+      const revisionsPath = path.join(DATA_DIR, 'page-revisions.json');
+      let revData = { revisions: [] };
+      if (fs.existsSync(revisionsPath)) {
+        revData = JSON.parse(fs.readFileSync(revisionsPath, 'utf-8'));
+      }
+      const prevSnapshot = { name: previousState.name, slug: previousState.slug, description: previousState.description, blocks: previousState.blocks, metadata: previousState.metadata };
+      const newSnapshot = { name: page.name, slug: page.slug, description: page.description, blocks: page.blocks, metadata: page.metadata };
+      revData.revisions.push({
+        id: `rev-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        pageId: page.id,
+        timestamp: new Date().toISOString(),
+        author: req.user?.name || 'Unknown',
+        previousState: prevSnapshot,
+        state: newSnapshot
+      });
+      if (revData.revisions.length > 200) revData.revisions = revData.revisions.slice(-200);
+      fs.writeFileSync(revisionsPath, JSON.stringify(revData, null, 2));
+    }
+
     auditLog.record({
-      action: existing >= 0 ? 'page_updated' : 'page_created',
+      action: existingIdx >= 0 ? 'page_updated' : 'page_created',
       entity: 'page',
       entityId: page.id,
       after: page,
       userId: req.user?.id,
       userName: req.user?.name
     });
+
+    broadcastSSE({ type: 'page:save', pageId: page.id, name: page.name, action: existingIdx >= 0 ? 'updated' : 'created' });
 
     res.json({ success: true, data: page });
   } catch (err) {
@@ -725,7 +871,86 @@ exports.deletePage = async (req, res) => {
       userName: req.user?.name
     });
 
+    broadcastSSE({ type: 'page:delete', pageId: req.params.id, name: page.name });
+
     res.json({ success: true, message: 'Page deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.getPageHTML = async (req, res) => {
+  try {
+    let pageId = req.params.id;
+    // Strip .html extension if provided
+    if (pageId.endsWith('.html')) pageId = pageId.slice(0, -5);
+    // Also strip app- prefix if present
+    if (pageId.startsWith('app-')) pageId = pageId.slice(4);
+    const htmlPath = path.join(FRONTEND_DIR, `${pageId}.html`);
+    if (!fs.existsSync(htmlPath)) return res.status(404).json({ success: false, error: 'Page not found: ' + pageId });
+    const html = fs.readFileSync(htmlPath, 'utf-8');
+    res.json({ success: true, data: { id: pageId, html } });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.autosavePage = async (req, res) => {
+  try {
+    const pageId = req.params.id;
+    const autosavePath = path.join(DATA_DIR, `autosave-${pageId}.json`);
+    const state = { pageId, overrides: req.body.overrides || {}, blocks: req.body.blocks || [], updatedAt: new Date().toISOString() };
+    fs.writeFileSync(autosavePath, JSON.stringify(state, null, 2));
+    res.json({ success: true, data: state });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.getAutosave = async (req, res) => {
+  try {
+    const pageId = req.params.id;
+    const autosavePath = path.join(DATA_DIR, `autosave-${pageId}.json`);
+    if (!fs.existsSync(autosavePath)) return res.json({ success: true, data: null });
+    const state = JSON.parse(fs.readFileSync(autosavePath, 'utf-8'));
+    res.json({ success: true, data: state });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.getPageRevisions = async (req, res) => {
+  try {
+    const revisionsPath = path.join(DATA_DIR, 'page-revisions.json');
+    if (!fs.existsSync(revisionsPath)) return res.json({ success: true, data: [] });
+    const all = JSON.parse(fs.readFileSync(revisionsPath, 'utf-8'));
+    const pageRevisions = (all.revisions || []).filter(r => r.pageId === req.params.id);
+    res.json({ success: true, data: pageRevisions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.restorePageRevision = async (req, res) => {
+  try {
+    const revisionsPath = path.join(DATA_DIR, 'page-revisions.json');
+    if (!fs.existsSync(revisionsPath)) return res.status(404).json({ success: false, error: 'No revisions' });
+    const all = JSON.parse(fs.readFileSync(revisionsPath, 'utf-8'));
+    const revision = (all.revisions || []).find(r => r.id === req.params.revisionId && r.pageId === req.params.id);
+    if (!revision) return res.status(404).json({ success: false, error: 'Revision not found' });
+
+    const pagesPath = path.join(DATA_DIR, 'pages.json');
+    let pages = fs.existsSync(pagesPath) ? JSON.parse(fs.readFileSync(pagesPath, 'utf-8')) : [];
+    const idx = pages.findIndex(p => p.id === req.params.id);
+    if (idx >= 0) {
+      pages[idx] = { ...pages[idx], ...revision.state, updatedAt: new Date().toISOString() };
+    }
+    fs.writeFileSync(pagesPath, JSON.stringify(pages, null, 2));
+
+    auditLog.record({ action: 'page_revision_restore', entity: 'page', entityId: req.params.id, userId: req.user?.id, userName: req.user?.name });
+    broadcastSSE({ type: 'page:restore', pageId: req.params.id, revisionId: req.params.revisionId });
+
+    res.json({ success: true, data: pages[idx] || null });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -762,6 +987,7 @@ exports.lkosCreateAct = async (req, res) => {
       action: 'act_created', entity: 'knowledge', entityId: act.id,
       after: act, userId: req.user?.id, userName: req.user?.name
     });
+    broadcastSSE({ type: 'knowledge:act', action: 'created', actId: act.id, title: act.title });
     res.json({ success: true, data: act });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -777,6 +1003,7 @@ exports.lkosUpdateAct = async (req, res) => {
       action: 'act_updated', entity: 'knowledge', entityId: act.id,
       after: act, userId: req.user?.id, userName: req.user?.name
     });
+    broadcastSSE({ type: 'knowledge:act', action: 'updated', actId: act.id, title: act.title });
     res.json({ success: true, data: act });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -791,6 +1018,7 @@ exports.lkosDeleteAct = async (req, res) => {
       action: 'act_deleted', entity: 'knowledge', entityId: req.params.actId,
       userId: req.user?.id, userName: req.user?.name
     });
+    broadcastSSE({ type: 'knowledge:act', action: 'deleted', actId: req.params.actId });
     res.json({ success: true, message: 'Act deleted' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -900,6 +1128,21 @@ exports.lkosGetStats = async (req, res) => {
   try {
     const stats = lkos.getStats();
     res.json({ success: true, data: stats });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.lkosRebuild = async (req, res) => {
+  try {
+    const result = lkos.rebuild((stage, data) => {
+      broadcastSSE({ type: 'lkos:rebuild', stage, ...data });
+    });
+    auditLog.record({
+      action: 'lkos_rebuild', entity: 'knowledge', entityId: 'lkos',
+      after: result, userId: req.user?.id, userName: req.user?.name
+    });
+    res.json({ success: true, data: result });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

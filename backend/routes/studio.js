@@ -5,8 +5,11 @@
 
 const express = require('express');
 const router = express.Router();
-const { authenticate, adminOnly } = require('../middleware/auth');
+const { authenticate, adminOnly, authenticateSSE } = require('../middleware/auth');
 const ctrl = require('../controllers/studioController');
+
+// ── SSE Events (before global auth/rate-limit, uses query-param auth) ──
+router.get('/events', authenticateSSE, adminOnly, ctrl.getStudioEvents);
 
 // All Studio routes require admin auth
 router.use(authenticate, adminOnly);
@@ -67,12 +70,18 @@ router.post('/jobs/:id/retry', ctrl.retryJob);
 
 // ── Page Builder ─────────────────────────────────────────────
 router.get('/pages', ctrl.getPages);
+router.get('/pages/:id/html', ctrl.getPageHTML);
 router.post('/pages', ctrl.savePage);
+router.post('/pages/:id/autosave', ctrl.autosavePage);
+router.get('/pages/:id/autosave', ctrl.getAutosave);
 router.delete('/pages/:id', ctrl.deletePage);
+router.get('/pages/:id/revisions', ctrl.getPageRevisions);
+router.post('/pages/:id/revisions/:revisionId/restore', ctrl.restorePageRevision);
 
 // ── Knowledge OS — Full Hierarchy ────────────────────────────
 router.get('/lkos/acts', ctrl.lkosListActs);
 router.get('/lkos/stats', ctrl.lkosGetStats);
+router.post('/lkos/rebuild', ctrl.lkosRebuild);
 router.get('/lkos/acts/:actId', ctrl.lkosGetAct);
 router.post('/lkos/acts', ctrl.lkosCreateAct);
 router.put('/lkos/acts/:actId', ctrl.lkosUpdateAct);

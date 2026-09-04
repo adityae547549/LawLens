@@ -19,7 +19,7 @@ async function loadHistory() {
     if (convEl) {
       if (data.conversations && data.conversations.length > 0) {
         convEl.innerHTML = data.conversations.map(c => `
-          <div class="card" style="margin-bottom:var(--spacing-sm);padding:var(--spacing-md);cursor:pointer;" onclick="window.location.href='/chat?id=${c.id}'">
+          <div class="card" style="margin-bottom:var(--spacing-sm);padding:var(--spacing-md);cursor:pointer;" onclick="window.location.href='./chat.html?conv=${c.id}'">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:var(--spacing-md);">
               <div style="flex:1;min-width:0;">
                 <div style="font-weight:500;margin-bottom:4px;">${Utils.escapeHtml(c.title)}</div>
