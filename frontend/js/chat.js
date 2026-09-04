@@ -347,7 +347,7 @@ async function streamChat(message, typingEl, statusEl) {
         } else if (parsed.type === 'done') {
           statusEl.remove();
           LawLens.state.currentConversationId = parsed.conversationId;
-          finalizeMessage(msgDiv, fullContent, parsed.citations || [], parsed.confidence || 0, parsed.confidenceLabel || '', parsed.memoryUsed);
+          finalizeMessage(msgDiv, fullContent, parsed.citations || [], parsed.confidence || 0, parsed.confidenceLabel || '', parsed.memoryUsed, parsed.citationCheck);
         } else if (parsed.type === 'error') {
           statusEl.remove();
           updateStreamMessage(msgDiv, parsed.message || 'An error occurred');
@@ -390,7 +390,7 @@ function updateStreamMessage(msgDiv, content) {
   messages.scrollTop = messages.scrollHeight;
 }
 
-function finalizeMessage(msgDiv, content, citations, confidence, confidenceLabel, memoryUsed) {
+function finalizeMessage(msgDiv, content, citations, confidence, confidenceLabel, memoryUsed, citationCheck) {
   const bubble = msgDiv.querySelector('.message-bubble');
   const citationsEl = msgDiv.querySelector('.message-citations');
   const confidenceEl = msgDiv.querySelector('.message-confidence');
@@ -453,12 +453,21 @@ function finalizeMessage(msgDiv, content, citations, confidence, confidenceLabel
     const cappedConfidence = Math.min(confidence, 100);
     const color = cappedConfidence >= 70 ? 'var(--success)' : cappedConfidence >= 40 ? 'var(--warning)' : 'var(--error)';
     const label = confidenceLabel || (cappedConfidence >= 70 ? '🟢 High' : cappedConfidence >= 40 ? '⚖️ Medium' : '⚠️ Low');
+    const verified = citationCheck?.verified?.length || 0;
+    const unverified = citationCheck?.unverified?.length || 0;
+    const totalCited = citationCheck?.total || 0;
+    const coverageLabel = totalCited > 0
+      ? `${verified}/${totalCited} citations verified`
+      : 'No citations in answer';
+
     confidenceEl.innerHTML = `
-      <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;">
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap;">
         <div style="height:4px;width:80px;background:var(--bg-tertiary);border-radius:2px;overflow:hidden;">
           <div style="height:100%;width:${cappedConfidence}%;background:${color};border-radius:2px;"></div>
         </div>
         <span style="font-size:0.75rem;color:var(--text-tertiary);">Confidence: ${cappedConfidence}% — ${label}</span>
+        ${totalCited > 0 ? `<span style="font-size:0.7rem;color:${unverified > 0 ? 'var(--warning)' : 'var(--success)'};border-left:1px solid var(--border-color);padding-left:0.5rem;">✓ ${coverageLabel}</span>` : ''}
+        <span style="font-size:0.7rem;color:var(--text-tertiary);border-left:1px solid var(--border-color);padding-left:0.5rem;">${citations.length} source${citations.length !== 1 ? 's' : ''}</span>
       </div>
     `;
   }
@@ -596,10 +605,10 @@ function formatMessage(text) {
     .replace(/^(📚.*SOURCES.*)$/gm, '<div style="font-weight:700;color:var(--accent-primary);margin-top:1rem;margin-bottom:0.3rem;font-size:0.95rem;">$1</div>')
     .replace(/^(Title:.*)$/gm, '<div style="font-weight:700;font-size:1.05rem;margin-bottom:0.5rem;">$1</div>')
     .replace(/^(>-\s.*)$/gm, '<div style="border-left:3px solid var(--accent-primary);padding-left:0.75rem;margin:0.5rem 0;color:var(--text-secondary);font-style:italic;">$1</div>')
-    .replace(/\[Web Source (\d+): ([^\]]+)\]/g, '<span class="source-chip source-chip-web">🌐 $2</span>')
-    .replace(/\[Source (\d+): ([^\]]+)\]/g, '<span class="source-chip source-chip-local">📄 $2</span>')
-    .replace(/\[Source (\d+)\]/g, '<span class="source-chip source-chip-local">📄 Source $1</span>')
-    .replace(/\[Web Source (\d+)\]/g, '<span class="source-chip source-chip-web">🌐 Web Source $1</span>');
+    .replace(/\[Web Source (\d+): ([^\]]+)\]/g, '<span class="source-chip source-chip-inline source-chip-web" data-source-type="web" data-source-num="$1" role="button" tabindex="0">🌐 $2</span>')
+    .replace(/\[Source (\d+): ([^\]]+)\]/g, '<span class="source-chip source-chip-inline source-chip-local" data-source-type="local" data-source-num="$1" role="button" tabindex="0">📄 $2</span>')
+    .replace(/\[Source (\d+)\]/g, '<span class="source-chip source-chip-inline source-chip-local" data-source-type="local" data-source-num="$1" role="button" tabindex="0">📄 Source $1</span>')
+    .replace(/\[Web Source (\d+)\]/g, '<span class="source-chip source-chip-inline source-chip-web" data-source-type="web" data-source-num="$1" role="button" tabindex="0">🌐 Web Source $1</span>');
 }
 
 function initSuggestionBtns() {
@@ -704,11 +713,66 @@ function viewSource(id) {
   if (id) window.location.href = `./article.html?id=${encodeURIComponent(id)}`;
 }
 
-// Delegated handler for local source chips (replaces inline onclick to avoid
-// attribute injection from user-supplied document names).
+function showSourcePopover(e, msgDiv) {
+  const el = e.target.closest('.source-chip-inline');
+  if (!el) return;
+
+  const sourceNum = parseInt(el.dataset.sourceNum);
+  const sourceType = el.dataset.sourceType;
+  const citations = msgDiv.dataset.citations ? JSON.parse(msgDiv.dataset.citations) : [];
+  const source = citations.find(c => {
+    if (sourceType === 'web') return c.type === 'web' && citations.filter(x => x.type === 'web').indexOf(c) === sourceNum - 1;
+    return (c.type === 'local' || !c.type) && citations.filter(x => x.type !== 'web').indexOf(c) === sourceNum - 1;
+  });
+
+  if (!source) return;
+
+  const existing = document.getElementById('sourcePopover');
+  if (existing) existing.remove();
+
+  const popover = document.createElement('div');
+  popover.id = 'sourcePopover';
+  popover.style.cssText = 'position:fixed;z-index:9999;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;padding:0.75rem;max-width:350px;box-shadow:0 4px 20px rgba(0,0,0,0.15);font-size:0.85rem;';
+
+  const rect = el.getBoundingClientRect();
+  popover.style.left = Math.min(rect.left, window.innerWidth - 370) + 'px';
+  popover.style.top = (rect.bottom + 8) + 'px';
+
+  const trustColor = source.trust === 'high' ? 'var(--success)' : source.trust === 'medium' ? 'var(--warning)' : 'var(--text-tertiary)';
+  popover.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+      <span style="font-weight:600;">${Utils.escapeHtml(source.fileName || source.name || 'Source')}</span>
+      <span style="font-size:0.7rem;color:${trustColor};">${Utils.escapeHtml(source.trustLabel || source.type || '')}</span>
+    </div>
+    <div style="color:var(--text-secondary);line-height:1.5;margin-bottom:0.5rem;">${Utils.escapeHtml((source.text || source.snippet || 'No preview available').slice(0, 400))}</div>
+    <div style="display:flex;gap:0.5rem;">
+      ${sourceType === 'local' && source.id ? `<button onclick="viewSource('${Utils.escapeHtml(source.id)}');this.closest('#sourcePopover').remove();" style="padding:0.25rem 0.5rem;background:var(--accent-primary);color:white;border:none;border-radius:4px;cursor:pointer;font-size:0.75rem;">Open Source</button>` : ''}
+      ${sourceType === 'web' && source.url ? `<a href="${Utils.escapeHtml(source.url)}" target="_blank" style="padding:0.25rem 0.5rem;background:var(--accent-primary);color:white;border:none;border-radius:4px;text-decoration:none;font-size:0.75rem;">Open Link</a>` : ''}
+      <button onclick="this.closest('#sourcePopover').remove();" style="padding:0.25rem 0.5rem;background:var(--bg-tertiary);color:var(--text-secondary);border:none;border-radius:4px;cursor:pointer;font-size:0.75rem;">Close</button>
+    </div>
+  `;
+
+  document.body.appendChild(popover);
+
+  const closeHandler = (ev) => {
+    if (!popover.contains(ev.target) && !el.contains(ev.target)) {
+      popover.remove();
+      document.removeEventListener('click', closeHandler);
+    }
+  };
+  setTimeout(() => document.addEventListener('click', closeHandler), 10);
+}
+
+// Delegated handler for source chips
 document.addEventListener('click', (e) => {
   const el = e.target.closest('[data-view-source]');
   if (el) viewSource(el.dataset.viewSource);
+
+  const inlineEl = e.target.closest('.source-chip-inline');
+  if (inlineEl) {
+    const msgDiv = inlineEl.closest('.message');
+    if (msgDiv) showSourcePopover(e, msgDiv);
+  }
 });
 
 function copyMessage(btn) {
