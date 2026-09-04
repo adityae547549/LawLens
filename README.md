@@ -2,130 +2,108 @@
 
 **AI-Powered Legal Research Platform**
 
-LawLens is a production-ready, AI-powered legal research application that uses Retrieval-Augmented Generation (RAG) to provide accurate, sourced answers from legal documents. Built with Node.js, Express, and Groq AI.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Firebase](https://img.shields.io/badge/Firebase-Hosting-orange.svg)](https://firebase.google.com/)
+
+LawLens is a production-ready, AI-powered legal research platform that uses Retrieval-Augmented Generation (RAG) to provide accurate, sourced answers from Indian legal documents.
+
+**Live Frontend:** [lawlens.web.app](https://lawlens.web.app)
+
+---
 
 ## Features
 
-- **AI Chat** - Natural language legal research with source citations
-- **Constitution Viewer** - Browse, search, and explore legal articles
-- **Document Upload** - Upload PDF, DOCX, TXT, JSON, and Markdown files
-- **Semantic Search** - Hybrid keyword + semantic search across all documents
-- **User Accounts** - JWT authentication, profiles, and preferences
-- **Bookmarks** - Save and organize important legal articles
-- **History** - Track conversations and searches
-- **Admin Panel** - Manage users, datasets, prompts, and system settings
-- **Dark/Light Mode** - Professional theme support
+- **AI Chat** — Natural language legal research with source citations
+- **Constitution Viewer** — Browse, search, and explore legal articles
+- **Document Upload** — PDF, DOCX, TXT, JSON, and Markdown support
+- **Semantic Search** — Hybrid keyword + semantic search across all documents
+- **User Accounts** — JWT authentication, profiles, and preferences
+- **Bookmarks** — Save and organize important legal articles
+- **History** — Track conversations and searches
+- **Admin Panel** — Manage users, datasets, prompts, and system settings
+- **Dark/Light Mode** — Professional theme support
 
 ## Tech Stack
 
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript (ES6+)
-- **Backend**: Node.js, Express.js
-- **AI**: Groq API (Llama 3.3 70B)
-- **RAG**: Custom vector store with TF-IDF style embeddings
-- **Database**: JSON file-based storage
-- **Auth**: JWT with bcrypt password hashing
+| Layer | Technology |
+|-------|-----------|
+| Frontend | HTML5, CSS3, Vanilla JavaScript (ES6+) |
+| Backend | Node.js, Express.js |
+| AI | Groq API (Llama 3.3 70B) |
+| RAG | Custom vector store with TF-IDF embeddings |
+| Database | JSON file-based storage |
+| Auth | JWT + bcrypt |
+| Hosting | Firebase (frontend), Docker (backend) |
+| CI/CD | Render (backend deployment) |
 
 ## Project Structure
 
 ```
 LawLens/
-├── frontend/
-│   ├── index.html          # Landing page
-│   ├── login.html          # Login page
-│   ├── register.html       # Registration page
-│   ├── dashboard.html      # User dashboard
-│   ├── chat.html           # AI chat interface
-│   ├── search.html         # Document search
-│   ├── bookmarks.html      # Saved articles
-│   ├── history.html        # Activity history
-│   ├── article.html        # Article viewer
-│   ├── profile.html        # User profile
-│   ├── settings.html       # User settings
-│   ├── admin.html          # Admin panel
-│   ├── 404.html            # Not found page
-│   ├── css/
-│   │   ├── style.css       # Main styles + dark/light mode
-│   │   ├── auth.css        # Authentication styles
-│   │   ├── chat.css        # Chat interface styles
-│   │   ├── dashboard.css   # Dashboard styles
-│   │   └── admin.css       # Admin panel styles
-│   └── js/
-│       ├── utils.js        # Utility functions
-│       ├── app.js          # Main application logic
-│       ├── auth.js         # Authentication handling
-│       ├── chat.js         # Chat functionality
-│       ├── search.js       # Search functionality
-│       ├── dashboard.js    # Dashboard logic
-│       ├── profile.js      # Profile management
-│       ├── settings.js     # Settings management
-│       ├── admin.js        # Admin panel logic
-│       ├── bookmarks.js    # Bookmarks management
-│       ├── history.js      # History viewing
-│       └── article.js      # Article viewer logic
-├── backend/
-│   ├── server.js           # Express server entry point
-│   ├── package.json        # Dependencies
-│   ├── .env.example        # Environment variables template
-│   ├── routes/             # API route definitions
-│   ├── controllers/        # Route handlers
-│   ├── middleware/          # Auth, upload, rate limiter
-│   ├── rag/                # RAG pipeline components
-│   │   ├── embeddings.js   # Text embedding generation
-│   │   ├── vectorStore.js  # Vector database management
-│   │   ├── documentProcessor.js # Document parsing & chunking
-│   │   ├── retriever.js    # Document retrieval logic
-│   │   ├── generator.js    # Groq AI integration
-│   │   └── promptEditor.js # System prompt management
-│   ├── database/           # JSON file-based storage
-│   ├── data/               # Legal documents directory
-│   ├── uploads/            # Uploaded files directory
-│   ├── vector/             # Vector index storage
-│   └── scripts/
-│       └── rebuildVector.js # Vector DB rebuild script
-└── README.md
+├── frontend/                 # Static frontend (Firebase Hosting)
+│   ├── *.html                # Page routes
+│   ├── css/                  # Stylesheets
+│   ├── js/                   # Client-side modules
+│   └── firebase.json         # Firebase config
+├── backend/                  # Express API server
+│   ├── server.js             # Entry point
+│   ├── routes/               # API routes
+│   ├── controllers/          # Route handlers
+│   ├── middleware/            # Auth, upload, rate limiting
+│   ├── rag/                  # RAG pipeline (embeddings, retrieval, generation)
+│   ├── knowledge/            # Legal knowledge OS
+│   ├── database/             # JSON file storage
+│   ├── data/                 # Legal documents
+│   └── uploads/              # User uploads
+├── Dockerfile                # Backend container
+├── docker-compose.yml        # Local orchestration
+├── render.yaml               # Render deployment config
+└── .env.example              # Environment template
 ```
 
-## Installation
+## Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ 
-- A Groq API key (get one at https://console.groq.com)
+- Node.js 18+
+- Docker (optional)
+- Groq API key — [Get one here](https://console.groq.com)
 
-### Setup
+### Local Development
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/lawlense.git
-   cd lawlense
-   ```
+```bash
+# Clone
+git clone https://github.com/adityae547549/LawLens.git
+cd LawLens
 
-2. Install backend dependencies:
-   ```bash
-   cd backend
-   npm install
-   ```
+# Backend setup
+cd backend
+cp .env.example .env    # Add your GROQ_API_KEY and JWT_SECRET
+npm install
+npm run rebuild-vector  # Build vector DB from legal docs
+npm start               # Server runs on http://localhost:3000
 
-3. Configure environment variables:
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `.env` and set your `GROQ_API_KEY` and a secure `JWT_SECRET`.
+# Frontend — open frontend/index.html in browser
+# Or serve with any static server
+```
 
-4. Add legal documents:
-   Place your legal documents (PDF, DOCX, TXT, JSON, MD) in `backend/data/`
+### Docker
 
-5. Build the vector database:
-   ```bash
-   npm run rebuild-vector
-   ```
+```bash
+docker-compose up -d --build
+# Frontend: open frontend/index.html
+# Backend: http://localhost:3000
+```
 
-6. Start the server:
-   ```bash
-   npm start
-   ```
+### Deploy to Render
 
-7. Access the application at `http://localhost:3000`
+1. Push to GitHub
+2. Go to [render.com](https://render.com) → New Web Service
+3. Connect repo — Render auto-detects `render.yaml`
+4. Add env var: `GROQ_API_KEY`
+5. Deploy
 
 ## API Documentation
 
@@ -133,18 +111,18 @@ LawLens/
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/auth/register` | Register a new user |
-| POST | `/api/auth/login` | Login and get JWT token |
-| GET | `/api/auth/profile` | Get user profile (auth required) |
-| PUT | `/api/auth/profile` | Update user profile (auth required) |
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login (returns JWT) |
+| GET | `/api/auth/profile` | Get profile |
+| PUT | `/api/auth/profile` | Update profile |
 
 ### Chat
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/chat` | Send a chat message (optional auth) |
-| GET | `/api/chat/conversations` | List conversations (auth required) |
-| GET | `/api/chat/conversations/:id` | Get conversation details |
+| POST | `/api/chat` | Send message |
+| GET | `/api/chat/conversations` | List conversations |
+| GET | `/api/chat/conversations/:id` | Get conversation |
 | DELETE | `/api/chat/conversations/:id` | Delete conversation |
 
 ### Search
@@ -152,116 +130,66 @@ LawLens/
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/search` | Search documents |
-| GET | `/api/search/suggestions?query=` | Get search suggestions |
-| GET | `/api/search/recent` | Recent searches (auth required) |
-| DELETE | `/api/search/clear` | Clear search history |
-
-### Upload
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/upload` | Upload document (auth required) |
-| GET | `/api/upload/status` | Upload status |
+| GET | `/api/search/suggestions` | Get suggestions |
+| GET | `/api/search/recent` | Recent searches |
 
 ### Articles
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/articles/:id` | Get article by ID |
-| GET | `/api/articles/:id/related` | Get related articles |
-| GET | `/api/articles/:id/explain` | Get AI explanation |
+| GET | `/api/articles/:id` | Get article |
+| GET | `/api/articles/:id/related` | Related articles |
+| GET | `/api/articles/:id/explain` | AI explanation |
 
 ### Bookmarks
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/bookmarks` | List bookmarks (auth required) |
+| GET | `/api/bookmarks` | List bookmarks |
 | POST | `/api/bookmarks` | Add bookmark |
-| PUT | `/api/bookmarks/:id` | Update bookmark |
 | DELETE | `/api/bookmarks/:id` | Remove bookmark |
-
-### History
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/history` | Get user history (auth required) |
-| DELETE | `/api/history/clear` | Clear all history |
 
 ### Admin
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/admin/dashboard` | Admin stats (admin only) |
+| GET | `/api/admin/dashboard` | Dashboard stats |
 | GET | `/api/admin/users` | List users |
-| DELETE | `/api/admin/users/:id` | Delete user |
 | POST | `/api/admin/rebuild-vector` | Rebuild vector DB |
-| GET | `/api/admin/logs` | View server logs |
-| GET | `/api/admin/metrics` | API metrics |
 | GET | `/api/admin/prompt` | Get system prompt |
 | PUT | `/api/admin/prompt` | Update system prompt |
-| POST | `/api/admin/prompt/reset` | Reset prompt to default |
-| POST | `/api/admin/upload-dataset` | Upload dataset |
 
-## AI Rules
+## AI Behavior
 
-LawLens enforces strict AI behavior:
-
-- **Never hallucinate** - AI never answers from memory
-- **Never invent laws** - Only uses retrieved context
-- **Always cite sources** - Every answer references legal documents
-- **Explain simply** - Legal concepts in plain language
-- **No legal advice** - Personalized advice is never given
-
-If the AI cannot find relevant information in the legal database, it responds: "I couldn't find relevant information in the current legal database."
+- **Never hallucinates** — Only uses retrieved context
+- **Never invents laws** — Strictly from legal documents
+- **Always cites sources** — Every answer references documents
+- **Explains simply** — Legal concepts in plain language
+- **No legal advice** — Never provides personalized legal counsel
 
 ## Security
 
-- Passwords hashed with bcrypt (12 rounds)
-- JWT tokens with configurable expiration
-- Rate limiting on all API endpoints
-- File upload validation (type and size limits)
+- bcrypt password hashing (12 rounds)
+- JWT with configurable expiration
+- Rate limiting on all endpoints
+- File upload validation (type + size)
 - Helmet security headers
-- Environment variables for sensitive config
-- Admin endpoints protected by role-based access
+- CORS origin whitelist
+- Admin role-based access control
+- Path traversal protection
 
-## Development
+## Environment Variables
 
-```bash
-# Start in watch mode (auto-restart on changes)
-npm run dev
-
-# Rebuild vector database
-npm run rebuild-vector
-```
-
-## Adding Legal Documents
-
-1. Place files in `backend/data/`
-2. Run `npm run rebuild-vector`
-3. The system automatically reads, chunks, and indexes all documents
-
-Supported formats: PDF, TXT, DOCX, JSON, Markdown
-
-## Docker Support
-
-Create a `Dockerfile`:
-
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY backend/package.json ./
-RUN npm install
-COPY . .
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-Then build and run:
-```bash
-docker build -t lawlense .
-docker run -p 3000:3000 lawlense
-```
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GROQ_API_KEY` | Yes | Groq API key for AI |
+| `JWT_SECRET` | Yes | Secret for JWT signing |
+| `NODE_ENV` | No | `production` or `development` |
+| `PORT` | No | Server port (default: 3000) |
+| `CORS_ORIGIN` | No | Allowed origins (default: `*`) |
+| `DB_PATH` | No | Database directory |
+| `UPLOAD_DIR` | No | Upload directory |
 
 ## License
 
-MIT
+MIT © Aditya Parmar
