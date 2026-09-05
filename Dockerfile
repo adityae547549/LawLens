@@ -1,16 +1,18 @@
 FROM node:20-alpine
 
+RUN apk add --no-cache python3 make g++
+
 WORKDIR /app
 
 COPY backend/ ./backend/
 COPY frontend/ ./frontend/
 
 WORKDIR /app/backend
-RUN npm ci --omit=dev --ignore-scripts
+RUN npm install --omit=dev --legacy-peer-deps
 
 ENV NODE_ENV=production
 ENV PORT=3000
-ENV CORS_ORIGIN=https://lawlens.web.app
+ENV CORS_ORIGIN=https://lawlens.web.app,https://lawlens-f0ebc.web.app
 ENV DB_PATH=./database
 ENV UPLOAD_DIR=./uploads
 ENV VECTOR_DB_PATH=./vector/index.json
