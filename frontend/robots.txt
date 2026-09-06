@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /sw.js
+Disallow: /admin.html
+Disallow: /studio.html
+Disallow: /profile.html
+Disallow: /settings.html
+Disallow: /history.html
+Disallow: /bookmarks.html
+Disallow: /documents.html
+Disallow: /workspaces.html
+Disallow: /feedback.html
+
+Sitemap: https://lawlens.web.app/sitemap.xml

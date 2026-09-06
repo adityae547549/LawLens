@@ -29,7 +29,14 @@ const Utils = {
   },
 
   isAuthenticated() {
-    return !!this.getToken();
+    const token = this.getToken();
+    if (!token) return false;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000 > Date.now();
+    } catch {
+      return false;
+    }
   },
 
   /* Phase 6: XP, Streaks & Achievements */
@@ -165,7 +172,7 @@ const Utils = {
 
   async api(path, options = {}) {
     const { method = 'GET', body, headers = {}, formData = false } = options;
-    const token = this.getToken();
+    let token = this.getToken();
     const config = { method, headers: { ...headers } };
 
     if (token) {
@@ -180,16 +187,27 @@ const Utils = {
     }
 
     try {
-      const res = await fetch(`${API_BASE}${path}`, config);
+      let res = await fetch(`${API_BASE}${path}`, config);
+
+      if (res.status === 401 && token && typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser) {
+        try {
+          const freshToken = await firebase.auth().currentUser.getIdToken(true);
+          this.setToken(freshToken);
+          config.headers['Authorization'] = `Bearer ${freshToken}`;
+          res = await fetch(`${API_BASE}${path}`, config);
+        } catch {}
+      }
+
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || `HTTP ${res.status}`);
       }
       return data;
     } catch (err) {
-      if (err.message.includes('401') || err.message.includes('Authentication required')) {
+      if (err.message.includes('401') || err.message.includes('Authentication required') || err.message.includes('Invalid or expired token')) {
         this.removeToken();
         this.removeUser();
+        try { if (typeof firebase !== 'undefined' && firebase.auth) await firebase.auth().signOut(); } catch {}
         if (!window.location.pathname.includes('login') && !window.location.pathname.includes('register')) {
           window.location.href = './login.html';
         }
