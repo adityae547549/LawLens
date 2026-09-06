@@ -11,8 +11,20 @@ services:
         value: 3000
       - key: GROQ_API_KEY
         sync: false
-      - key: JWT_SECRET
-        generateValue: true
+      - key: FIREBASE_API_KEY
+        sync: false
+      - key: FIREBASE_AUTH_DOMAIN
+        value: lawlens-f0ebc.firebaseapp.com
+      - key: FIREBASE_PROJECT_ID
+        value: lawlens-f0ebc
+      - key: FIREBASE_STORAGE_BUCKET
+        value: lawlens-f0ebc.firebasestorage.app
+      - key: FIREBASE_MESSAGING_SENDER_ID
+        value: 729621375997
+      - key: FIREBASE_APP_ID
+        value: 1:729621375997:web:be1ef7c92507abaf798794
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
       - key: CORS_ORIGIN
         value: https://lawlens.web.app,https://lawlens-f0ebc.web.app
       - key: DB_PATH

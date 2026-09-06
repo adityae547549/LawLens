@@ -1,9 +1,0 @@
-{
-  "name": "lawlens-root",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start": "cd backend && npm start",
-    "test:matrix": "cd backend && node testAuthMatrix.js"
-  }
-}
