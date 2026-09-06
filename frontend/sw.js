@@ -1,6 +1,6 @@
-const CACHE_VERSION = 'lawlens-v3';
-const STATIC_CACHE = 'lawlens-static-v3';
-const RUNTIME_CACHE = 'lawlens-runtime-v3';
+const CACHE_VERSION = 'lawlens-v4';
+const STATIC_CACHE = 'lawlens-static-v4';
+const RUNTIME_CACHE = 'lawlens-runtime-v4';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();

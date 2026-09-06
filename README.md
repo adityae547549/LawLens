@@ -1,42 +1,40 @@
 # LawLens
 
-**AI-Powered Legal Research Platform**
+**AI-Powered Legal Research Platform for Indian Law**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
-[![Firebase](https://img.shields.io/badge/Firebase-Hosting-orange.svg)](https://firebase.google.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-Auth%20%2B%20Hosting-orange.svg)](https://firebase.google.com/)
 
-LawLens is a production-ready, AI-powered legal research platform that uses Retrieval-Augmented Generation (RAG) to provide accurate, sourced answers from Indian legal documents.
+LawLens is a web application for researching Indian law. It uses Retrieval-Augmented Generation (RAG) to answer questions with responses grounded in a curated corpus of legal documents, and every answer carries source citations.
 
 **Live Frontend:** [lawlens.web.app](https://lawlens.web.app)
+**Backend API:** `https://lawlens-p15c.onrender.com` (Render — currently suspended)
 
 ---
 
 ## Features
 
-- **AI Chat** — Natural language legal research with source citations
-- **Constitution Viewer** — Browse, search, and explore legal articles
-- **Document Upload** — PDF, DOCX, TXT, JSON, and Markdown support
-- **Semantic Search** — Hybrid keyword + semantic search across all documents
-- **User Accounts** — JWT authentication, profiles, and preferences
-- **Bookmarks** — Save and organize important legal articles
-- **History** — Track conversations and searches
-- **Admin Panel** — Manage users, datasets, prompts, and system settings
-- **Dark/Light Mode** — Professional theme support
+- **AI Chat** — Natural-language legal research with per-fact source citations and citation checks
+- **Search** — Hybrid keyword + semantic search (local corpus) with optional web mode
+- **Constitution Viewer** — Browse and explore the Constitution of India
+- **Timeline** — Landmark Supreme Court cases
+- **Document Upload** — PDF, DOCX, TXT, JSON, and Markdown; per-account library
+- **Bookmarks, History, Workspaces** — Per-account research data
+- **Admin Panel** — Users, datasets, vector rebuild, system prompt, logs, analytics
+- **Multilingual** — Rebut in the same language the user writes in (23 Indian languages)
 
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | HTML5, CSS3, Vanilla JavaScript (ES6+) |
+| Frontend | HTML5, CSS3, Vanilla JavaScript (ES6+), Firebase Hosting |
 | Backend | Node.js, Express.js |
 | AI | Groq API (Llama 3.3 70B) |
-| RAG | Custom vector store with TF-IDF embeddings |
-| Database | JSON file-based storage |
-| Auth | JWT + bcrypt |
-| Hosting | Firebase (frontend), Docker (backend) |
-| CI/CD | Render (backend deployment) |
+| RAG | Custom vector store with TF-IDF embeddings + reranker |
+| Authentication | Firebase Authentication (ID token verification server-side) |
+| Data store | Cloud Firestore (primary) or JSON file engine (local dev) |
+| Storage | Firebase Storage (planned) / local disk uploads |
+| CI | GitHub Actions (`npm test`, frontend checks) |
 
 ## Project Structure
 
@@ -46,149 +44,171 @@ LawLens/
 │   ├── *.html                # Page routes
 │   ├── css/                  # Stylesheets
 │   ├── js/                   # Client-side modules
-│   └── firebase.json         # Firebase config
+│   ├── sw.js                 # Service worker
+│   └── firebase.json         # Hosting config + security headers
 ├── backend/                  # Express API server
 │   ├── server.js             # Entry point
 │   ├── routes/               # API routes
 │   ├── controllers/          # Route handlers
-│   ├── middleware/            # Auth, upload, rate limiting
+│   ├── middleware/            # Auth (Firebase), upload, rate limiting
 │   ├── rag/                  # RAG pipeline (embeddings, retrieval, generation)
-│   ├── knowledge/            # Legal knowledge OS
-│   ├── database/             # JSON file storage
-│   ├── data/                 # Legal documents
-│   └── uploads/              # User uploads
+│   ├── knowledge/            # Legal knowledge OS (admin-only API)
+│   ├── database/             # db.js engine selector + engines
+│   ├── data/                 # Legal documents (vector corpus)
+│   └── uploads/              # User uploads (local engine)
+├── firestore.rules           # Firestore security rules
+├── storage.rules             # Firebase Storage security rules
 ├── Dockerfile                # Backend container
 ├── docker-compose.yml        # Local orchestration
 ├── render.yaml               # Render deployment config
-└── .env.example              # Environment template
+└── backend/.env.example      # Environment template
 ```
 
 ## Quick Start
 
 ### Prerequisites
 
-- Node.js 18+
-- Docker (optional)
-- Groq API key — [Get one here](https://console.groq.com)
+- Node.js 20+
+- A Google Cloud / Firebase project
+- GROQ API key — [console.groq.com](https://console.groq.com)
 
-### Local Development
+### Backend (local)
 
 ```bash
-# Clone
-git clone https://github.com/adityae547549/LawLens.git
-cd LawLens
-
-# Backend setup
 cd backend
-cp .env.example .env    # Add your GROQ_API_KEY and JWT_SECRET
-npm install
-npm run rebuild-vector  # Build vector DB from legal docs
-npm start               # Server runs on http://localhost:3000
-
-# Frontend — open frontend/index.html in browser
-# Or serve with any static server
+cp .env.example .env
+# Fill in GROQ_API_KEY plus the Firebase project values.
+# Firebase auth requires a service account:
+#   Firebase Console → Project Settings → Service Accounts → Generate new private key
+#   Paste the whole JSON as FIREBASE_SERVICE_ACCOUNT (single line, escaped).
+npm install          # also rebuilds the vector index from backend/data
+npm test             # run the test suite
+npm run rebuild-vector
+npm start            # http://localhost:3000
 ```
 
-### Docker
+Without `FIREBASE_SERVICE_ACCOUNT`, the server runs in JSON-storage mode and
+auth endpoints return `AUTH_UNAVAILABLE` (no Google auth). Set
+`DB_ENGINE=json` to force the JSON engine even when Firebase credentials exist.
+
+### Frontend (local)
+
+Open `frontend/index.html` in a browser. Requests to `/api` proxy to
+`localhost:3000` when running on `localhost`.
+
+## Authentication (Firebase-first)
+
+- The frontend signs the user in with the Firebase JS SDK (`google`, Google popup).
+- It sends the resulting ID token as `Authorization: Bearer <idToken>` to
+  `/api/auth/login` (and `/register`, `/google`).
+- The backend verifies the token with the Firebase Admin SDK
+  (`admin.auth().verifyIdToken`) — **no passwords, no JWTs, no client-trusted
+  roles.** The Firebase UID is the stable identity (`req.user.id`).
+- Role (e.g. `admin`) is read server-side from the user record only.
+
+## Admin bootstrap
 
 ```bash
-docker-compose up -d --build
-# Frontend: open frontend/index.html
-# Backend: http://localhost:3000
+cd backend
+# Get your UID from Firebase Console → Authentication → Users.
+# Then (once) set in backend/.env:
+ADMIN_FIREBASE_UID=your-firebase-uid
+ADMIN_EMAIL=you@example.com
+npm run seed
 ```
 
-### Deploy to Render
+## Firestore
 
-1. Push to GitHub
-2. Go to [render.com](https://render.com) → New Web Service
-3. Connect repo — Render auto-detects `render.yaml`
-4. Add env var: `GROQ_API_KEY`
-5. Deploy
+The backend prefers Cloud Firestore when Firebase Admin is initialized. The
+JSON engine is the zero-config fallback and interfaces are identical, so
+controllers do not switch code paths.
 
-## API Documentation
+```bash
+# One-time migration from JSON files in backend/database/*.json:
+cd backend
+npm run migrate
+```
 
-### Authentication
+### Deploy rules (Firebase CLI)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | Login (returns JWT) |
-| GET | `/api/auth/profile` | Get profile |
-| PUT | `/api/auth/profile` | Update profile |
+```bash
+firebase deploy --only firestore:rules     # uses ./firestore.rules
+firebase deploy --only storage             # uses ./storage.rules
+```
 
-### Chat
+Rules are locked down by default: per-user documents are owner-only, admin
+collections have no client access, and the server uses the Admin SDK (which
+bypasses rules). See `firebase.json`, `firestore.rules`, `storage.rules`.
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/chat` | Send message |
-| GET | `/api/chat/conversations` | List conversations |
-| GET | `/api/chat/conversations/:id` | Get conversation |
-| DELETE | `/api/chat/conversations/:id` | Delete conversation |
+## Tests
 
-### Search
+```bash
+cd backend && npm test
+```
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/search` | Search documents |
-| GET | `/api/search/suggestions` | Get suggestions |
-| GET | `/api/search/recent` | Recent searches |
+Covers: validation schemas, embeddings (cosine similarity), reranker ordering,
+citation helpers, retriever context formatting, vector store hybrid search,
+provider factory, repositories, and the knowledge graph. CI runs the same
+suite via `.github/workflows/ci.yml` and verifies SEO one-ways in the frontend.
 
-### Articles
+## Deployment
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/articles/:id` | Get article |
-| GET | `/api/articles/:id/related` | Related articles |
-| GET | `/api/articles/:id/explain` | AI explanation |
+### Frontend (Firebase Hosting)
 
-### Bookmarks
+```bash
+cd frontend
+firebase deploy --only hosting:lawlens
+```
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/bookmarks` | List bookmarks |
-| POST | `/api/bookmarks` | Add bookmark |
-| DELETE | `/api/bookmarks/:id` | Remove bookmark |
+2 Valid targets exist: `lawlens` and `lawlens-f0ebc` (see `frontend/.firebaserc`).
+Both rewrite all routes to `index.html` and serve the service worker with
+`no-cache`.
 
-### Admin
+### Backend (Render)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/admin/dashboard` | Dashboard stats |
-| GET | `/api/admin/users` | List users |
-| POST | `/api/admin/rebuild-vector` | Rebuild vector DB |
-| GET | `/api/admin/prompt` | Get system prompt |
-| PUT | `/api/admin/prompt` | Update system prompt |
+`render.yaml` defines the service. **The production backend is currently
+suspended** (HTTP 503) — resume it in the Render dashboard and set these env
+vars in Render:
 
-## AI Behavior
+- `GROQ_API_KEY` — sync secret
+- `FIREBASE_SERVICE_ACCOUNT` — sync secret (full service-account JSON)
+- `FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`,
+  `FIREBASE_STORAGE_BUCKET`, `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_APP_ID`
 
-- **Never hallucinates** — Only uses retrieved context
-- **Never invents laws** — Strictly from legal documents
-- **Always cites sources** — Every answer references documents
-- **Explains simply** — Legal concepts in plain language
-- **No legal advice** — Never provides personalized legal counsel
+> Note: the free Render tier is re-suspended when provisions are exhausted.
+> The frontend hard-codes `https://lawlens-p15c.onrender.com/api` for
+> non-localhost — update `frontend/js/utils.js` `API_BASE` if the URL changes.
 
 ## Security
 
-- bcrypt password hashing (12 rounds)
-- JWT with configurable expiration
-- Rate limiting on all endpoints
-- File upload validation (type + size)
-- Helmet security headers
-- CORS origin whitelist
-- Admin role-based access control
-- Path traversal protection
+- Firebase ID token verification on every protected route (no JWTs/bcrypt)
+- Admin-only `/api/knowledge/*` and `/api/admin/*` endpoints
+- Authenticated `/api/upload/*`; per-account document ownership checks
+- CORS origin whitelist; Helmet security headers
+- Rate limiting; file type + size validation; sanitized filenames
+- Locked-down Firestore & Storage rules; `noindex` on all auth-gated pages
+- `sw.js` never caches `/api/` traffic; static assets cached briefly
 
 ## Environment Variables
+
+See `backend/.env.example`. Key ones:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `GROQ_API_KEY` | Yes | Groq API key for AI |
-| `JWT_SECRET` | Yes | Secret for JWT signing |
-| `NODE_ENV` | No | `production` or `development` |
-| `PORT` | No | Server port (default: 3000) |
-| `CORS_ORIGIN` | No | Allowed origins (default: `*`) |
-| `DB_PATH` | No | Database directory |
-| `UPLOAD_DIR` | No | Upload directory |
+| `FIREBASE_SERVICE_ACCOUNT` | For auth | Full service-account JSON (single quoted line) |
+| `FIREBASE_*` | Yes (client) | Firebase client config, served at `/api/config/firebase` |
+| `ADMIN_FIREBASE_UID` | For admin | UID of the admin user (used by `npm run seed`) |
+| `CORS_ORIGIN` | No | Comma-separated allowed origins |
+| `DB_ENGINE` | No | Force `json` engine in local dev |
+| `PORT` / `VECTOR_DB_PATH` / `UPLOAD_DIR` / `DB_PATH` | No | Runtime tuning |
+
+## Accuracy & Limitations
+
+LawLens is a research aid, **not legal advice**. The corpus is a curated
+subset of official texts, answers are AI-generated, and multilingual output is
+AI-translated. Always verify against primary sources — India Code
+(indiacode.nic.in), official gazettes, or the courts.
 
 ## License
 

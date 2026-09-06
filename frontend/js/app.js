@@ -24,7 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initRippleEffect();
   addSkipToContent();
   Utils.lazyLoadImages();
+  registerServiceWorker();
 });
+
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  if (window.location.hostname === 'localhost') return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).catch(err => {
+      console.warn('Service worker registration failed:', err.message);
+    });
+  });
+}
 
 function loadLucideIcons() {
   if (window.lucide) {

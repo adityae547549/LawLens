@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run tests
+        run: npm test
+
+  frontend-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate firebase.json
+        working-directory: frontend
+        run: node -e "const f=JSON.parse(require('fs').readFileSync('firebase.json','utf8')); if(!f.hosting||f.hosting.length<1) process.exit(1); console.log('firebase.json OK');"
+
+      - name: Validate sitemap is well-formed XML
+        working-directory: frontend
+        run: node -e "const x=require('fs').readFileSync('sitemap.xml','utf8'); if(!x.includes('<urlset')||!x.includes('lawlens.web.app')) process.exit(1); console.log('sitemap OK');"
+
+      - name: Check auth pages are noindex
+        working-directory: frontend
+        run: |
+          for f in login register chat search legal-research dashboard documents workspaces summarizer compare flashcards quiz article; do
+            grep -q 'name="robots" content="noindex"' $f.html || (echo "$f.html must be noindex" && exit 1)
+          done
+          echo "noindex check OK"

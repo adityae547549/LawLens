@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// LawLens Firestore security rules.
+//
+// The Node.js backend authenticates with the Firebase Admin SDK, which bypasses
+// these rules. These rules therefore only govern direct client (web) access to
+// Cloud Firestore, which the application currently does NOT use — all data flows
+// through the backend API at /api. Everything is locked down by default.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users: only the account owner may read/manage their own profile record.
+    match /users/{firebaseUid} {
+      allow read, write: if request.auth != null && request.auth.uid == firebaseUid;
+    }
+
+    // Per-user data: owner-only access.
+    match /conversations/{id} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    match /bookmarks/{id} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    match /searchHistory/{id} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    match /documents/{id} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    match /workspaces/{id} {
+      allow read, write: if request.auth != null && resource.data.createdBy == request.auth.uid;
+    }
+
+    // Server-managed collections: no direct client access.
+    match /shares/{id} { allow read, write: if false; }
+    match /feedback/{id} { allow read, write: if false; }
+    match /analytics/{id} { allow read, write: if false; }
+    match /settings/{id} { allow read, write: if false; }
+  }
+}

@@ -107,9 +107,9 @@
         <a href="#demo" class="hero-btn-secondary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">View Demo</a>
       </div>
       <div class="hero-stats">
-        <div><div class="hero-stat-val">10,000+</div><div class="hero-stat-label">Articles Indexed</div></div>
-        <div><div class="hero-stat-val">&lt;2 sec</div><div class="hero-stat-label">Response Time</div></div>
-        <div><div class="hero-stat-val">100%</div><div class="hero-stat-label">Citation Based</div></div>
+        <div><div class="hero-stat-val">3,000+</div><div class="hero-stat-label">Indexed Source Chunks</div></div>
+        <div><div class="hero-stat-val">20+</div><div class="hero-stat-label">Official Documents</div></div>
+        <div><div class="hero-stat-val">23</div><div class="hero-stat-label">Indian Languages</div></div>
       </div>
     </div>
     <div class="hero-mockup">
@@ -311,78 +311,100 @@
   </div>
 </section>
 
-<!-- ═══ Statistics ═══ -->
+<!-- ═══ Stats ═══ -->
 <section class="section" id="stats">
   <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-badge">By the Numbers</div>
+      <h2 class="section-title">Current research corpus</h2>
+      <p class="section-sub">Honest, verifiable numbers from the running system.</p>
+    </div>
     <div class="stats-grid">
       <div class="stat-card reveal">
-        <div class="stat-val" data-target="10000">0</div>
-        <div class="stat-label">Articles Indexed</div>
+        <div class="stat-val" data-target="3128">0</div>
+        <div class="stat-label">Indexed Source Chunks</div>
       </div>
       <div class="stat-card reveal">
-        <div class="stat-val" data-target="100" data-suffix="%">0</div>
-        <div class="stat-label">Citation Based</div>
+        <div class="stat-val" data-target="20">0</div>
+        <div class="stat-label">Official Documents</div>
       </div>
       <div class="stat-card reveal">
-        <div class="stat-val" data-target="2" data-prefix="<" data-suffix=" sec">0</div>
-        <div class="stat-label">Average Response</div>
+        <div class="stat-val" data-target="23">0</div>
+        <div class="stat-label">Response Languages</div>
       </div>
       <div class="stat-card reveal">
-        <div class="stat-val" data-target="99" data-suffix="%">0</div>
-        <div class="stat-label">Secure</div>
+        <div class="stat-val" data-target="5">0</div>
+        <div class="stat-label">Explain Levels</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ Testimonials ═══ -->
-<section class="section" id="testimonials" style="background: var(--bg-tertiary);">
+<!-- ═══ Transparency ═══ -->
+<section class="section" id="about" style="background: var(--bg-tertiary);">
   <div class="section-inner">
     <div class="section-header reveal">
-      <div class="section-badge">Testimonials</div>
-      <h2 class="section-title">Trusted by legal professionals</h2>
-      <p class="section-sub">See what law students, lawyers, and researchers say about LawLens.</p>
+      <div class="section-badge">Honest by Design</div>
+      <h2 class="section-title">What LawLens is — and isn't</h2>
+      <p class="section-sub">We don't claim to replace a lawyer, and we don't oversell accuracy.</p>
     </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card reveal">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"LawLens has completely changed how I study constitutional law. The cited answers mean I can trust what I'm reading and cross-reference with the actual Articles."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">P</div>
-          <div>
-            <div class="testimonial-name">Priya Sharma</div>
-            <div class="testimonial-role">Law Student, NLU Delhi</div>
-          </div>
-        </div>
+    <div class="compare-table-wrap reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Generic AI</th>
+            <th class="highlight">LawLens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Source Citations</td><td class="compare-cross">Often fabricated</td><td class="highlight"><span class="compare-check">Every fact traced to a source</span></td></tr>
+          <tr><td>Hallucination Protection</td><td class="compare-cross">Frequently invents laws</td><td class="highlight"><span class="compare-check">Answers grounded in retrieved documents</span></td></tr>
+          <tr><td>Legal Advice</td><td class="compare-cross">Blurry lines</td><td class="highlight"><span class="compare-check">Explicitly not legal advice</span></td></tr>
+          <tr><td>Document Upload</td><td class="compare-cross">Not supported</td><td class="highlight"><span class="compare-check">PDF, DOCX, TXT, MD, JSON</span></td></tr>
+          <tr><td>Web Search for Updates</td><td class="compare-cross">Generic web results</td><td class="highlight"><span class="compare-check">Clearly labeled web mode</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="section-sub" style="text-align:center;max-width:720px;margin:2rem auto 0;">LawLens is in active development. The corpus is a curated subset of official texts, not the entire body of Indian law. Always verify against primary sources like India Code (indiacode.nic.in) or consult a qualified legal professional.</p>
+  </div>
+</section>
+
+<!-- ═══ Research Limits ═══ -->
+<section class="section" id="limits">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-badge">Before You Rely On It</div>
+      <h2 class="section-title">Know the limitations</h2>
+      <p class="section-sub">What you should verify on your own.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i data-lucide="alert-triangle"></i></div>
+        <h3>Not Legal Advice</h3>
+        <p>AI-generated explanations are research aids, not counsel. Consult a qualified professional for decisions about your specific situation.</p>
       </div>
-      <div class="testimonial-card reveal">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"Finally, an AI tool that doesn't hallucinate legal provisions. The source citations and confidence scores make this reliable for actual legal research."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">R</div>
-          <div>
-            <div class="testimonial-name">Rahul Mehta</div>
-            <div class="testimonial-role">Senior Advocate, Supreme Court</div>
-          </div>
-        </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i data-lucide="folder-open"></i></div>
+        <h3>Curated Corpus</h3>
+        <p>The database covers a curated set of Acts and judgments. Missing text isn't proof a law doesn't exist — check India Code directly.</p>
       </div>
-      <div class="testimonial-card reveal">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"The document upload feature is incredible. I uploaded my entire constitutional law textbook and can now ask questions about specific chapters."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">A</div>
-          <div>
-            <div class="testimonial-name">Ananya Desai</div>
-            <div class="testimonial-role">Legal Researcher, JNU</div>
-          </div>
-        </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i data-lucide="refresh-cw"></i></div>
+        <h3>Verify Primary Sources</h3>
+        <p>Statutes and amendments change. Cross-check dates, amendments, and citations against official gazettes and court websites.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i data-lucide="languages"></i></div>
+        <h3>Translations May Vary</h3>
+        <p>Multilingual answers are AI-translated. The authoritative text of every Indian law is the official English/Hindi version.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══ FAQ ═══ -->
-<section class="section" id="faq">
+<section class="section" id="faq" style="background: var(--bg-tertiary);">
   <div class="section-inner">
     <div class="section-header reveal">
       <div class="section-badge">FAQ</div>
@@ -392,11 +414,11 @@
     <div class="faq-list">
       <div class="faq-item reveal">
         <button class="faq-q">How accurate is LawLens? <span class="faq-arrow">▾</span></button>
-        <div class="faq-a"><div class="faq-a-inner">LawLens uses Retrieval-Augmented Generation (RAG), meaning every answer is grounded in actual legal documents. The AI never answers from memory — every fact is cited from the retrieved context. Confidence scores show you how reliable each answer is.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">LawLens uses Retrieval-Augmented Generation (RAG). Each answer is generated from retrieved document chunks and includes citations back to those sources. It is far less prone to hallucination than a plain chatbot, but it is not infallible — always verify important points against the cited primary sources.</div></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q">Does it give legal advice? <span class="faq-arrow">▾</span></button>
-        <div class="faq-a"><div class="faq-a-inner">No. LawLens is a research tool, not a lawyer. It explains legal documents in simple language and provides citations. It never provides personalized legal advice or attorney-client recommendations.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">No. LawLens is a research tool, not a lawyer. It explains legal documents in simple language and provides citations. It never provides personalized legal advice.</div></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q">Which documents are supported? <span class="faq-arrow">▾</span></button>
@@ -404,11 +426,11 @@
       </div>
       <div class="faq-item reveal">
         <button class="faq-q">How does RAG work? <span class="faq-arrow">▾</span></button>
-        <div class="faq-a"><div class="faq-a-inner">RAG (Retrieval-Augmented Generation) works in 4 steps: 1) Your question is converted to a search query. 2) The system finds the most relevant document chunks using hybrid search. 3) A cross-encoder reranker selects the best matches. 4) The AI generates an answer using ONLY the retrieved context, citing every source.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">RAG (Retrieval-Augmented Generation) works in 4 steps: 1) Your question is converted to a search query. 2) The system finds the most relevant document chunks using hybrid search. 3) A cross-encoder reranker selects the best matches. 4) The AI generates an answer using the retrieved context, citing every source.</div></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-q">Is my data private? <span class="faq-arrow">▾</span></button>
-        <div class="faq-a"><div class="faq-a-inner">Yes. Your documents and conversations are stored securely. We use Firebase Authentication, encrypted storage, and rate limiting. Your data is never shared with third parties or used for training.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Your documents and conversations are stored per-account and protected by Firebase Authentication. Data is never shared with third parties or used for model training.</div></div>
       </div>
     </div>
   </div>
@@ -440,25 +462,22 @@
       </div>
       <div>
         <div class="footer-col-title">Resources</div>
-        <a href="#" class="footer-link">Documentation</a>
-        <a href="#" class="footer-link">API Reference</a>
-        <a href="#" class="footer-link">GitHub</a>
-        <a href="#" class="footer-link">Changelog</a>
+        <a href="./constitution.html" class="footer-link">Constitution Viewer</a>
+        <a href="./timeline.html" class="footer-link">Landmark Cases</a>
+        <a href="./trust.html" class="footer-link">Trust &amp; Sources</a>
         <a href="./feedback.html" class="footer-link">Feedback</a>
       </div>
       <div>
         <div class="footer-col-title">Legal</div>
-        <a href="#" class="footer-link">Privacy Policy</a>
-        <a href="#" class="footer-link">Terms of Service</a>
-        <a href="#" class="footer-link">Contact</a>
+        <a href="./trust.html" class="footer-link">Trust &amp; Accuracy</a>
+        <a href="./feedback.html" class="footer-link">Contact</a>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">&copy; 2026 LawLens. All rights reserved.</div>
       <div class="footer-bottom-links">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-        <a href="#">Sitemap</a>
+        <a href="./trust.html">Trust</a>
+        <a href="./sitemap.xml">Sitemap</a>
       </div>
     </div>
   </div>
