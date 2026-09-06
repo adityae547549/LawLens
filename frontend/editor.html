@@ -90,7 +90,8 @@ if (!TOKEN) { document.body.innerHTML = '<div style="display:flex;align-items:ce
 
 function api(path, opts = {}) {
   const url = '/api' + path;
-  const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN };
+  const APPCHECK = localStorage.getItem('lawlens_appcheck');
+const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN, ...(APPCHECK ? { 'X-Firebase-AppCheck': APPCHECK } : {}) };
   return fetch(url, { ...opts, headers: { ...headers, ...opts.headers } }).then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error || d.message || 'API error'); return d; });
 }
 

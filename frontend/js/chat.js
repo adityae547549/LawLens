@@ -175,7 +175,10 @@ function initChatUpload() {
 
       const response = await fetch(`${API_BASE}/upload`, {
         method: 'POST',
-        headers: Utils.getToken() ? { 'Authorization': 'Bearer ' + Utils.getToken() } : {},
+        headers: {
+          ...(Utils.getToken() ? { 'Authorization': 'Bearer ' + Utils.getToken() } : {}),
+          ...(Utils.getAppCheckToken() ? { 'X-Firebase-AppCheck': Utils.getAppCheckToken() } : {})
+        },
         body: formData
       });
 
@@ -308,7 +311,8 @@ async function streamChat(message, typingEl, statusEl) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...(Utils.getToken() ? { 'Authorization': `Bearer ${Utils.getToken()}` } : {})
+      ...(Utils.getToken() ? { 'Authorization': `Bearer ${Utils.getToken()}` } : {}),
+      ...(Utils.getAppCheckToken() ? { 'X-Firebase-AppCheck': Utils.getAppCheckToken() } : {})
     },
     body: JSON.stringify({ message, conversationId: LawLens.state.currentConversationId, level, mode, language, fileId: localStorage.getItem('lawlense_active_doc') || undefined, useMemory })
   });

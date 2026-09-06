@@ -76,7 +76,10 @@ async function handleUpload(file) {
     const token = Utils.getToken();
     const res = await fetch(`${API_BASE}/upload`, {
       method: 'POST',
-      headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...(Utils.getAppCheckToken() ? { 'X-Firebase-AppCheck': Utils.getAppCheckToken() } : {})
+      },
       body: formData
     });
 
