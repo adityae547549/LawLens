@@ -15,6 +15,18 @@ const Utils = {
     localStorage.removeItem('lawlense_token');
   },
 
+  getAppCheckToken() {
+    return localStorage.getItem('lawlens_appcheck');
+  },
+
+  setAppCheckToken(token) {
+    localStorage.setItem('lawlens_appcheck', token);
+  },
+
+  removeAppCheckToken() {
+    localStorage.removeItem('lawlens_appcheck');
+  },
+
   getUser() {
     const data = localStorage.getItem('lawlense_user');
     return data ? JSON.parse(data) : null;
@@ -180,6 +192,11 @@ const Utils = {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
 
+    const appCheckToken = this.getAppCheckToken();
+    if (appCheckToken) {
+      config.headers['X-Firebase-AppCheck'] = appCheckToken;
+    }
+
     if (body && !formData) {
       config.headers['Content-Type'] = 'application/json';
       config.body = JSON.stringify(body);
@@ -208,6 +225,7 @@ const Utils = {
       if (err.message.includes('401') || err.message.includes('Authentication required') || err.message.includes('Invalid or expired token')) {
         this.removeToken();
         this.removeUser();
+        this.removeAppCheckToken();
         try { if (typeof firebase !== 'undefined' && firebase.auth) await firebase.auth().signOut(); } catch {}
         if (!window.location.pathname.includes('login') && !window.location.pathname.includes('register')) {
           window.location.href = './login.html';

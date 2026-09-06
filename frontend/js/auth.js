@@ -1,5 +1,6 @@
 let firebaseAuth = null;
 let firebaseApp = null;
+let appCheckInitialized = false;
 
 async function initFirebase() {
   try {
@@ -13,6 +14,22 @@ async function initFirebase() {
       firebaseApp = firebase.initializeApp(config);
     }
     firebaseAuth = firebase.auth();
+
+    if (config.appCheckSiteKey && firebase.appCheck) {
+      try {
+        if (!appCheckInitialized) {
+          firebase.appCheck().initializeAppCheck(firebaseApp, {
+            provider: new firebase.appCheck.ReCaptchaEnterpriseProvider(config.appCheckSiteKey),
+            isTokenAutoRefreshEnabled: true,
+          });
+          appCheckInitialized = true;
+        }
+        refreshAppCheckToken();
+        setInterval(refreshAppCheckToken, 15 * 60 * 1000);
+      } catch (e) {
+        console.warn('[AppCheck] init failed:', e);
+      }
+    }
     return true;
   } catch (err) {
     console.warn('[Auth] Failed to initialize Firebase:', err);
@@ -20,10 +37,28 @@ async function initFirebase() {
   }
 }
 
+async function refreshAppCheckToken() {
+  try {
+    const tokenResult = await firebase.appCheck().getToken(false);
+    if (tokenResult && tokenResult.token) {
+      Utils.setAppCheckToken(tokenResult.token);
+    }
+  } catch (e) {
+    console.warn('[AppCheck] token unavailable:', e.message);
+  }
+}
+
+function appCheckHeaders() {
+  const headers = { 'Content-Type': 'application/json' };
+  const ac = Utils.getAppCheckToken();
+  if (ac) headers['X-Firebase-AppCheck'] = ac;
+  return headers;
+}
+
 async function syncUserWithBackend(idToken) {
   const res = await fetch(`${API_BASE}/auth/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: appCheckHeaders(),
     body: JSON.stringify({ idToken }),
   });
   if (!res.ok) {
@@ -36,7 +71,7 @@ async function syncUserWithBackend(idToken) {
 async function registerWithBackend(idToken) {
   const res = await fetch(`${API_BASE}/auth/register`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: appCheckHeaders(),
     body: JSON.stringify({ idToken }),
   });
   if (!res.ok) {

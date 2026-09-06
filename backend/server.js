@@ -96,6 +96,9 @@ const aiLimiter = rateLimit({
 app.use('/api/chat', aiLimiter);
 app.use('/api/ai', aiLimiter);
 
+const appCheck = require('./middleware/appCheck');
+app.use('/api/', appCheck);
+
 const healthCheck = (req, res) => {
   res.json({
     status: 'ok',
