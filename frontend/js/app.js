@@ -217,8 +217,20 @@ function initSidebar() {
 
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', (e) => {
+    logoutBtn.addEventListener('click', async (e) => {
       e.preventDefault();
+      try {
+        if (typeof firebase !== 'undefined' && firebase.auth) {
+          await firebase.auth().signOut();
+        } else {
+          const res = await fetch(`${typeof API_BASE !== 'undefined' ? API_BASE : '/api'}/config/firebase`);
+          const config = await res.json();
+          if (config.apiKey && typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length === 0) {
+            firebase.initializeApp(config);
+            await firebase.auth().signOut();
+          }
+        }
+      } catch {}
       Utils.removeToken();
       Utils.removeUser();
       Utils.showToast('Logged out successfully', 'success');
