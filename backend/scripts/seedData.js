@@ -1,3 +1,6 @@
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+const { initFirebaseAdmin } = require('../utils/firebaseAdmin');
+initFirebaseAdmin();
 const db = require('../database/db');
 
 async function seed() {

@@ -1,4 +1,4 @@
-const { isFirebaseAdminInitialized } = require('../utils/firebaseAdmin');
+const { isFirebaseAdminInitialized, initFirebaseAdmin, getFirebaseMode } = require('../utils/firebaseAdmin');
 
 /**
  * Database engine selection.
@@ -13,6 +13,14 @@ const { isFirebaseAdminInitialized } = require('../utils/firebaseAdmin');
 function selectEngine() {
   if (process.env.DB_ENGINE === 'json') {
     return { engine: 'json', db: require('./json') };
+  }
+
+  if (!isFirebaseAdminInitialized()) {
+    try {
+      initFirebaseAdmin();
+    } catch (err) {
+      console.warn(`[DB] Firebase Admin init failed (${err.message})`);
+    }
   }
 
   if (isFirebaseAdminInitialized()) {
