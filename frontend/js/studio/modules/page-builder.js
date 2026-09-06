@@ -9,8 +9,7 @@ Studio.Modules.register('page-builder', () => {
   async function loadPages() { try { _pages = (await Studio.api('/studio/pages')).data || []; } catch { _pages = []; } }
 
   function openEditor(page) {
-    const token = localStorage.getItem('studio_token') || localStorage.getItem('token') || '';
-    window.open('/editor.html?page=' + page.id + '&token=' + encodeURIComponent(token), '_blank');
+    window.open('/editor.html?page=' + encodeURIComponent(page.id), '_blank');
   }
 
   function renderList() {

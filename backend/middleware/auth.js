@@ -23,9 +23,6 @@ function extractToken(req) {
   if (authHeader && authHeader.startsWith('Bearer ')) {
     return authHeader.split(' ')[1];
   }
-  if (req.query && req.query.token) {
-    return req.query.token;
-  }
   return null;
 }
 

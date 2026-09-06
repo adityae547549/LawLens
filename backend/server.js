@@ -53,15 +53,14 @@ const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map(s => s.tri
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-    }
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.length === 0 && /localhost|127\.0\.0\.1/.test(origin)) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(null, false);
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Firebase-AppCheck'],
   maxAge: 86400,
 }));
 
@@ -99,12 +98,17 @@ app.use('/api/ai', aiLimiter);
 const appCheck = require('./middleware/appCheck');
 app.use('/api/', appCheck);
 
+const { getFirebaseMode } = require('./utils/firebaseAdmin');
+
 const healthCheck = (req, res) => {
+  const fbMode = getFirebaseMode();
+  const firebase =
+    fbMode === 'service_account' ? 'configured' : fbMode === 'application_default' ? 'degraded' : 'not_configured';
   res.json({
     status: 'ok',
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
-    firebase: require('./utils/firebaseAdmin').isFirebaseAdminInitialized() ? 'configured' : 'not_configured',
+    firebase,
   });
 };
 app.get('/health', healthCheck);

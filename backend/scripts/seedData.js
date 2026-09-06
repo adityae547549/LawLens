@@ -8,8 +8,7 @@ async function seed() {
     process.exit(1);
   }
 
-  const users = await db.findAll('users');
-  const existing = (users || []).find(u => u.firebaseUid === adminFirebaseUid);
+  const existing = await db.findOne('users', { firebaseUid: adminFirebaseUid });
 
   if (existing) {
     await db.updateOne('users', { id: existing.id }, { role: 'admin' });

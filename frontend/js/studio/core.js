@@ -493,44 +493,59 @@ window.Studio = (() => {
     return Utils.api(path, options);
   };
 
-  // ── SSE Connection ──────────────────────────────────────────
+  // ── SSE Connection (fetch-based to avoid token-in-URL) ──────
   const SSE = {
-    _es: null,
+    _controller: null,
     _retryTimer: null,
     _retryDelay: 1000,
     _maxRetry: 30000,
 
-    connect() {
-      if (this._es) this.disconnect();
+    async connect() {
+      this.disconnect();
       const token = Utils.getToken();
       if (!token) return;
-      const url = `/api/studio/events?token=${encodeURIComponent(token)}`;
-      this._es = new EventSource(url);
       this._retryDelay = 1000;
-
-      this._es.onmessage = (e) => {
-        try {
-          const event = JSON.parse(e.data);
-          Events.emit('sse:' + event.type, event);
-          Events.emit('sse:*', event);
-        } catch {}
-      };
-
-      this._es.onerror = () => {
-        this._es.close();
-        this._es = null;
-        this._retryTimer = setTimeout(() => this.connect(), this._retryDelay);
-        this._retryDelay = Math.min(this._retryDelay * 2, this._maxRetry);
-      };
+      this._controller = new AbortController();
+      try {
+        const response = await fetch('/api/studio/events', {
+          headers: { 'Authorization': 'Bearer ' + token },
+          signal: this._controller.signal,
+        });
+        if (!response.ok) throw new Error('SSE ' + response.status);
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const event = JSON.parse(line.slice(6));
+                Events.emit('sse:' + event.type, event);
+                Events.emit('sse:*', event);
+              } catch {}
+            }
+          }
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          this._retryTimer = setTimeout(() => this.connect(), this._retryDelay);
+          this._retryDelay = Math.min(this._retryDelay * 2, this._maxRetry);
+        }
+      }
     },
 
     disconnect() {
       if (this._retryTimer) { clearTimeout(this._retryTimer); this._retryTimer = null; }
-      if (this._es) { this._es.close(); this._es = null; }
+      if (this._controller) { this._controller.abort(); this._controller = null; }
     },
 
     isConnected() {
-      return this._es && this._es.readyState === EventSource.OPEN;
+      return this._controller && !this._controller.signal.aborted;
     }
   };
 
