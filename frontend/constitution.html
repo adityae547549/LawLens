@@ -4,53 +4,21 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Constitution of India — AI-Powered Browse & Search | LawLens</title>
-  <meta name="description" content="Browse and search the Constitution of India with AI-powered explanations and cross-references.">
+  <title>Indian Constitution Explorer — AI-Powered Search & Analysis | LawLens</title>
+  <meta name="description" content="Explore all 448 articles of the Indian Constitution with AI-powered search, summaries, and visual navigation. Browse Parts, Schedules, and Amendments with instant AI explanations.">
   <link rel="canonical" href="https://lawlens.web.app/constitution.html">
   <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lawlens.web.app/constitution.html">
+  <meta property="og:title" content="Indian Constitution Explorer — AI-Powered Search & Analysis">
+  <meta property="og:description" content="Explore all 448 articles of the Indian Constitution with AI-powered search, summaries, and visual navigation.">
+  <meta property="og:image" content="https://lawlens.web.app/logo.png">
+  <meta property="og:site_name" content="LawLens">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/ui-enhancements.css">
-  <style>
-    .constitution-page{max-width:1200px;margin:0 auto;padding:var(--spacing-lg);}
-    .hero{text-align:center;padding:3rem 1rem 2rem;margin-bottom:2rem;}
-    .hero h1{font-size:2rem;margin-bottom:0.5rem;}
-    .hero p{color:var(--text-tertiary);max-width:600px;margin:0 auto;}
-    .search-tabs{display:flex;gap:0;border:1px solid var(--border-color);border-radius:var(--radius-md);overflow:hidden;width:fit-content;margin:0 auto 2rem;}
-    .search-tab{padding:0.6rem 1.5rem;font-size:0.85rem;border:none;background:transparent;color:var(--text-secondary);cursor:pointer;font-weight:500;}
-    .search-tab.active{background:var(--accent-glow);color:var(--accent-primary);}
-    .search-panel{display:none;max-width:700px;margin:0 auto 2rem;}
-    .search-panel.active{display:block;}
-    .search-row{display:flex;gap:var(--spacing-sm);}
-    .search-row input{flex:1;padding:0.8rem 1rem;border-radius:var(--radius-md);font-size:0.95rem;}
-    .search-row button{padding:0.8rem 1.5rem;border-radius:var(--radius-md);white-space:nowrap;}
-    .amendment-list{max-height:400px;overflow-y:auto;padding:0.5rem;}
-    .amendment-item{display:flex;gap:1rem;padding:0.8rem;border:1px solid var(--border-color);border-radius:var(--radius-md);margin-bottom:0.5rem;cursor:pointer;transition:all 0.2s;}
-    .amendment-item:hover{border-color:var(--accent-primary);background:var(--accent-glow);}
-    .amendment-num{font-size:1.1rem;font-weight:700;color:var(--accent-primary);min-width:30px;}
-    .amendment-info{flex:1;}
-    .amendment-info h4{font-size:0.9rem;margin:0 0 0.2rem;}
-    .amendment-info p{font-size:0.8rem;color:var(--text-tertiary);margin:0;}
-    .amendment-year{font-size:0.75rem;color:var(--text-tertiary);white-space:nowrap;}
-    .results-grid{display:grid;gap:1rem;}
-    .result-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.25rem;transition:border-color 0.2s;}
-    .result-card:hover{border-color:var(--accent-primary);}
-    .result-card h3{font-size:1rem;margin-bottom:0.5rem;color:var(--accent-primary);}
-    .result-card p{font-size:0.9rem;line-height:1.7;color:var(--text-secondary);margin:0;}
-    .quick-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:2rem 0;}
-    .quick-link{display:flex;align-items:center;gap:0.75rem;padding:1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);cursor:pointer;transition:all 0.2s;text-decoration:none;color:var(--text-primary);}
-    .quick-link:hover{border-color:var(--accent-primary);transform:translateY(-2px);}
-    .quick-link-icon{font-size:1.5rem;}
-    .quick-link-text h3{font-size:0.9rem;margin:0;}
-    .quick-link-text p{font-size:0.75rem;color:var(--text-tertiary);margin:0.2rem 0 0;}
-    .article-display{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin:1rem 0;white-space:pre-wrap;font-size:0.9rem;line-height:1.8;}
-    .related-articles{margin-top:1rem;}
-    .related-chip{display:inline-block;padding:0.3rem 0.8rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:999px;font-size:0.8rem;margin:0.2rem;cursor:pointer;transition:all 0.2s;}
-    .related-chip:hover{border-color:var(--accent-primary);color:var(--accent-primary);}
-    .back-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--text-tertiary);text-decoration:none;font-size:0.85rem;margin-bottom:1rem;}
-    .back-link:hover{color:var(--accent-primary);}
-  </style>
 </head>
 <body>
   <div class="app-layout">
@@ -108,91 +76,61 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
           <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
-          <h2 style="font-size:1.1rem;font-weight:600;">Constitution AI</h2>
+          <h2 style="font-size:1.1rem;font-weight:600;">Constitution Explorer</h2>
         </div>
         <div class="top-nav-right">
           <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
-      <div class="constitution-page">
-        <div class="hero">
-          <div style="font-size:2.5rem;margin-bottom:0.5rem;"><i data-lucide="scroll-text"></i></div>
-          <h1>Constitution AI</h1>
-          <p>Search by article number, topic, or browse amendments. Every answer backed by the Constitution of India.</p>
+      <div class="page-content" id="constitutionPage">
+        <div class="page-header">
+          <h1>Indian Constitution Explorer</h1>
+          <p>Browse, search, and understand the Constitution with AI assistance</p>
         </div>
 
-        <div class="search-tabs">
-          <button class="search-tab active" data-tab="article">Article Search</button>
-          <button class="search-tab" data-tab="topic">Topic Search</button>
-          <button class="search-tab" data-tab="amendments">Amendments</button>
-        </div>
-
-        <div class="search-panel active" id="panel-article">
-          <div class="search-row">
-            <input type="number" id="articleInput" placeholder="Enter article number (e.g. 21)" min="1" max="395">
-            <button class="btn btn-primary" id="searchArticleBtn">Search Article</button>
+        <div style="display:grid;grid-template-columns:280px 1fr 320px;gap:var(--spacing-xl);height:calc(100vh - 200px);min-height:600px;" id="constitutionLayout">
+          <!-- Left: Parts List -->
+          <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;">
+            <div style="padding:var(--spacing-md);border-bottom:1px solid var(--border-color);">
+              <input type="text" id="partsSearch" placeholder="Search parts..." style="width:100%;padding:0.6rem 0.8rem;border-radius:var(--radius-md);font-size:0.85rem;">
+            </div>
+            <div id="partsList" style="flex:1;overflow-y:auto;padding:var(--spacing-xs);"></div>
           </div>
-        </div>
 
-        <div class="search-panel" id="panel-topic">
-          <div class="search-row">
-            <input type="text" id="topicInput" placeholder="Enter topic (e.g. fundamental rights, equality, freedom)">
-            <button class="btn btn-primary" id="searchTopicBtn">Search Topic</button>
+          <!-- Center: Article View -->
+          <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);overflow-y:auto;padding:var(--spacing-lg);" id="articleView">
+            <div style="text-align:center;padding:var(--spacing-2xl);color:var(--text-tertiary);">
+              <i data-lucide="book-open" style="width:48px;height:48px;margin-bottom:var(--spacing-md);opacity:0.3;"></i>
+              <h3>Select a part from the left</h3>
+              <p>Or use the search bar to find specific articles</p>
+            </div>
           </div>
-        </div>
 
-        <div class="search-panel" id="panel-amendments">
-          <div style="display:flex;gap:var(--spacing-sm);margin-bottom:1rem;">
-            <input type="text" id="amendmentSearch" placeholder="Filter amendments..." style="flex:1;">
-          </div>
-          <div class="amendment-list" id="amendmentList"></div>
-        </div>
-
-        <div id="searchResults" style="display:none;">
-          <a href="#" class="back-link" onclick="hideResults();return false;"><i data-lucide="arrow-left"></i> Back to search</a>
-          <div id="resultsContent"></div>
-        </div>
-
-        <div class="quick-links">
-          <a class="quick-link" onclick="quickSearch(14)">
-            <span class="quick-link-icon"><i data-lucide="scale"></i></span>
-            <div class="quick-link-text"><h3>Article 14</h3><p>Right to Equality</p></div>
-          </a>
-          <a class="quick-link" onclick="quickSearch(19)">
-            <span class="quick-link-icon"><i data-lucide="message-circle"></i></span>
-            <div class="quick-link-text"><h3>Article 19</h3><p>Freedoms & Rights</p></div>
-          </a>
-          <a class="quick-link" onclick="quickSearch(21)">
-            <span class="quick-link-icon"><i data-lucide="shield"></i></span>
-            <div class="quick-link-text"><h3>Article 21</h3><p>Right to Life</p></div>
-          </a>
-          <a class="quick-link" onclick="quickSearch(32)">
-            <span class="quick-link-icon"><i data-lucide="arrow-right"></i></span>
-            <div class="quick-link-text"><h3>Article 32</h3><p>Constitutional Remedies</p></div>
-          </a>
-          <a class="quick-link" onclick="quickSearch(44)">
-            <span class="quick-link-icon"><i data-lucide="arrow-right"></i></span>
-            <div class="quick-link-text"><h3>Article 44</h3><p>Uniform Civil Code</p></div>
-          </a>
-          <a class="quick-link" onclick="quickSearch(243)">
-            <span class="quick-link-icon"><i data-lucide="arrow-right"></i></span>
-            <div class="quick-link-text"><h3>Article 243</h3><p>Panchayati Raj</p></div>
-          </a>
-        </div>
-
-        <div style="margin-top:2rem;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);">
-          <h3 style="margin-bottom:1rem;"><i data-lucide="arrow-right"></i> Quick Actions</h3>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-            <a href="./quiz.html" class="btn btn-ghost btn-sm"><i data-lucide="brain"></i> Quiz Yourself</a>
-            <a href="./flashcards.html" class="btn btn-ghost btn-sm"><i data-lucide="layers"></i> Flashcards</a>
-            <a href="./compare.html" class="btn btn-ghost btn-sm"><i data-lucide="scale"></i> Compare Articles</a>
-            <a href="./timeline.html" class="btn btn-ghost btn-sm"><i data-lucide="calendar"></i> Constitutional Timeline</a>
-            <a href="./chat.html" class="btn btn-ghost btn-sm"><i data-lucide="message-square"></i> AI About Constitution</a>
+          <!-- Right: AI Assistant -->
+          <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;">
+            <div style="padding:var(--spacing-md);border-bottom:1px solid var(--border-color);display:flex;align-items:center;gap:var(--spacing-sm);">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;"><i data-lucide="bot" style="width:18px;height:18px;color:white;"></i></div>
+              <div><div style="font-weight:600;font-size:0.9rem;">AI Assistant</div><div style="font-size:0.75rem;color:var(--text-tertiary);">Ask about the Constitution</div></div>
+            </div>
+            <div id="aiMessages" style="flex:1;overflow-y:auto;padding:var(--spacing-md);display:flex;flex-direction:column;gap:var(--spacing-md);">
+              <div style="background:var(--bg-secondary);border-radius:var(--radius-md);padding:var(--spacing-md);font-size:0.85rem;">
+                <p style="margin-bottom:var(--spacing-sm);">I can help you understand the Indian Constitution. Try asking:</p>
+                <ul style="margin:0;padding-left:var(--spacing-md);color:var(--text-secondary);">
+                  <li style="margin-bottom:4px;">"Explain Article 21"</li>
+                  <li style="margin-bottom:4px;">"What are Fundamental Rights?"</li>
+                  <li style="margin-bottom:4px;">"Compare Articles 14 and 19"</li>
+                </ul>
+              </div>
+            </div>
+            <form id="aiChatForm" style="padding:var(--spacing-md);border-top:1px solid var(--border-color);display:flex;gap:var(--spacing-sm);">
+              <input type="text" id="aiChatInput" placeholder="Ask about the Constitution..." style="flex:1;padding:0.6rem 0.8rem;border-radius:var(--radius-md);font-size:0.85rem;">
+              <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="send" style="width:16px;height:16px;"></i></button>
+            </form>
           </div>
         </div>
       </div>
@@ -204,4 +142,3 @@
   <script src="./js/constitution.js"></script>
 </body>
 </html>
-

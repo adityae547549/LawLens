@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Legal Articles & In-Depth Analysis | LawLens</title>
-  <meta name="description" content="Read in-depth legal articles and analysis.">
+  <title>Article Viewer — LawLens</title>
+  <meta name="description" content="Read and search individual constitutional articles with AI-powered explanations.">
   <link rel="canonical" href="https://lawlens.web.app/article.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +69,7 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
@@ -81,16 +81,50 @@
         </div>
       </div>
       <div class="page-content" id="articlePage">
-        <div style="display:grid;grid-template-columns:1fr 300px;gap:var(--spacing-xl);">
-          <div id="articleContent"></div>
-          <div>
-            <div class="card" style="position:sticky;top:calc(64px + var(--spacing-xl));">
-              <h4 style="margin-bottom:var(--spacing-md);font-size:1rem;">Related Articles</h4>
-              <div id="relatedArticles">
-                <p style="color:var(--text-tertiary);font-size:0.85rem;">Loading related articles...</p>
+        <div class="page-header">
+          <h1>Article Viewer</h1>
+          <p>Read individual constitutional articles with AI explanations</p>
+        </div>
+
+        <div style="display:flex;gap:var(--spacing-md);margin-bottom:var(--spacing-xl);flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <select id="articleSelect" class="form-select" style="width:100%;padding:0.7rem 1rem;">
+              <option value="">Select an article...</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:var(--spacing-sm);">
+            <button class="btn btn-outline btn-sm" id="prevArticle"><i data-lucide="chevron-left" style="width:16px;height:16px;"></i></button>
+            <button class="btn btn-outline btn-sm" id="nextArticle"><i data-lucide="chevron-right" style="width:16px;height:16px;"></i></button>
+            <button class="btn btn-outline btn-sm" id="bookmarkArticle"><i data-lucide="bookmark" style="width:16px;height:16px;"></i></button>
+          </div>
+        </div>
+
+        <div id="articleContent" style="display:none;">
+          <div class="card" style="margin-bottom:var(--spacing-xl);">
+            <div class="card-header">
+              <h3 class="card-title" id="articleTitle">—</h3>
+              <div id="articleBadges" style="display:flex;gap:var(--spacing-xs);flex-wrap:wrap;"></div>
+            </div>
+            <div class="card-body" id="articleText" style="white-space:pre-wrap;line-height:1.8;font-size:0.95rem;"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="sparkles" style="width:20px;height:20px;color:var(--accent-primary);"></i> AI Explanation</h3>
+              <div style="display:flex;gap:var(--spacing-xs);">
+                <button class="btn btn-ghost btn-sm explain-btn" data-level="simple">Simple</button>
+                <button class="btn btn-ghost btn-sm explain-btn" data-level="detailed">Detailed</button>
+                <button class="btn btn-ghost btn-sm explain-btn" data-level="upsc">UPSC</button>
               </div>
             </div>
+            <div class="card-body" id="aiExplanation" style="white-space:pre-wrap;line-height:1.7;"></div>
           </div>
+        </div>
+
+        <div id="articlePlaceholder" style="text-align:center;padding:var(--spacing-2xl);color:var(--text-tertiary);">
+          <i data-lucide="file-text" style="width:48px;height:48px;margin-bottom:var(--spacing-md);opacity:0.3;"></i>
+          <h3>Select an article to view</h3>
+          <p>Choose from the dropdown above or navigate using the arrow buttons</p>
         </div>
       </div>
     </main>
@@ -101,4 +135,3 @@
   <script src="./js/article.js"></script>
 </body>
 </html>
-

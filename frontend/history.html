@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Legal Research History | LawLens</title>
-  <meta name="description" content="View your legal research history.">
+  <title>History — LawLens</title>
+  <meta name="description" content="View your recent activity and conversation history on LawLens.">
   <link rel="canonical" href="https://lawlens.web.app/history.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +69,7 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
@@ -81,19 +81,33 @@
         </div>
       </div>
       <div class="page-content" id="historyPage">
-        <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div class="page-header">
           <div>
-            <h1>History</h1>
-            <p>Your chat conversations and search history</p>
+            <h1>Activity History</h1>
+            <p>Browse your recent conversations and searches</p>
           </div>
-          <button class="btn btn-danger btn-sm" onclick="clearAllHistory()">Clear All</button>
+          <button class="btn btn-ghost btn-sm" id="clearHistoryBtn"><i data-lucide="trash-2" style="width:16px;height:16px;"></i> Clear All</button>
         </div>
 
-        <h3 style="margin-bottom:var(--spacing-md);font-size:1.1rem;">Conversations</h3>
-        <div id="historyConversations" style="margin-bottom:var(--spacing-xl);"></div>
+        <div style="display:flex;gap:var(--spacing-md);margin-bottom:var(--spacing-xl);flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <input type="text" id="historySearch" placeholder="Search history..." style="width:100%;padding:0.7rem 1rem;border-radius:var(--radius-md);">
+          </div>
+          <div style="display:flex;gap:var(--spacing-sm);">
+            <button class="btn btn-outline btn-sm history-filter active" data-filter="all">All</button>
+            <button class="btn btn-outline btn-sm history-filter" data-filter="chat">Chat</button>
+            <button class="btn btn-outline btn-sm history-filter" data-filter="search">Search</button>
+            <button class="btn btn-outline btn-sm history-filter" data-filter="quiz">Quiz</button>
+          </div>
+        </div>
 
-        <h3 style="margin-bottom:var(--spacing-md);font-size:1.1rem;">Search History</h3>
-        <div id="historySearches"></div>
+        <div id="historyList" style="display:flex;flex-direction:column;gap:var(--spacing-sm);"></div>
+
+        <div id="historyEmpty" style="display:none;text-align:center;padding:var(--spacing-2xl);color:var(--text-tertiary);">
+          <i data-lucide="clock" style="width:48px;height:48px;margin-bottom:var(--spacing-md);opacity:0.3;"></i>
+          <h3>No history yet</h3>
+          <p>Your recent activity will appear here</p>
+        </div>
       </div>
     </main>
   </div>
@@ -103,4 +117,3 @@
   <script src="./js/history.js"></script>
 </body>
 </html>
-

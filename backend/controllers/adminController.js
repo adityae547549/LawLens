@@ -225,8 +225,9 @@ exports.deleteDataset = async (req, res) => {
 exports.getDatasetPreview = async (req, res) => {
   try {
     const { fileName } = req.params;
+    const safeFileName = path.basename(fileName).replace(/[^a-zA-Z0-9._-]/g, '_');
     const dataDir = path.resolve(__dirname, '..', 'data');
-    const filePath = path.join(dataDir, fileName);
+    const filePath = path.join(dataDir, safeFileName);
 
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ error: 'File not found' });

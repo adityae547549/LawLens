@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Legal Document Summarizer | LawLens</title>
-  <meta name="description" content="Summarize legal documents and texts with AI.">
+  <title>Summarizer — LawLens</title>
+  <meta name="description" content="Summarize legal documents, judgments, and articles with AI.">
   <link rel="canonical" href="https://lawlens.web.app/summarizer.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +14,13 @@
   <link rel="stylesheet" href="./css/ui-enhancements.css">
 </head>
 <body>
-<div class="app-layout">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header"><img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;"><span class="sidebar-title">LawLens</span></div>
-    <nav class="sidebar-nav">
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
         <div class="nav-section">
           <div class="nav-section-title">Main</div>
           <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
@@ -66,82 +69,73 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
-  <main class="main-content">
-    <div class="top-nav">
-      <div class="top-nav-left"><button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button><h2 style="font-size:1.1rem;font-weight:600;">AI Summarizer</h2></div>
-      <div class="top-nav-right"><button class="theme-toggle" title="Toggle theme"></button></div>
-    </div>
-    <div class="page-content" id="summarizerPage">
-      <div style="margin-bottom:1.5rem;"><h1 style="margin-bottom:0.15rem;"><i data-lucide="pen-line"></i> AI Legal Summarizer</h1><p style="color:var(--text-tertiary);margin:0;">Summarize legal text, documents, or compare multiple sources</p></div>
-
-      <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap;">
-        <button class="btn btn-secondary summarizer-tab active" data-tab="text" style="border-color:var(--accent-primary);"><i data-lucide="pencil"></i> Text</button>
-        <button class="btn btn-secondary summarizer-tab" data-tab="document"><i data-lucide="file-text"></i> Document</button>
-        <button class="btn btn-secondary summarizer-tab" data-tab="compare"><i data-lucide="scale"></i> Compare</button>
+    </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Summarizer</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
       </div>
+      <div class="page-content" id="summarizerPage">
+        <div class="page-header">
+          <h1>Document Summarizer</h1>
+          <p>Get concise summaries of legal texts with AI</p>
+        </div>
 
-      <div id="textTab" class="summarizer-tab-content active">
-        <div class="admin-section">
-          <div class="admin-section-header"><h3>Summarize Text</h3></div>
-          <div class="admin-section-body">
-            <div style="margin-bottom:0.75rem;">
-              <label class="form-label">Mode</label>
-              <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.35rem;">
-                <button class="btn btn-sm summarizer-mode active" data-mode="concise" style="border:1px solid var(--border-color);">Concise</button>
-                <button class="btn btn-sm summarizer-mode" data-mode="detailed" style="border:1px solid var(--border-color);">Detailed</button>
-                <button class="btn btn-sm summarizer-mode" data-mode="extract" style="border:1px solid var(--border-color);">Extract</button>
-                <button class="btn btn-sm summarizer-mode" data-mode="plain" style="border:1px solid var(--border-color);">Plain Language</button>
+        <div style="max-width:800px;margin:0 auto;">
+          <div class="card" style="margin-bottom:var(--spacing-xl);">
+            <div class="card-header"><h3 class="card-title">Input</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">Paste text or upload a document</label>
+                <textarea id="summarizerInput" rows="8" placeholder="Paste your legal text here, or upload a file below..." style="width:100%;resize:vertical;"></textarea>
+              </div>
+              <div style="display:flex;gap:var(--spacing-md);align-items:center;flex-wrap:wrap;">
+                <button class="btn btn-outline btn-sm" id="uploadSummaryFile"><i data-lucide="upload" style="width:16px;height:16px;"></i> Upload File</button>
+                <input type="file" id="summaryFileInput" accept=".pdf,.txt,.doc,.docx" style="display:none;">
+                <span style="font-size:0.8rem;color:var(--text-tertiary);" id="fileName"></span>
+                <div style="margin-left:auto;display:flex;gap:var(--spacing-sm);">
+                  <select id="summaryLength" class="form-select" style="width:auto;padding:0.5rem 0.8rem;font-size:0.85rem;">
+                    <option value="brief">Brief</option>
+                    <option value="standard" selected>Standard</option>
+                    <option value="detailed">Detailed</option>
+                  </select>
+                  <button class="btn btn-primary" id="summarizeBtn">Summarize</button>
+                </div>
               </div>
             </div>
-            <textarea id="summarizeInput" style="width:100%;min-height:200px;padding:1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);background:var(--bg-secondary);color:var(--text-primary);font-family:inherit;resize:vertical;" placeholder="Paste legal text to summarize..."></textarea>
-            <div style="margin-top:0.75rem;"><button class="btn btn-primary" id="summarizeBtn"><i data-lucide="rocket"></i> Summarize</button></div>
           </div>
-        </div>
-        <div class="admin-section" id="textResult" style="display:none;">
-          <div class="admin-section-header"><h3>Summary</h3><div class="admin-actions"><button class="btn btn-sm btn-secondary" id="copySummary"><i data-lucide="copy"></i> Copy</button></div></div>
-          <div class="admin-section-body"><div id="summaryOutput" style="line-height:1.7;white-space:pre-wrap;"></div></div>
-        </div>
-      </div>
 
-      <div id="documentTab" class="summarizer-tab-content" style="display:none;">
-        <div class="admin-section">
-          <div class="admin-section-header"><h3>Summarize from Library</h3></div>
-          <div class="admin-section-body">
-            <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:1rem;">Select a document from your library to generate an AI summary.</p>
-            <div id="docLibraryList"></div>
-          </div>
-        </div>
-        <div class="admin-section" id="docSummaryResult" style="display:none;">
-          <div class="admin-section-header"><h3>Document Summary</h3></div>
-          <div class="admin-section-body"><div id="docSummaryOutput" style="line-height:1.7;white-space:pre-wrap;"></div></div>
-        </div>
-      </div>
+          <div id="summaryResult" style="display:none;">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"><i data-lucide="sparkles" style="width:20px;height:20px;color:var(--accent-primary);"></i> Summary</h3>
+                <button class="btn btn-ghost btn-sm" id="copySummary"><i data-lucide="copy" style="width:16px;height:16px;"></i> Copy</button>
+              </div>
+              <div class="card-body" id="summaryOutput" style="white-space:pre-wrap;line-height:1.7;"></div>
+            </div>
 
-      <div id="compareTab" class="summarizer-tab-content" style="display:none;">
-        <div class="admin-section">
-          <div class="admin-section-header"><h3>Compare Documents</h3></div>
-          <div class="admin-section-body">
-            <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:1rem;">Select 2 or more documents to compare their provisions.</p>
-            <div id="compareDocList"></div>
-            <div style="margin-top:0.75rem;display:flex;gap:0.5rem;">
-              <input type="text" id="compareQuery" style="flex:1;padding:0.6rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);background:var(--bg-secondary);color:var(--text-primary);" placeholder="Optional: specific aspect to compare">
-              <button class="btn btn-primary" id="compareBtn"><i data-lucide="scale"></i> Compare</button>
+            <div class="card" style="margin-top:var(--spacing-md);">
+              <div class="card-header"><h3 class="card-title">Key Points</h3></div>
+              <div class="card-body" id="keyPoints" style="line-height:1.7;"></div>
             </div>
           </div>
-        </div>
-        <div class="admin-section" id="compareResult" style="display:none;">
-          <div class="admin-section-header"><h3>Comparison</h3></div>
-          <div class="admin-section-body"><div id="compareOutput" style="line-height:1.7;white-space:pre-wrap;"></div></div>
+
+          <div id="summaryLoading" style="display:none;text-align:center;padding:var(--spacing-2xl);">
+            <div class="spinner"></div>
+            <p style="margin-top:var(--spacing-md);color:var(--text-tertiary);">Analyzing document...</p>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
-</div>
-<div id="sidebarOverlay"></div>
-<script src="./js/utils.js"></script>
-<script src="./js/app.js"></script>
-<script src="./js/summarizer.js"></script>
+    </main>
+  </div>
+  <div id="sidebarOverlay"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/summarizer.js"></script>
 </body>
 </html>
-

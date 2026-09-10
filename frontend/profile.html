@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Profile & Account Settings | LawLens</title>
-  <meta name="description" content="Your LawLens profile and account settings.">
+  <title>Profile — LawLens</title>
+  <meta name="description" content="View and manage your LawLens profile.">
   <link rel="canonical" href="https://lawlens.web.app/profile.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +69,7 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
@@ -86,30 +86,45 @@
           <p>Manage your account information</p>
         </div>
 
-        <div class="card" style="max-width:600px;">
-          <div style="display:flex;align-items:center;gap:var(--spacing-lg);margin-bottom:var(--spacing-xl);padding-bottom:var(--spacing-lg);border-bottom:1px solid var(--border-color);">
-            <div id="profileAvatar" style="width:64px;height:64px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:white;"></div>
-            <div>
-              <h2 id="profileNameDisplay" style="font-size:1.25rem;">User</h2>
-              <div style="display:flex;gap:var(--spacing-sm);margin-top:4px;">
-                <span class="badge" id="profileRole">user</span>
-                <span class="badge" id="profileJoined">Joined N/A</span>
+        <div style="max-width:600px;display:flex;flex-direction:column;gap:var(--spacing-xl);">
+          <div class="card">
+            <div class="card-body" style="display:flex;align-items:center;gap:var(--spacing-lg);">
+              <div id="profileAvatar" style="width:80px;height:80px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-size:2rem;color:white;font-weight:700;"></div>
+              <div>
+                <h2 id="profileName" style="font-size:1.3rem;margin-bottom:var(--spacing-xs);">—</h2>
+                <p id="profileEmail" style="color:var(--text-tertiary);font-size:0.9rem;">—</p>
+                <p id="profileRole" style="font-size:0.8rem;margin-top:var(--spacing-xs);"></p>
               </div>
             </div>
           </div>
 
-          <form id="profileForm">
-            <div class="form-group">
-              <label class="form-label" for="profileName">Full Name</label>
-              <input type="text" id="profileName" placeholder="Your name" required>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Account Details</h3></div>
+            <div class="card-body">
+              <div class="settings-item">
+                <div><div class="settings-label">Display Name</div></div>
+                <input type="text" id="editName" class="form-input" style="width:auto;">
+              </div>
+              <div class="settings-item">
+                <div><div class="settings-label">Email</div></div>
+                <span id="editEmail" style="color:var(--text-tertiary);">—</span>
+              </div>
+              <div class="settings-item">
+                <div><div class="settings-label">Member Since</div></div>
+                <span id="profileJoinDate" style="color:var(--text-tertiary);">—</span>
+              </div>
             </div>
-            <div class="form-group">
-              <label class="form-label" for="profileEmail">Email</label>
-              <input type="email" id="profileEmail" disabled style="opacity:0.6;cursor:not-allowed;">
-              <div style="font-size:0.8rem;color:var(--text-tertiary);margin-top:4px;">Email cannot be changed</div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Statistics</h3></div>
+            <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-lg);">
+              <div style="text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--accent-primary);" id="profileTotalChats">0</div><div style="font-size:0.85rem;color:var(--text-tertiary);">Conversations</div></div>
+              <div style="text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--accent-primary);" id="profileTotalSearches">0</div><div style="font-size:0.85rem;color:var(--text-tertiary);">Searches</div></div>
             </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-          </form>
+          </div>
+
+          <button class="btn btn-primary" id="saveProfileBtn" style="align-self:flex-start;">Save Changes</button>
         </div>
       </div>
     </main>
@@ -120,4 +135,3 @@
   <script src="./js/profile.js"></script>
 </body>
 </html>
-

@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Application Settings | LawLens</title>
-  <meta name="description" content="LawLens application settings.">
+  <title>Settings — LawLens</title>
+  <meta name="description" content="Manage your LawLens preferences, display, notifications, and account settings.">
   <link rel="canonical" href="https://lawlens.web.app/settings.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +69,7 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
@@ -86,92 +86,70 @@
           <p>Customize your LawLens experience</p>
         </div>
 
-        <div class="card" style="max-width:600px;margin-bottom:var(--spacing-xl);">
-          <h3 style="margin-bottom:var(--spacing-lg);font-size:1.1rem;">Appearance</h3>
-          <form id="settingsForm">
-            <div class="form-group">
-              <label class="form-label" for="settingsTheme">Theme</label>
-              <select id="settingsTheme">
-                <option value="dark">Dark Mode</option>
-                <option value="light">Light Mode</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="settingsFontSize">Font Size</label>
-              <select id="settingsFontSize">
-                <option value="small">Small</option>
-                <option value="medium" selected>Medium</option>
-                <option value="large">Large</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="settingsLanguage">UI Language</label>
-              <select id="settingsLanguage">
-                <option value="en">English</option>
-                <option value="hi">Hindi</option>
-                <option value="bn">Bengali</option>
-                <option value="ta">Tamil</option>
-                <option value="te">Telugu</option>
-                <option value="mr">Marathi</option>
-                <option value="kn">Kannada</option>
-                <option value="gu">Gujarati</option>
-                <option value="pa">Punjabi</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" style="display:flex;align-items:center;gap:var(--spacing-sm);cursor:pointer;">
-                <input type="checkbox" id="settingsNotifications" checked>
-                <span>Enable notifications</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="form-label" style="display:flex;align-items:center;gap:var(--spacing-sm);cursor:pointer;">
-                <input type="checkbox" id="settingsStudyReminders">
-                <span>Daily study reminders</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="form-label" style="display:flex;align-items:center;gap:var(--spacing-sm);cursor:pointer;">
-                <input type="checkbox" id="settingsAutoSave" checked>
-                <span>Auto-save conversations</span>
-              </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Save Settings</button>
-          </form>
-        </div>
-
-        <div class="card" style="max-width:600px;margin-bottom:var(--spacing-xl);">
-          <h3 style="margin-bottom:var(--spacing-lg);font-size:1.1rem;">Learning Stats</h3>
-          <div id="settingsLearningStats" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-            <div style="text-align:center;padding:1rem;background:var(--bg-tertiary);border-radius:var(--radius-md);">
-              <div style="font-size:1.3rem;font-weight:700;color:var(--warning);" id="setXP">0</div>
-              <div style="font-size:0.75rem;color:var(--text-tertiary);">Total XP</div>
-            </div>
-            <div style="text-align:center;padding:1rem;background:var(--bg-tertiary);border-radius:var(--radius-md);">
-              <div style="font-size:1.3rem;font-weight:700;color:var(--accent-primary);" id="setLevel">1</div>
-              <div style="font-size:0.75rem;color:var(--text-tertiary);">Level</div>
-            </div>
-            <div style="text-align:center;padding:1rem;background:var(--bg-tertiary);border-radius:var(--radius-md);">
-              <div style="font-size:1.3rem;font-weight:700;color:var(--error);" id="setStreak">0</div>
-              <div style="font-size:0.75rem;color:var(--text-tertiary);">Day Streak</div>
-            </div>
-            <div style="text-align:center;padding:1rem;background:var(--bg-tertiary);border-radius:var(--radius-md);">
-              <div style="font-size:1.3rem;font-weight:700;color:var(--success);" id="setAchieve">0</div>
-              <div style="font-size:0.75rem;color:var(--text-tertiary);">Achievements</div>
+        <div style="max-width:700px;display:flex;flex-direction:column;gap:var(--spacing-xl);">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Appearance</h3></div>
+            <div class="card-body">
+              <div class="settings-item">
+                <div><div class="settings-label">Theme</div><div class="settings-desc">Choose between light, dark, or system theme</div></div>
+                <select id="themeSelect" class="form-select" style="width:auto;">
+                  <option value="dark">Dark</option>
+                  <option value="light">Light</option>
+                  <option value="system">System</option>
+                </select>
+              </div>
+              <div class="settings-item">
+                <div><div class="settings-label">Compact Mode</div><div class="settings-desc">Reduce spacing for a denser layout</div></div>
+                <label class="toggle"><input type="checkbox" id="compactMode"><span class="toggle-slider"></span></label>
+              </div>
             </div>
           </div>
-          <div class="xp-bar-container" style="margin-top:0.75rem;">
-            <div class="xp-bar-fill" id="setXPBar" style="width:0%;"></div>
-          </div>
-          <a href="./study.html" class="btn btn-secondary btn-sm" style="margin-top:0.75rem;font-size:0.85rem;">View Study Hub <i data-lucide="arrow-right" style="width:14px;height:14px;vertical-align:middle;"></i></a>
-        </div>
 
-        <div class="card" style="max-width:600px;">
-          <h3 style="margin-bottom:var(--spacing-lg);font-size:1.1rem;">Data Management</h3>
-          <div style="display:flex;gap:var(--spacing-sm);flex-wrap:wrap;">
-            <button class="btn btn-secondary" onclick="exportData()">Export My Data</button>
-            <button class="btn btn-danger" onclick="clearAllHistory()">Clear All History</button>
-            <button class="btn btn-danger" onclick="resetLearning()"><i data-lucide="refresh-cw"></i> Reset Learning Progress</button>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">AI Preferences</h3></div>
+            <div class="card-body">
+              <div class="settings-item">
+                <div><div class="settings-label">Default Response Level</div><div class="settings-desc">Set the default complexity level for AI responses</div></div>
+                <select id="defaultLevel" class="form-select" style="width:auto;">
+                  <option value="general">General</option>
+                  <option value="student">Student</option>
+                  <option value="upsc">UPSC</option>
+                  <option value="lawyer">Lawyer</option>
+                </select>
+              </div>
+              <div class="settings-item">
+                <div><div class="settings-label">Auto-explain Legal Terms</div><div class="settings-desc">Automatically define legal jargon in responses</div></div>
+                <label class="toggle"><input type="checkbox" id="autoExplain" checked><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Notifications</h3></div>
+            <div class="card-body">
+              <div class="settings-item">
+                <div><div class="settings-label">Email Notifications</div><div class="settings-desc">Receive updates about new features and tips</div></div>
+                <label class="toggle"><input type="checkbox" id="emailNotif"><span class="toggle-slider"></span></label>
+              </div>
+              <div class="settings-item">
+                <div><div class="settings-label">Browser Notifications</div><div class="settings-desc">Get notified about important activity</div></div>
+                <label class="toggle"><input type="checkbox" id="browserNotif"><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="border-color:var(--color-danger);">
+            <div class="card-header"><h3 class="card-title" style="color:var(--color-danger);">Danger Zone</h3></div>
+            <div class="card-body">
+              <div class="settings-item">
+                <div><div class="settings-label">Delete All Data</div><div class="settings-desc">Permanently delete all your conversations, documents, and account data</div></div>
+                <button class="btn btn-danger btn-sm" id="deleteAllData">Delete Everything</button>
+              </div>
+              <div class="settings-item">
+                <div><div class="settings-label">Delete Account</div><div class="settings-desc">Permanently delete your account and all associated data</div></div>
+                <button class="btn btn-danger btn-sm" id="deleteAccount">Delete Account</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -183,4 +161,3 @@
   <script src="./js/settings.js"></script>
 </body>
 </html>
-

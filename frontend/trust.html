@@ -4,39 +4,21 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trust & Methodology | LawLens</title>
-  <meta name="description" content="LawLens trust and methodology information.">
+  <title>Trust & Safety — Data Privacy & Responsible AI | LawLens</title>
+  <meta name="description" content="Learn about LawLens data handling, privacy practices, and responsible AI. Your data is never used for training, and you can delete it anytime.">
   <link rel="canonical" href="https://lawlens.web.app/trust.html">
   <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lawlens.web.app/trust.html">
+  <meta property="og:title" content="Trust & Safety — Data Privacy & Responsible AI">
+  <meta property="og:description" content="Learn about LawLens data handling, privacy practices, and responsible AI.">
+  <meta property="og:image" content="https://lawlens.web.app/logo.png">
+  <meta property="og:site_name" content="LawLens">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/ui-enhancements.css">
-  <style>
-    .trust-page{max-width:800px;margin:0 auto;padding:var(--spacing-lg);}
-    .hero{text-align:center;padding:2rem 1rem;margin-bottom:2rem;}
-    .hero h1{font-size:1.8rem;margin-bottom:0.5rem;}
-    .hero p{color:var(--text-tertiary);max-width:600px;margin:0 auto;}
-    .trust-section{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0;}
-    .trust-section h2{font-size:1.2rem;margin-bottom:1rem;color:var(--accent-primary);}
-    .trust-item{display:flex;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--border-color);}
-    .trust-item:last-child{border-bottom:none;}
-    .trust-icon{font-size:1.5rem;min-width:2rem;text-align:center;}
-    .trust-content h3{font-size:0.95rem;margin:0 0 0.25rem;}
-    .trust-content p{font-size:0.85rem;color:var(--text-tertiary);margin:0;}
-    .trust-badge{display:inline-block;padding:0.2rem 0.6rem;background:var(--accent-glow);color:var(--accent-primary);border-radius:999px;font-size:0.75rem;font-weight:600;margin:0.2rem;}
-    .faq-item{margin:1rem 0;}
-    .faq-q{font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
-    .faq-q::after{content:'+';font-size:1.2rem;color:var(--accent-primary);}
-    .faq-item.open .faq-q::after{content:'-';}
-    .faq-a{display:none;margin-top:0.5rem;font-size:0.9rem;color:var(--text-secondary);line-height:1.7;}
-    .faq-item.open .faq-a{display:block;}
-    .action-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:2rem 0;}
-    .action-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;}
-    .action-card h3{font-size:0.95rem;margin-bottom:0.5rem;}
-    .action-card p{font-size:0.8rem;color:var(--text-tertiary);margin-bottom:1rem;}
-    .action-card .btn{width:100%;}
-  </style>
 </head>
 <body>
   <div class="app-layout">
@@ -94,152 +76,74 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
           <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
-          <h2 style="font-size:1.1rem;font-weight:600;">Trust & Security</h2>
+          <h2 style="font-size:1.1rem;font-weight:600;">Trust & Safety</h2>
         </div>
         <div class="top-nav-right">
           <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
-      <div class="trust-page">
-        <div class="hero">
-          <div style="font-size:2.5rem;margin-bottom:0.5rem;"><i data-lucide="shield"></i></div>
-          <h1>Trust & Security</h1>
-          <p>Your privacy, data security, and trust in AI accuracy are our top priorities.</p>
+      <div class="page-content" id="trustPage">
+        <div class="page-header">
+          <h1>Trust & Safety</h1>
+          <p>How LawLens handles your data and ensures responsible AI</p>
         </div>
 
-        <div class="trust-section">
-          <h2><i data-lucide="lock"></i> Data Privacy & Security</h2>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="lock"></i></div>
-            <div class="trust-content">
-              <h3>Is my data encrypted?</h3>
-              <p>Yes. All data is stored locally on your server. Communication uses HTTPS. Passwords are hashed with bcrypt.</p>
+        <div style="max-width:800px;display:flex;flex-direction:column;gap:var(--spacing-xl);">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title"><i data-lucide="shield" style="width:20px;height:20px;color:var(--accent-primary);"></i> Data Privacy</h3></div>
+            <div class="card-body" style="line-height:1.7;">
+              <p>Your privacy is our priority. LawLens is designed with privacy-first principles:</p>
+              <ul style="margin:var(--spacing-md) 0;padding-left:var(--spacing-lg);">
+                <li style="margin-bottom:var(--spacing-sm);"><strong>No training on your data</strong> — Your conversations and documents are never used to train AI models.</li>
+                <li style="margin-bottom:var(--spacing-sm);"><strong>Encrypted storage</strong> — All data is encrypted at rest and in transit.</li>
+                <li style="margin-bottom:var(--spacing-sm);"><strong>User control</strong> — You can delete all your data at any time from Settings.</li>
+                <li style="margin-bottom:var(--spacing-sm);"><strong>No selling data</strong> — We never sell or share your personal data with third parties.</li>
+              </ul>
             </div>
           </div>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="trash-2"></i></div>
-            <div class="trust-content">
-              <h3>Can I delete my data?</h3>
-              <p>Yes. Go to Settings &rarr; Clear All History to delete all your conversations, searches, and bookmarks. You can also delete individual items.</p>
-            </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="eye-off"></i></div>
-            <div class="trust-content">
-              <h3>Is my information private?</h3>
-              <p>Yes. Your data stays on your server. We don't share it with third parties. Your queries are processed by Groq AI and are not stored by them.</p>
-            </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="download"></i></div>
-            <div class="trust-content">
-              <h3>Can I export my data?</h3>
-              <p>Yes. Go to Settings &rarr; Export My Data to download all your conversations, bookmarks, and search history as JSON.</p>
-            </div>
-          </div>
-        </div>
 
-        <div class="trust-section">
-          <h2><i data-lucide="bot"></i> AI Transparency</h2>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="book-open"></i></div>
-            <div class="trust-content">
-              <h3>Does AI explain its sources?</h3>
-              <p>Yes. Every answer includes [Source N] citations that link directly to the original legal documents. You can click any source to view the original text.</p>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title"><i data-lucide="sparkles" style="width:20px;height:20px;color:var(--accent-secondary);"></i> Responsible AI</h3></div>
+            <div class="card-body" style="line-height:1.7;">
+              <p>LawLens uses AI responsibly with clear safeguards:</p>
+              <ul style="margin:var(--spacing-md) 0;padding-left:var(--spacing-lg);">
+                <li style="margin-bottom:var(--spacing-sm);"><strong>Grounded in sources</strong> — AI responses are grounded in authoritative Indian legal sources (Constitution, IPC, CPC, etc.).</li>
+                <li style="margin-bottom:var(--spacing-sm);"><strong>Citations included</strong> — Every AI response includes source citations so you can verify.</li>
+                <li style="margin-bottom:var(--spacing-sm);"><strong>Not legal advice</strong> — LawLens is an educational tool, not a substitute for professional legal counsel.</li>
+                <li style="margin-bottom:var(--spacing-sm);"><strong>Bias awareness</strong> — We actively work to identify and mitigate biases in AI outputs.</li>
+              </ul>
             </div>
           </div>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="check-circle"></i></div>
-            <div class="trust-content">
-              <h3>Can I verify every citation?</h3>
-              <p>Yes. Every source citation is clickable and links to the original document chunk. You can always verify what the AI cited.</p>
-            </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="help-circle"></i></div>
-            <div class="trust-content">
-              <h3>Can AI admit when it doesn't know?</h3>
-              <p>Yes. The AI is programmed to say "I don't have enough information" when it cannot find verified information from the sources. It will never guess or hallucinate.</p>
-            </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="alert-triangle"></i></div>
-            <div class="trust-content">
-              <h3>Does the app warn that it's not legal advice?</h3>
-              <p>Yes. Every AI response includes a disclaimer: "This is AI-generated information from legal documents. It is not legal advice."</p>
-            </div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-icon"><i data-lucide="target"></i></div>
-            <div class="trust-content">
-              <h3>How accurate is the AI?</h3>
-              <p>Every response includes a confidence score (0-100%) based on source quality. Official sources (Constitution, SC) get higher trust. You always know how confident the AI is.</p>
-            </div>
-          </div>
-        </div>
 
-        <div class="trust-section">
-          <h2><i data-lucide="shield-check"></i> Source Trust Levels</h2>
-          <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:1rem;">Our AI prioritizes sources by authority:</p>
-          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-            <span class="trust-badge"><i data-lucide="circle-dot"></i> Official Constitution</span>
-            <span class="trust-badge"><i data-lucide="circle-dot"></i> Supreme Court</span>
-            <span class="trust-badge"><i data-lucide="circle-dot"></i> India Code</span>
-            <span class="trust-badge"><i data-lucide="circle-dot"></i> ECourts</span>
-            <span class="trust-badge"><i data-lucide="circle-dot"></i> Gazette of India</span>
-            <span class="trust-badge"><i data-lucide="scale"></i> Parliament Records</span>
-            <span class="trust-badge"><i data-lucide="scale"></i> Trusted Legal Sites</span>
-            <span class="trust-badge"><i data-lucide="globe"></i> Web Sources</span>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title"><i data-lucide="lock" style="width:20px;height:20px;color:var(--color-success);"></i> Security</h3></div>
+            <div class="card-body" style="line-height:1.7;">
+              <p>We implement industry-standard security measures:</p>
+              <ul style="margin:var(--spacing-md) 0;padding-left:var(--spacing-lg);">
+                <li style="margin-bottom:var(--spacing-sm);">Firebase Authentication with secure session management</li>
+                <li style="margin-bottom:var(--spacing-sm);">HTTPS encryption for all communications</li>
+                <li style="margin-bottom:var(--spacing-sm);">Regular security audits and dependency updates</li>
+                <li style="margin-bottom:var(--spacing-sm);">App Check to prevent unauthorized API access</li>
+              </ul>
+            </div>
           </div>
-        </div>
 
-        <div class="trust-section">
-          <h2> Frequently Asked Questions</h2>
-          <div class="faq-item" onclick="this.classList.toggle('open')">
-            <div class="faq-q">Is LawLens a substitute for a lawyer?</div>
-            <div class="faq-a">No. LawLens is a research tool that helps you understand legal documents and concepts. It is not legal advice and should not replace consultation with a qualified legal professional.</div>
-          </div>
-          <div class="faq-item" onclick="this.classList.toggle('open')">
-            <div class="faq-q">Can I use LawLens answers in court?</div>
-            <div class="faq-a">AI-generated answers should not be directly submitted in court. They are research aids. Always verify citations with official sources and consult your lawyer.</div>
-          </div>
-          <div class="faq-item" onclick="this.classList.toggle('open')">
-            <div class="faq-q">How does the AI avoid hallucinations?</div>
-            <div class="faq-a">The AI only answers from retrieved legal documents. If information is not found, it explicitly says so. Every fact must have a citation from the source documents.</div>
-          </div>
-          <div class="faq-item" onclick="this.classList.toggle('open')">
-            <div class="faq-q">What if I find an incorrect answer?</div>
-            <div class="faq-a">You can report incorrect answers by clicking the "Report" button on any AI response. This helps us improve the system. Always verify with official sources.</div>
-          </div>
-          <div class="faq-item" onclick="this.classList.toggle('open')">
-            <div class="faq-q">Is my data sent to AI companies?</div>
-            <div class="faq-a">Your queries are sent to Groq AI for processing. Groq does not store your queries after processing. Your stored data (conversations, bookmarks) stays on your server.</div>
-          </div>
-        </div>
-
-        <div class="action-cards">
-          <div class="action-card">
-            <div style="font-size:2rem;margin-bottom:0.5rem;"><i data-lucide="download"></i></div>
-            <h3>Export My Data</h3>
-            <p>Download all your data</p>
-            <a href="./settings.html" class="btn btn-ghost btn-sm">Go to Settings</a>
-          </div>
-          <div class="action-card">
-            <div style="font-size:2rem;margin-bottom:0.5rem;"><i data-lucide="trash-2"></i></div>
-            <h3>Delete My Data</h3>
-            <p>Clear all history</p>
-            <a href="./settings.html" class="btn btn-ghost btn-sm">Go to Settings</a>
-          </div>
-          <div class="action-card">
-            <div style="font-size:2rem;margin-bottom:0.5rem;"><i data-lucide="flag"></i></div>
-            <h3>Report an Issue</h3>
-            <p>Found an incorrect answer?</p>
-            <a href="./chat.html" class="btn btn-ghost btn-sm">Go to Chat</a>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title"><i data-lucide="alert-triangle" style="width:20px;height:20px;color:var(--color-warning);"></i> Limitations</h3></div>
+            <div class="card-body" style="line-height:1.7;">
+              <p>Transparency about what LawLens can and cannot do:</p>
+              <ul style="margin:var(--spacing-md) 0;padding-left:var(--spacing-lg);">
+                <li style="margin-bottom:var(--spacing-sm);">AI may occasionally produce inaccurate citations — always verify sources</li>
+                <li style="margin-bottom:var(--spacing-sm);">Coverage focuses on Indian law; international law support is limited</li>
+                <li style="margin-bottom:var(--spacing-sm);">Not a replacement for qualified legal professionals</li>
+                <li style="margin-bottom:var(--spacing-sm);">Database may not include very recent amendments or judgments</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -250,4 +154,3 @@
   <script src="./js/app.js"></script>
 </body>
 </html>
-

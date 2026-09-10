@@ -4,63 +4,23 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Study Mode — Focused Legal Learning | LawLens</title>
-  <meta name="description" content="LawLens study mode — focused legal learning.">
+  <title>Study Hub — LawLens</title>
+  <meta name="description" content="Central hub for constitutional law learning tools — quizzes, flashcards, and more.">
   <link rel="canonical" href="https://lawlens.web.app/study.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/ui-enhancements.css">
-  <style>
-    .study-container { max-width: 900px; margin: 0 auto; }
-    .study-header { text-align: center; margin-bottom: 2rem; }
-    .study-header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    .study-header p { color: var(--text-secondary); }
-    .study-stats-bar { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
-    .study-stat { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1rem 1.5rem; text-align: center; min-width: 120px; }
-    .study-stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); }
-    .study-stat-label { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 0.25rem; }
-    .xp-bar-container { background: var(--bg-tertiary); border-radius: 999px; height: 8px; overflow: hidden; margin: 1rem auto; max-width: 400px; }
-    .xp-bar-fill { height: 100%; background: var(--gradient-primary); border-radius: 999px; transition: width 0.5s ease; }
-    .study-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-    .study-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; text-align: center; transition: all 0.2s; cursor: pointer; text-decoration: none; color: var(--text-primary); }
-    .study-card:hover { border-color: var(--accent-primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-    .study-card-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .study-card-title { font-weight: 600; margin-bottom: 0.25rem; }
-    .study-card-desc { font-size: 0.8rem; color: var(--text-tertiary); }
-    .daily-challenge { background: var(--bg-card); border: 1px solid var(--accent-primary); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-    .daily-icon { font-size: 2rem; }
-    .daily-info { flex: 1; min-width: 200px; }
-    .daily-title { font-weight: 600; margin-bottom: 0.25rem; }
-    .daily-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
-    .daily-progress { background: var(--bg-tertiary); border-radius: 999px; height: 6px; overflow: hidden; max-width: 300px; }
-    .daily-progress-fill { height: 100%; background: var(--gradient-primary); border-radius: 999px; transition: width 0.5s ease; }
-    .daily-xp { font-size: 0.8rem; color: var(--warning); font-weight: 600; }
-    .weakness-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2rem; }
-    .weakness-section h3 { margin-bottom: 1rem; font-size: 1.1rem; }
-    .weakness-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-bottom: 1px solid var(--border-light); }
-    .weakness-item:last-child { border-bottom: none; }
-    .weakness-topic { flex: 1; font-size: 0.9rem; }
-    .weakness-count { font-size: 0.8rem; color: var(--error); }
-    .weakness-action { font-size: 0.8rem; }
-    .empty-weakness { text-align: center; padding: 2rem; color: var(--text-tertiary); font-style: italic; }
-    .achievement-list { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .achievement-badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.3rem 0.7rem; border-radius: 999px; font-size: 0.75rem; background: var(--bg-tertiary); color: var(--text-secondary); }
-    .achievement-badge.unlocked { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
-    .study-suggestion { background: var(--gradient-subtle); border: 1px solid var(--accent-glow); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-    .study-suggestion-text { flex: 1; font-size: 0.9rem; color: var(--text-secondary); }
-    .study-suggestion-btn { font-size: 0.8rem; }
-  </style>
 </head>
 <body>
-<div class="app-layout">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
-      <span class="sidebar-title">LawLens</span>
-    </div>
-    <nav class="sidebar-nav">
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
         <div class="nav-section">
           <div class="nav-section-title">Main</div>
           <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
@@ -109,135 +69,94 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
-  <main class="main-content">
-    <div class="top-nav">
-      <div class="top-nav-left">
-        <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
-        <h2 style="font-size:1.1rem;font-weight:600;">Study Hub</h2>
+    </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Study Hub</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
+        </div>
       </div>
-      <div class="top-nav-right">
-        <span id="xpDisplay"></span>
-        <span id="levelDisplay" style="margin:0 0.5rem;"></span>
-        <span id="streakDisplay"></span>
-        <button class="theme-toggle" title="Toggle theme" style="margin-left:0.5rem;"></button>
-      </div>
-    </div>
-    <div class="page-content">
-      <div class="study-container">
-        <div class="study-header">
-          <h1><i data-lucide="clipboard-list"></i> Study Hub</h1>
-          <p>Your connected learning hub &mdash; track progress, build streaks, and master Indian law</p>
+      <div class="page-content" id="studyPage">
+        <div class="page-header">
+          <h1>Study Hub</h1>
+          <p>Your central place for constitutional law learning tools</p>
         </div>
 
-        <div id="xpBarSection" style="text-align:center;margin-bottom:2rem;">
-          <div style="display:flex;justify-content:center;gap:1rem;margin-bottom:0.5rem;">
-            <span style="font-size:0.85rem;color:var(--text-secondary);">Level <strong id="levelNum">1</strong></span>
-            <span style="font-size:0.85rem;color:var(--text-secondary);"><strong id="xpTotal">0</strong> XP</span>
-            <span style="font-size:0.85rem;color:var(--text-secondary);"><strong id="xpNext">500</strong> to next level</span>
-          </div>
-          <div class="xp-bar-container">
-            <div class="xp-bar-fill" id="xpBarFill" style="width:0%;"></div>
-          </div>
-        </div>
-
-        <div class="study-stats-bar">
-          <div class="study-stat">
-            <div class="study-stat-value" id="statLevel">1</div>
-            <div class="study-stat-label">Level</div>
-          </div>
-          <div class="study-stat">
-            <div class="study-stat-value" id="statSP">0</div>
-            <div class="study-stat-label">XP</div>
-          </div>
-          <div class="study-stat">
-            <div class="study-stat-value" id="statStreak">0</div>
-            <div class="study-stat-label">Day Streak</div>
-          </div>
-          <div class="study-stat">
-            <div class="study-stat-value" id="statWeak">0</div>
-            <div class="study-stat-label">Weaknesses</div>
-          </div>
-          <div class="study-stat">
-            <div class="study-stat-value" id="statAchieve">0</div>
-            <div class="study-stat-label">Achievements</div>
-          </div>
-        </div>
-
-        <div id="dailyChallengeSection" class="daily-challenge">
-          <div class="daily-icon"><i data-lucide="target"></i></div>
-          <div class="daily-info">
-            <div class="daily-title">Daily Challenge</div>
-            <div class="daily-desc" id="dailyDesc">Loading...</div>
-            <div class="daily-progress">
-              <div class="daily-progress-fill" id="dailyProgressFill" style="width:0%;"></div>
-            </div>
-            <div style="display:flex;gap:1rem;margin-top:0.5rem;align-items:center;">
-              <span style="font-size:0.8rem;color:var(--text-secondary);" id="dailyProgressText">0 / 0</span>
-              <span class="daily-xp" id="dailyXp">+0 XP</span>
-            </div>
-          </div>
-          <button class="btn btn-primary btn-sm" id="dailyActionBtn" style="font-size:0.8rem;">Go</button>
-        </div>
-
-        <div id="studySuggestion" class="study-suggestion" style="display:none;">
-          <span style="font-size:1.5rem;"><i data-lucide="sparkles"></i></span>
-          <div class="study-suggestion-text" id="suggestionText">Focus on your weak areas</div>
-          <button class="btn btn-primary btn-sm study-suggestion-btn" id="suggestionBtn">Study Now</button>
-        </div>
-
-        <div class="study-grid">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--spacing-lg);margin-bottom:var(--spacing-xl);">
           <a href="./quiz.html" class="study-card">
-            <div class="study-card-icon"><i data-lucide="brain"></i></div>
-            <div class="study-card-title">AI Quiz</div>
-            <div class="study-card-desc">Test your knowledge with AI-generated questions</div>
+            <div class="study-card-icon" style="background:rgba(109,93,252,0.1);color:var(--accent-primary);"><i data-lucide="brain" style="width:32px;height:32px;"></i></div>
+            <h3>AI Quiz</h3>
+            <p>Test your knowledge with AI-generated multiple choice questions on any constitutional topic.</p>
+            <span class="study-card-link">Start a quiz <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
           </a>
+
           <a href="./flashcards.html" class="study-card">
-            <div class="study-card-icon"><i data-lucide="layers"></i></div>
-            <div class="study-card-title">Flashcards</div>
-            <div class="study-card-desc">Study legal concepts with flip cards</div>
+            <div class="study-card-icon" style="background:rgba(139,92,246,0.1);color:var(--accent-secondary);"><i data-lucide="layers" style="width:32px;height:32px;"></i></div>
+            <h3>Flashcards</h3>
+            <p>Study with flip cards covering Fundamental Rights, Duties, Amendments, and more.</p>
+            <span class="study-card-link">Study now <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
           </a>
-          <a href="./chat.html" class="study-card">
-            <div class="study-card-icon"><i data-lucide="message-square"></i></div>
-            <div class="study-card-title">AI Chat</div>
-            <div class="study-card-desc">Ask questions and study any topic</div>
+
+          <a href="./constitution.html" class="study-card">
+            <div class="study-card-icon" style="background:rgba(16,185,129,0.1);color:var(--color-success);"><i data-lucide="book-open" style="width:32px;height:32px;"></i></div>
+            <h3>Constitution Explorer</h3>
+            <p>Browse all 448 articles of the Indian Constitution with AI-powered explanations.</p>
+            <span class="study-card-link">Explore <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
           </a>
+
           <a href="./timeline.html" class="study-card">
-            <div class="study-card-icon"><i data-lucide="calendar"></i></div>
-            <div class="study-card-title">Timeline</div>
-            <div class="study-card-desc">Explore Indian constitutional history</div>
+            <div class="study-card-icon" style="background:rgba(245,158,11,0.1);color:var(--color-warning);"><i data-lucide="calendar" style="width:32px;height:32px;"></i></div>
+            <h3>Amendment Timeline</h3>
+            <p>Visualize the history of constitutional amendments on an interactive timeline.</p>
+            <span class="study-card-link">View timeline <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
           </a>
+
           <a href="./compare.html" class="study-card">
-            <div class="study-card-icon"><i data-lucide="scale"></i></div>
-            <div class="study-card-title">Compare</div>
-            <div class="study-card-desc">Compare legal concepts side by side</div>
+            <div class="study-card-icon" style="background:rgba(239,68,68,0.1);color:var(--color-danger);"><i data-lucide="columns" style="width:32px;height:32px;"></i></div>
+            <h3>Article Comparison</h3>
+            <p>Compare two constitutional articles side-by-side with AI-powered analysis.</p>
+            <span class="study-card-link">Compare <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
           </a>
-          <a href="./dashboard.html" class="study-card">
-            <div class="study-card-icon"><i data-lucide="layout-dashboard"></i></div>
-            <div class="study-card-title">Dashboard</div>
-            <div class="study-card-desc">View your overall activity</div>
+
+          <a href="./chat.html" class="study-card">
+            <div class="study-card-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6;"><i data-lucide="message-square" style="width:32px;height:32px;"></i></div>
+            <h3>AI Chat</h3>
+            <p>Ask any question about Indian law and get instant, cited answers from AI.</p>
+            <span class="study-card-link">Start chatting <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></span>
           </a>
         </div>
 
-        <div class="weakness-section">
-          <h3><i data-lucide="trending-up"></i> Areas to Improve</h3>
-          <div id="weaknessList">
-            <div class="empty-weakness">No weaknesses recorded yet. Take a quiz to identify areas for improvement.</div>
+        <div class="card">
+          <div class="card-header"><h3 class="card-title">Your Progress</h3></div>
+          <div class="card-body" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--spacing-lg);text-align:center;">
+            <div>
+              <div style="font-size:1.8rem;font-weight:700;color:var(--accent-primary);" id="studyTotalXP">0</div>
+              <div style="font-size:0.85rem;color:var(--text-tertiary);">Total XP</div>
+            </div>
+            <div>
+              <div style="font-size:1.8rem;font-weight:700;color:var(--color-success);" id="studyQuizzesTaken">0</div>
+              <div style="font-size:0.85rem;color:var(--text-tertiary);">Quizzes Taken</div>
+            </div>
+            <div>
+              <div style="font-size:1.8rem;font-weight:700;color:var(--color-warning);" id="studyStreak">0d</div>
+              <div style="font-size:0.85rem;color:var(--text-tertiary);">Current Streak</div>
+            </div>
+            <div>
+              <div style="font-size:1.8rem;font-weight:700;color:var(--accent-secondary);" id="studyCardsReviewed">0</div>
+              <div style="font-size:0.85rem;color:var(--text-tertiary);">Cards Reviewed</div>
+            </div>
           </div>
         </div>
-
-        <div class="weakness-section">
-          <h3><i data-lucide="trophy"></i> Achievements</h3>
-          <div class="achievement-list" id="achievementList"></div>
-        </div>
       </div>
-    </div>
-  </main>
-</div>
-<div id="sidebarOverlay"></div>
-<script src="./js/utils.js"></script>
-<script src="./js/app.js"></script>
-<script src="./js/study.js"></script>
+    </main>
+  </div>
+  <div id="sidebarOverlay"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/study.js"></script>
 </body>
 </html>
-

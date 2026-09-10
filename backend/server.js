@@ -67,6 +67,13 @@ app.use(cors({
 app.use(compression());
 app.use(logger.requestMiddleware);
 
+// Request timeout — kill slow requests after 60s
+app.use((req, res, next) => {
+  req.setTimeout(60000);
+  res.setTimeout(60000);
+  next();
+});
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -167,6 +174,11 @@ if (hasFrontend) {
   });
 }
 
+// Catch-all for unmatched API routes (all methods)
+app.all('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API endpoint not found', code: 'NOT_FOUND' });
+});
+
 app.use((err, req, res, next) => {
   logger.error(err.message || 'Unhandled server error', { stack: err.stack, path: req.path, method: req.method });
 
@@ -194,7 +206,8 @@ app.use((err, req, res, next) => {
 
 function selfPing() {
   const url = SELF_URL + '/health';
-  https.get(url, (res) => {
+  const client = url.startsWith('https') ? https : require('http');
+  client.get(url, (res) => {
     logger.info(`[KeepAlive] Ping ${res.statusCode}`);
   }).on('error', (err) => {
     logger.error(`[KeepAlive] Ping failed: ${err.message}`);
@@ -206,8 +219,8 @@ const server = app.listen(PORT, () => {
 
   if (process.env.NODE_ENV === 'production' && SELF_URL && !SELF_URL.includes('localhost')) {
     selfPing();
-    setInterval(selfPing, 1 * 60 * 1000);
-    logger.info(`[KeepAlive] Self-ping active every 1 minute`);
+    setInterval(selfPing, 5 * 60 * 1000);
+    logger.info(`[KeepAlive] Self-ping active every 5 minutes`);
   }
 });
 

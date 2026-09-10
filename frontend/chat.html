@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Legal Chat � Cited Answers on Indian Law | LawLens</title>
+  <title>AI Legal Chat — LawLens</title>
   <meta name="description" content="Chat with LawLens AI for cited answers about Indian law.">
   <link rel="canonical" href="https://lawlens.web.app/chat.html">
   <meta name="robots" content="noindex">
@@ -15,7 +15,6 @@
   <link rel="stylesheet" href="./css/chat.css">
 </head>
 <body>
-  <a href="#chat-container" class="skip-to-content">Skip to chat</a>
   <div class="app-layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
@@ -71,7 +70,7 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
@@ -82,12 +81,12 @@
           <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
-      <div class="chat-page">
+      <div class="chat-page" id="chat-container">
         <div class="chat-messages" id="chatMessages">
           <div class="chat-welcome">
             <div class="chat-welcome-icon"><i data-lucide="message-square" style="width:48px;height:48px;"></i></div>
-            <h2>The Perplexity for Indian Law</h2>
-            <p>Ask questions naturally. Get answers backed by authoritative sources. Every response includes citations.</p>
+            <h2>Ask anything about Indian law</h2>
+            <p>Get accurate, cited answers from authoritative legal sources. Every response includes source citations.</p>
 
             <input type="hidden" id="searchMode" value="legal">
             <input type="hidden" id="explainLevel" value="general">
@@ -104,28 +103,27 @@
         </div>
         <div class="chat-input-container">
           <div style="max-width:800px;margin:0 auto;">
-            <div id="activeDocBar" style="display:none;padding:0.6rem 1rem;background:var(--accent-glow);border:1px solid var(--accent-primary);border-radius:var(--radius-md);margin-bottom:0.5rem;display:none;align-items:center;gap:0.5rem;font-size:0.85rem;">
+            <div id="activeDocBar" style="display:none;padding:0.6rem 1rem;background:var(--accent-glow);border:1px solid var(--accent-primary);border-radius:var(--radius-md);margin-bottom:0.5rem;align-items:center;gap:0.5rem;font-size:0.85rem;">
               <span><i data-lucide="file-text" style="width:16px;height:16px;"></i></span>
               <span id="activeDocName" style="flex:1;font-weight:500;color:var(--accent-primary);"></span>
-              <span style="font-size:0.75rem;color:var(--text-tertiary);">Active Document</span>
               <button onclick="clearActiveDoc()" style="background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text-tertiary);">&times;</button>
             </div>
 
             <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem;flex-wrap:wrap;align-items:center;">
               <span style="font-size:0.75rem;color:var(--text-tertiary);padding:0.3rem 0;">Mode:</span>
-              <button class="mode-btn" data-mode="legal" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;"><i data-lucide="scale"></i> Legal</button>
-              <button class="mode-btn" data-mode="web" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;"><i data-lucide="globe"></i> Web</button>
-              <button class="mode-btn" data-mode="hybrid" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;"><i data-lucide="layers"></i> Hybrid</button>
+              <button class="mode-btn" data-mode="legal"><i data-lucide="scale"></i> Legal</button>
+              <button class="mode-btn" data-mode="web"><i data-lucide="globe"></i> Web</button>
+              <button class="mode-btn" data-mode="hybrid"><i data-lucide="layers"></i> Hybrid</button>
               <span style="font-size:0.75rem;color:var(--text-tertiary);padding:0.3rem 0;margin-left:0.3rem;">Level:</span>
-              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="child">12yo</button>
-              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="general">General</button>
-              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="student">Student</button>
-              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="upsc">UPSC</button>
-              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="lawyer">Lawyer</button>
-              <button class="level-btn" style="font-size:0.75rem;padding:0.2rem 0.6rem;border:1px solid var(--border-color);border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);cursor:pointer;" data-level="judge">Judge</button>
+              <button class="level-btn" data-level="child">12yo</button>
+              <button class="level-btn" data-level="general">General</button>
+              <button class="level-btn" data-level="student">Student</button>
+              <button class="level-btn" data-level="upsc">UPSC</button>
+              <button class="level-btn" data-level="lawyer">Lawyer</button>
+              <button class="level-btn" data-level="judge">Judge</button>
             </div>
             <form id="chatForm" class="chat-input-wrapper">
-              <button type="button" class="chat-upload-btn" id="chatUploadBtn" title="Upload a document to search within"><i data-lucide="paperclip" style="width:18px;height:18px;"></i></button>
+              <button type="button" class="chat-upload-btn" id="chatUploadBtn" title="Upload a document"><i data-lucide="paperclip" style="width:18px;height:18px;"></i></button>
               <input type="file" id="chatFileInput" accept=".pdf,.txt,.doc,.docx,.png,.jpg,.jpeg,.webp,.tiff,.bmp" style="display:none;">
               <textarea id="chatInput" placeholder="Ask a legal question or attach a document..." rows="1"></textarea>
               <button type="submit" class="chat-send-btn" id="chatSendBtn"><i data-lucide="send" style="width:18px;height:18px;"></i></button>
@@ -142,4 +140,3 @@
   <script src="./js/chat.js"></script>
 </body>
 </html>
-

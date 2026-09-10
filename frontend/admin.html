@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel — System Management & Analytics | LawLens</title>
-  <meta name="description" content="LawLens Admin Panel — system management and analytics.">
+  <title>Admin Panel — LawLens</title>
+  <meta name="description" content="LawLens admin dashboard for managing users, content, and system settings.">
   <link rel="canonical" href="https://lawlens.web.app/admin.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,14 +64,13 @@
           <a href="./profile.html" class="nav-item"><i data-lucide="user" class="nav-icon"></i> Profile</a>
           <a href="./settings.html" class="nav-item"><i data-lucide="settings" class="nav-icon"></i> Settings</a>
           <a href="./feedback.html" class="nav-item"><i data-lucide="message-circle" class="nav-icon"></i> Feedback</a>
-          <a href="./admin.html" class="nav-item active"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
+          <a href="./admin.html" class="nav-item admin-only active"><i data-lucide="wrench" class="nav-icon"></i> Admin</a>
         </div>
       </nav>
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
     </aside>
-
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
@@ -82,230 +81,57 @@
           <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
-
       <div class="page-content" id="adminPage">
         <div class="page-header">
-          <h1>Administration</h1>
-          <p>Manage users, datasets, prompts, knowledge, and system settings</p>
+          <h1>Admin Dashboard</h1>
+          <p>Manage users, content, and system settings</p>
         </div>
 
-        <div id="adminStats" class="admin-stats"></div>
-
-        <!-- Tab Navigation -->
-        <div class="admin-tabs-scroll">
-          <div class="admin-tabs">
-            <button class="admin-tab active" data-tab="overview">Overview</button>
-            <button class="admin-tab" data-tab="users">Users</button>
-            <button class="admin-tab" data-tab="datasets">Datasets</button>
-            <button class="admin-tab" data-tab="vector">Vector DB</button>
-            <button class="admin-tab" data-tab="knowledge">Knowledge</button>
-            <button class="admin-tab" data-tab="prompt">Prompts</button>
-            <button class="admin-tab" data-tab="ai-config">AI Config</button>
-            <button class="admin-tab" data-tab="analytics">Analytics</button>
-            <button class="admin-tab" data-tab="benchmarks">Benchmarks</button>
-            <button class="admin-tab" data-tab="imports">Imports</button>
-            <button class="admin-tab" data-tab="sources">Sources</button>
-            <button class="admin-tab" data-tab="jobs">Jobs</button>
-            <button class="admin-tab" data-tab="audit">Audit Log</button>
-            <button class="admin-tab" data-tab="graph">Graph</button>
-            <button class="admin-tab" data-tab="settings">Settings</button>
-            <button class="admin-tab" data-tab="logs">Logs</button>
-          </div>
+        <div id="adminLoading" style="text-align:center;padding:var(--spacing-2xl);">
+          <div class="spinner"></div>
+          <p style="margin-top:var(--spacing-md);color:var(--text-tertiary);">Verifying admin access...</p>
         </div>
 
-        <!-- ═══ Overview ═══ -->
-        <div id="overview" class="admin-tab-content active">
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>System Overview</h3></div>
-            <div class="admin-section-body" id="overviewContent"></div>
-          </div>
+        <div id="adminAccessDenied" style="display:none;text-align:center;padding:var(--spacing-2xl);">
+          <i data-lucide="shield-alert" style="width:48px;height:48px;margin-bottom:var(--spacing-md);color:var(--color-danger);"></i>
+          <h3>Access Denied</h3>
+          <p style="color:var(--text-tertiary);">You don't have admin privileges to access this page.</p>
+          <a href="./dashboard.html" class="btn btn-primary" style="margin-top:var(--spacing-md);">Go to Dashboard</a>
         </div>
 
-        <!-- ═══ Users ═══ -->
-        <div id="users" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>User Management</h3></div>
-            <div class="admin-section-body" id="usersList"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Datasets ═══ -->
-        <div id="datasets" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>Upload Dataset</h3></div>
-            <div class="admin-section-body">
-              <form id="datasetUploadForm">
-                <div class="form-group">
-                  <label class="form-label">Select file (PDF, DOCX, TXT, JSON, MD)</label>
-                  <input type="file" id="datasetFile" accept=".pdf,.docx,.txt,.json,.md">
-                </div>
-                <div class="admin-actions">
-                  <button type="submit" class="btn btn-primary">Upload</button>
-                </div>
-              </form>
+        <div id="adminContent" style="display:none;">
+          <div class="admin-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--spacing-md);margin-bottom:var(--spacing-xl);">
+            <div class="stat-card">
+              <div class="stat-icon"><i data-lucide="users" style="width:20px;height:20px;"></i></div>
+              <div class="stat-value" id="totalUsers">—</div>
+              <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i data-lucide="message-square" style="width:20px;height:20px;"></i></div>
+              <div class="stat-value" id="totalChats">—</div>
+              <div class="stat-label">Total Chats</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i data-lucide="file" style="width:20px;height:20px;"></i></div>
+              <div class="stat-value" id="totalDocs">—</div>
+              <div class="stat-label">Documents</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i data-lucide="server" style="width:20px;height:20px;"></i></div>
+              <div class="stat-value" id="apiStatus">—</div>
+              <div class="stat-label">API Status</div>
             </div>
           </div>
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>Existing Datasets</h3></div>
-            <div class="admin-section-body" id="datasetsList"></div>
-          </div>
-        </div>
 
-        <!-- ═══ Vector DB ═══ -->
-        <div id="vector" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Vector Database</h3>
-              <div class="admin-actions">
-                <button class="btn btn-secondary btn-sm" onclick="rebuildVectorDB()">Rebuild Vector DB</button>
-              </div>
-            </div>
-            <div class="admin-section-body" id="vectorStatsContent"></div>
+          <div class="admin-tabs" style="display:flex;gap:var(--spacing-xs);margin-bottom:var(--spacing-xl);border-bottom:1px solid var(--border-color);padding-bottom:var(--spacing-sm);">
+            <button class="btn btn-ghost btn-sm admin-tab active" data-tab="users">Users</button>
+            <button class="btn btn-ghost btn-sm admin-tab" data-tab="usage">Usage</button>
+            <button class="btn btn-ghost btn-sm admin-tab" data-tab="settings">Settings</button>
+            <button class="btn btn-ghost btn-sm admin-tab" data-tab="logs">Logs</button>
           </div>
-        </div>
 
-        <!-- ═══ Knowledge Management ═══ -->
-        <div id="knowledge" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Knowledge Items</h3>
-              <div class="admin-actions">
-                <button class="btn btn-primary btn-sm" id="addKnowledgeBtn">+ Add Item</button>
-              </div>
-            </div>
-            <div class="admin-section-body" id="knowledgeList"></div>
-          </div>
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>Knowledge Stats</h3></div>
-            <div class="admin-section-body" id="knowledgeStats"></div>
-          </div>
+          <div id="adminTabContent"></div>
         </div>
-
-        <!-- ═══ Prompt Editor ═══ -->
-        <div id="prompt" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>System Prompt</h3>
-              <div class="admin-actions">
-                <button class="btn btn-secondary btn-sm" id="resetPrompt">Reset to Default</button>
-              </div>
-            </div>
-            <div class="admin-section-body">
-              <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:var(--spacing-md);">Edit the system prompt that defines how the AI behaves. Changes take effect immediately.</p>
-              <textarea class="prompt-editor" id="promptEditor"></textarea>
-              <div style="margin-top:var(--spacing-md);">
-                <button class="btn btn-primary" id="savePrompt">Save Prompt</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ═══ AI Configuration ═══ -->
-        <div id="ai-config" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>AI Configuration</h3></div>
-            <div class="admin-section-body" id="aiConfigContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Analytics ═══ -->
-        <div id="analytics" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>Analytics Dashboard</h3></div>
-            <div class="admin-section-body" id="analyticsContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Benchmarks ═══ -->
-        <div id="benchmarks" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Benchmark Center</h3>
-              <div class="admin-actions">
-                <button class="btn btn-primary btn-sm" id="runBenchmarkBtn">Run Benchmark</button>
-              </div>
-            </div>
-            <div class="admin-section-body" id="benchmarkContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Import Center ═══ -->
-        <div id="imports" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Import Center — Legal Acts</h3>
-              <div class="admin-actions">
-                <button class="btn btn-primary btn-sm" id="addActBtn">+ Add Act</button>
-              </div>
-            </div>
-            <div class="admin-section-body" id="importsContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Source Registry ═══ -->
-        <div id="sources" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Source Registry</h3>
-              <div class="admin-actions">
-                <button class="btn btn-secondary btn-sm" id="checkAllSourcesBtn">Check All</button>
-                <button class="btn btn-primary btn-sm" id="addSourceBtn">+ Add Source</button>
-              </div>
-            </div>
-            <div class="admin-section-body" id="sourcesContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Background Jobs ═══ -->
-        <div id="jobs" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Background Jobs</h3>
-              <div class="admin-actions">
-                <button class="btn btn-primary btn-sm" id="createJobBtn">+ Create Job</button>
-              </div>
-            </div>
-            <div class="admin-section-body" id="jobsContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Audit Log ═══ -->
-        <div id="audit" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>Audit Log</h3></div>
-            <div class="admin-section-body" id="auditContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Graph Explorer ═══ -->
-        <div id="graph" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header">
-              <h3>Knowledge Graph Explorer</h3>
-              <div class="admin-actions">
-                <button class="btn btn-secondary btn-sm" id="refreshGraphBtn">Refresh</button>
-              </div>
-            </div>
-            <div class="admin-section-body" id="graphContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Settings ═══ -->
-        <div id="settings" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>System Settings</h3></div>
-            <div class="admin-section-body" id="settingsContent"></div>
-          </div>
-        </div>
-
-        <!-- ═══ Logs ═══ -->
-        <div id="logs" class="admin-tab-content" style="display:none;">
-          <div class="admin-section">
-            <div class="admin-section-header"><h3>Server Logs</h3></div>
-            <div class="admin-section-body" id="logsViewer"></div>
-          </div>
-        </div>
-
       </div>
     </main>
   </div>

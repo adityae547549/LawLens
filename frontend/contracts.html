@@ -4,37 +4,14 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contract Analysis - LawLens</title>
+  <title>Contracts — LawLens</title>
+  <meta name="description" content="Analyze and understand legal contracts with AI-powered insights.">
+  <link rel="canonical" href="https://lawlens.web.app/contracts.html">
+  <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/ui-enhancements.css">
-  <style>
-    .contracts-page{max-width:1000px;margin:0 auto;padding:var(--spacing-lg);}
-    .hero{text-align:center;padding:2rem 1rem;margin-bottom:2rem;}
-    .hero h1{font-size:1.8rem;margin-bottom:0.5rem;}
-    .hero p{color:var(--text-tertiary);max-width:600px;margin:0 auto;}
-    .tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin:2rem 0;}
-    .tool-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;cursor:pointer;transition:all 0.2s;}
-    .tool-card:hover{border-color:var(--accent-primary);transform:translateY(-2px);}
-    .tool-card.active{border-color:var(--accent-primary);background:var(--accent-glow);}
-    .tool-card-icon{font-size:2rem;margin-bottom:0.75rem;}
-    .tool-card h3{font-size:1rem;margin-bottom:0.5rem;}
-    .tool-card p{font-size:0.85rem;color:var(--text-tertiary);margin:0;}
-    .upload-area{border:2px dashed var(--border-color);border-radius:var(--radius-lg);padding:2rem;text-align:center;margin:1.5rem 0;transition:border-color 0.2s;cursor:pointer;}
-    .upload-area:hover,.upload-area.dragover{border-color:var(--accent-primary);background:var(--accent-glow);}
-    .upload-area input[type="file"]{display:none;}
-    .upload-icon{font-size:2.5rem;margin-bottom:0.75rem;}
-    .upload-text{color:var(--text-tertiary);font-size:0.9rem;}
-    .upload-text strong{color:var(--accent-primary);}
-    .text-area-input{width:100%;min-height:200px;padding:1rem;border-radius:var(--radius-lg);font-size:0.9rem;line-height:1.7;resize:vertical;font-family:inherit;}
-    .analysis-result{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0;white-space:pre-wrap;line-height:1.8;}
-    .analysis-result h3{color:var(--accent-primary);margin-bottom:1rem;}
-    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
-    .compare-col textarea{width:100%;min-height:150px;padding:1rem;border-radius:var(--radius-lg);font-size:0.9rem;resize:vertical;font-family:inherit;}
-    @media(max-width:768px){.compare-grid{grid-template-columns:1fr;}}
-    .action-bar{display:flex;gap:0.5rem;flex-wrap:wrap;margin:1rem 0;}
-  </style>
 </head>
 <body>
   <div class="app-layout">
@@ -92,104 +69,60 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
           <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
-          <h2 style="font-size:1.1rem;font-weight:600;">Contract Analysis</h2>
+          <h2 style="font-size:1.1rem;font-weight:600;">Contracts</h2>
         </div>
         <div class="top-nav-right">
           <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
-      <div class="contracts-page">
-        <div class="hero">
-          <div style="font-size:2.5rem;margin-bottom:0.5rem;"><i data-lucide="pen-line"></i></div>
-          <h1>Contract Analysis</h1>
-          <p>Upload or paste a contract. AI will analyze clauses, detect risks, find deadlines, and more.</p>
+      <div class="page-content" id="contractsPage">
+        <div class="page-header">
+          <h1>Contract Analyzer</h1>
+          <p>Upload and analyze legal contracts with AI-powered clause extraction</p>
         </div>
 
-        <div class="tool-grid">
-          <div class="tool-card active" data-tool="summarize" onclick="selectTool('summarize')">
-            <div class="tool-card-icon"><i data-lucide="landmark"></i></div>
-            <h3>Summarize Contract</h3>
-            <p>Get a clear summary of all key terms and obligations</p>
-          </div>
-          <div class="tool-card" data-tool="risk" onclick="selectTool('risk')">
-            <div class="tool-card-icon"><i data-lucide="alert-triangle"></i></div>
-            <h3>Detect Risky Clauses</h3>
-            <p>Identify potentially unfavorable or dangerous terms</p>
-          </div>
-          <div class="tool-card" data-tool="explain" onclick="selectTool('explain')">
-            <div class="tool-card-icon"><i data-lucide="lightbulb"></i></div>
-            <h3>Explain Each Clause</h3>
-            <p>Plain-language explanation of every clause</p>
-          </div>
-          <div class="tool-card" data-tool="obligations" onclick="selectTool('obligations')">
-            <div class="tool-card-icon"><i data-lucide="pin"></i></div>
-            <h3>Highlight Obligations</h3>
-            <p>Extract all duties and obligations for each party</p>
-          </div>
-          <div class="tool-card" data-tool="deadlines" onclick="selectTool('deadlines')">
-            <div class="tool-card-icon"><i data-lucide="clock"></i></div>
-            <h3>Find Deadlines</h3>
-            <p>Extract all dates, deadlines, and time-bound clauses</p>
-          </div>
-          <div class="tool-card" data-tool="checklist" onclick="selectTool('checklist')">
-            <div class="tool-card-icon"><i data-lucide="clipboard-check"></i></div>
-            <h3>Generate Checklist</h3>
-            <p>Create an action checklist from the contract</p>
-          </div>
-          <div class="tool-card" data-tool="missing" onclick="selectTool('missing')">
-            <div class="tool-card-icon"><i data-lucide="search-x"></i></div>
-            <h3>Missing Clauses</h3>
-            <p>Check what important clauses might be missing</p>
-          </div>
-          <div class="tool-card" data-tool="unusual" onclick="selectTool('unusual')">
-            <div class="tool-card-icon"><i data-lucide="flag"></i></div>
-            <h3>Detect Unusual Terms</h3>
-            <p>Find non-standard or unusual provisions</p>
-          </div>
-          <div class="tool-card" data-tool="compare" onclick="selectTool('compare')">
-            <div class="tool-card-icon"><i data-lucide="scale"></i></div>
-            <h3>Compare Two Contracts</h3>
-            <p>Side-by-side comparison of two agreements</p>
-          </div>
-        </div>
-
-        <div id="inputSection">
-          <div class="upload-area" id="uploadArea">
-            <div class="upload-icon"><i data-lucide="upload"></i></div>
-            <div class="upload-text">
-              <strong>Click to upload</strong> or drag and drop<br>
-              <span style="font-size:0.8rem;">PDF, DOCX, or TXT (max 10MB)</span>
-            </div>
-            <input type="file" id="contractFile" accept=".pdf,.docx,.txt">
-          </div>
-          <div style="text-align:center;margin:1rem 0;color:var(--text-tertiary);font-size:0.85rem;"> OR paste contract text </div>
-          <textarea class="text-area-input" id="contractText" placeholder="Paste your contract text here..."></textarea>
-        </div>
-
-        <div id="compareSection" style="display:none;">
-          <div class="compare-grid">
-            <div>
-              <label style="font-size:0.85rem;color:var(--text-tertiary);display:block;margin-bottom:0.5rem;">Contract A</label>
-              <textarea class="text-area-input" id="contractA" placeholder="Paste first contract..."></textarea>
-            </div>
-            <div>
-              <label style="font-size:0.85rem;color:var(--text-tertiary);display:block;margin-bottom:0.5rem;">Contract B</label>
-              <textarea class="text-area-input" id="contractB" placeholder="Paste second contract..."></textarea>
+        <div style="max-width:800px;margin:0 auto;">
+          <div class="upload-zone" id="contractUploadZone">
+            <div class="upload-zone-inner">
+              <i data-lucide="scroll-text" style="width:48px;height:48px;color:var(--accent-primary);margin-bottom:var(--spacing-md);"></i>
+              <h3>Upload a Contract</h3>
+              <p style="color:var(--text-tertiary);margin-bottom:var(--spacing-md);">Drag & drop or click to browse</p>
+              <input type="file" id="contractFileInput" accept=".pdf,.doc,.docx,.txt" style="display:none;">
+              <button class="btn btn-outline" id="contractBrowseBtn">Browse Files</button>
+              <p style="font-size:0.8rem;color:var(--text-tertiary);margin-top:var(--spacing-md);">Supports PDF, DOC, DOCX, TXT (max 10MB)</p>
             </div>
           </div>
-        </div>
 
-        <div class="action-bar">
-          <button class="btn btn-primary" id="analyzeBtn" onclick="analyzeContract()"><i data-lucide="bot"></i> Analyze Contract</button>
-          <button class="btn btn-ghost" onclick="clearContract()">Clear</button>
-        </div>
+          <div id="contractResult" style="display:none;">
+            <div class="card" style="margin-bottom:var(--spacing-lg);">
+              <div class="card-header">
+                <h3 class="card-title" id="contractTitle">Contract Analysis</h3>
+                <button class="btn btn-ghost btn-sm" id="downloadReport"><i data-lucide="download" style="width:16px;height:16px;"></i> Report</button>
+              </div>
+              <div class="card-body" id="contractSummary"></div>
+            </div>
 
-        <div id="analysisResults"></div>
+            <div class="card" style="margin-bottom:var(--spacing-lg);">
+              <div class="card-header"><h3 class="card-title">Key Clauses</h3></div>
+              <div class="card-body" id="keyClauses"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><h3 class="card-title">Risk Assessment</h3></div>
+              <div class="card-body" id="riskAssessment"></div>
+            </div>
+          </div>
+
+          <div id="contractLoading" style="display:none;text-align:center;padding:var(--spacing-2xl);">
+            <div class="spinner"></div>
+            <p style="margin-top:var(--spacing-md);color:var(--text-tertiary);">Analyzing contract...</p>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -199,4 +132,3 @@
   <script src="./js/contracts.js"></script>
 </body>
 </html>
-

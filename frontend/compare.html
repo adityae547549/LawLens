@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compare Legal Documents & Provisions Side by Side | LawLens</title>
-  <meta name="description" content="Compare legal documents, provisions, or analyses side by side.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare Articles — LawLens</title>
+  <meta name="description" content="Compare constitutional articles side-by-side with AI-powered insights.">
   <link rel="canonical" href="https://lawlens.web.app/compare.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/style.css" />
-  <link rel="stylesheet" href="./css/ui-enhancements.css" />
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/ui-enhancements.css">
 </head>
 <body>
-<div class="app-layout">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
-      <span class="sidebar-title">LawLens</span>
-    </div>
-    <nav class="sidebar-nav">
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
         <div class="nav-section">
           <div class="nav-section-title">Main</div>
           <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
@@ -69,97 +69,72 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
-  <main class="main-content">
-    <div class="top-nav">
-      <div class="top-nav-left">
-        <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
-        <h2 style="font-size:1.1rem;font-weight:600;">Compare Articles</h2>
-      </div>
-      <div class="top-nav-right">
-        <button class="theme-toggle" title="Toggle theme"></button>
-      </div>
-    </div>
-    <div class="page-content" id="comparePage">
-      <div class="compare-header">
-        <h1 class="page-title">Compare Articles</h1>
-        <p class="page-subtitle">Compare two legal articles side by side with AI analysis</p>
-      </div>
-
-      <div class="compare-inputs">
-        <div class="compare-input-card">
-          <label class="compare-label" for="articleA">Article A</label>
-          <input type="text" id="articleA" class="compare-input" placeholder="Enter first article name or description..." />
+    </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Compare Articles</h2>
         </div>
-        <div class="compare-divider">
-          <span class="compare-vs">VS</span>
-        </div>
-        <div class="compare-input-card">
-          <label class="compare-label" for="articleB">Article B</label>
-          <input type="text" id="articleB" class="compare-input" placeholder="Enter second article name or description..." />
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
-
-      <div class="compare-actions">
-        <button class="compare-btn" id="compareBtn">
-          <span class="compare-btn-icon"><i data-lucide="columns" style="width:18px;height:18px;"></i></span> Compare
-        </button>
-      </div>
-
-      <div class="compare-results" id="compareResults" style="display:none;">
-        <div class="compare-results-header">
-          <h2 class="compare-results-title">Comparison Results</h2>
+      <div class="page-content" id="comparePage">
+        <div class="page-header">
+          <h1>Compare Constitutional Articles</h1>
+          <p>Select two articles to compare side-by-side with AI analysis</p>
         </div>
-        <div class="compare-grid" id="compareGrid"></div>
+
+        <div style="display:flex;gap:var(--spacing-md);margin-bottom:var(--spacing-xl);flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <label class="form-label">Article 1</label>
+            <select id="compareArticle1" class="form-select">
+              <option value="">Select first article...</option>
+            </select>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <label class="form-label">Article 2</label>
+            <select id="compareArticle2" class="form-select">
+              <option value="">Select second article...</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="btn btn-primary" id="compareBtn" disabled>Compare</button>
+          </div>
+        </div>
+
+        <div id="compareResult" style="display:none;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-xl);margin-bottom:var(--spacing-xl);">
+            <div class="card" id="article1Card">
+              <div class="card-header"><h3 class="card-title" id="article1Title">—</h3></div>
+              <div class="card-body" id="article1Content"></div>
+            </div>
+            <div class="card" id="article2Card">
+              <div class="card-header"><h3 class="card-title" id="article2Title">—</h3></div>
+              <div class="card-body" id="article2Content"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i data-lucide="sparkles" style="width:20px;height:20px;color:var(--accent-primary);"></i> AI Analysis</h3>
+            </div>
+            <div class="card-body" id="aiAnalysis" style="white-space:pre-wrap;"></div>
+          </div>
+        </div>
+
+        <div id="comparePlaceholder" style="text-align:center;padding:var(--spacing-2xl);color:var(--text-tertiary);">
+          <i data-lucide="columns" style="width:48px;height:48px;margin-bottom:var(--spacing-md);opacity:0.3;"></i>
+          <h3>Select two articles to compare</h3>
+          <p>Choose articles from the dropdowns above, then click Compare</p>
+        </div>
       </div>
-
-      <div class="compare-loading" id="compareLoading" style="display:none;">
-        <div class="spinner"></div>
-        <p>Analyzing articles...</p>
-      </div>
-    </div>
-  </main>
-</div>
-<div id="sidebarOverlay"></div>
-
-<style>
-  .compare-header { margin-bottom: 2rem; }
-  .page-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
-  .page-subtitle { color: var(--text-secondary); font-size: 0.95rem; }
-  .compare-inputs { display: flex; align-items: stretch; gap: 1.5rem; margin-bottom: 1.5rem; }
-  .compare-input-card { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-  .compare-label { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
-  .compare-input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-secondary); color: var(--text-primary); font-size: 0.95rem; transition: all var(--transition); outline: none; font-family: inherit; }
-  .compare-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
-  .compare-input::placeholder { color: var(--text-tertiary); }
-  .compare-divider { display: flex; align-items: center; justify-content: center; }
-  .compare-vs { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--bg-tertiary); border: 1px solid var(--border-color); font-weight: 700; font-size: 0.8rem; color: var(--accent-primary); }
-  .compare-actions { display: flex; justify-content: center; margin-bottom: 2rem; }
-  .compare-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 2rem; border: none; border-radius: var(--radius-md); background: var(--gradient-primary); color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all var(--transition); box-shadow: 0 2px 10px var(--accent-glow); }
-  .compare-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--accent-glow); }
-  .compare-btn:active { transform: translateY(0) scale(0.98); }
-  .compare-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-  .compare-loading { text-align: center; padding: 3rem; color: var(--text-secondary); }
-  .compare-results-header { margin-bottom: 1rem; }
-  .compare-results-title { font-size: 1.25rem; font-weight: 600; }
-  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  .compare-column { border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); overflow: hidden; }
-  .compare-column-header { padding: 0.75rem 1rem; background: var(--bg-tertiary); border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.95rem; }
-  .compare-column-body { padding: 1rem; }
-  .compare-field { margin-bottom: 1rem; }
-  .compare-field:last-child { margin-bottom: 0; }
-  .compare-field-label { font-size: 0.8rem; font-weight: 600; color: var(--text-tertiary); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.03em; }
-  .compare-field-value { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
-  .compare-summary { grid-column: 1 / -1; border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-card); padding: 1.25rem; }
-  .compare-summary-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
-  .compare-summary-text { font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
-  .compare-empty { grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-tertiary); }
-  @media (max-width: 768px) { .compare-inputs { flex-direction: column; } .compare-divider { padding: 0.5rem 0; } .compare-grid { grid-template-columns: 1fr; } }
-</style>
-
-<script src="./js/utils.js"></script>
-<script src="./js/app.js"></script>
-<script src="./js/compare.js"></script>
+    </main>
+  </div>
+  <div id="sidebarOverlay"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/compare.js"></script>
 </body>
 </html>
-

@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Research Workspaces & Collaborative Projects | LawLens</title>
-  <meta name="description" content="Your research workspaces and collaborative projects.">
+  <title>Workspaces — LawLens</title>
+  <meta name="description" content="Organize your legal research into dedicated workspaces.">
   <link rel="canonical" href="https://lawlens.web.app/workspaces.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +14,13 @@
   <link rel="stylesheet" href="./css/ui-enhancements.css">
 </head>
 <body>
-<div class="app-layout">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header"><img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;"><span class="sidebar-title">LawLens</span></div>
-    <nav class="sidebar-nav">
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" style="width:36px;height:36px;border-radius:10px;object-fit:cover;">
+        <span class="sidebar-title">LawLens</span>
+      </div>
+      <nav class="sidebar-nav">
         <div class="nav-section">
           <div class="nav-section-title">Main</div>
           <a href="./dashboard.html" class="nav-item"><i data-lucide="layout-dashboard" class="nav-icon"></i> Dashboard</a>
@@ -66,35 +69,59 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
-  <main class="main-content">
-    <div class="top-nav">
-      <div class="top-nav-left"><button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button><h2 style="font-size:1.1rem;font-weight:600;">Workspaces</h2></div>
-      <div class="top-nav-right"><button class="theme-toggle" title="Toggle theme"></button></div>
-    </div>
-    <div class="page-content" id="workspacesPage">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.5rem;">
-        <div><h1 style="margin-bottom:0.15rem;"><i data-lucide="folder"></i> Workspaces</h1><p style="color:var(--text-tertiary);margin:0;">Collaborative case folders and document annotations</p></div>
-        <button class="btn btn-primary" id="createWorkspaceBtn">+ New Workspace</button>
-      </div>
-
-      <div class="admin-section" id="createWorkspaceSection" style="display:none;">
-        <div class="admin-section-header"><h3>Create Workspace</h3></div>
-        <div class="admin-section-body">
-          <div class="form-group"><label class="form-label">Name</label><input type="text" id="wsName" class="form-input" style="width:100%;padding:0.6rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);background:var(--bg-secondary);color:var(--text-primary);" placeholder="e.g., Criminal Law Research"></div>
-          <div class="form-group"><label class="form-label">Description</label><textarea id="wsDesc" style="width:100%;padding:0.6rem 1rem;border:1px solid var(--border-color);border-radius:var(--radius-md);background:var(--bg-secondary);color:var(--text-primary);min-height:80px;" placeholder="What is this workspace for?"></textarea></div>
-          <div class="form-group"><button class="btn btn-primary" id="saveWorkspaceBtn">Create Workspace</button></div>
+    </aside>
+    <main class="main-content">
+      <div class="top-nav">
+        <div class="top-nav-left">
+          <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
+          <h2 style="font-size:1.1rem;font-weight:600;">Workspaces</h2>
+        </div>
+        <div class="top-nav-right">
+          <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
+      <div class="page-content" id="workspacesPage">
+        <div class="page-header">
+          <div>
+            <h1>Workspaces</h1>
+            <p>Organize your research projects into separate workspaces</p>
+          </div>
+          <button class="btn btn-primary" id="createWorkspace"><i data-lucide="plus" style="width:18px;height:18px;"></i> New Workspace</button>
+        </div>
 
-      <div id="workspacesList"></div>
-    </div>
-  </main>
-</div>
-<div id="sidebarOverlay"></div>
-<script src="./js/utils.js"></script>
-<script src="./js/app.js"></script>
-<script src="./js/workspaces.js"></script>
+        <div id="workspacesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--spacing-lg);"></div>
+
+        <div id="workspacesEmpty" style="display:none;text-align:center;padding:var(--spacing-2xl);color:var(--text-tertiary);">
+          <i data-lucide="briefcase" style="width:48px;height:48px;margin-bottom:var(--spacing-md);opacity:0.3;"></i>
+          <h3>No workspaces yet</h3>
+          <p>Create your first workspace to organize research projects</p>
+        </div>
+
+        <div id="createModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:center;justify-content:center;">
+          <div class="card" style="width:90%;max-width:400px;">
+            <div class="card-header"><h3 class="card-title">Create Workspace</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" id="workspaceName" placeholder="e.g., Constitutional Law Research">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea id="workspaceDesc" rows="3" placeholder="What is this workspace for?"></textarea>
+              </div>
+              <div style="display:flex;gap:var(--spacing-sm);justify-content:flex-end;">
+                <button class="btn btn-ghost btn-sm" id="cancelCreate">Cancel</button>
+                <button class="btn btn-primary btn-sm" id="confirmCreate">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div id="sidebarOverlay"></div>
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/workspaces.js"></script>
 </body>
 </html>
-

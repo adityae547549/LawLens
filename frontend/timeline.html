@@ -4,32 +4,21 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Indian Legal History Timeline & Landmark Cases | LawLens</title>
-  <meta name="description" content="Explore the timeline of Indian legal history and landmark cases.">
+  <title>Indian Constitutional Amendment Timeline — Interactive History | LawLens</title>
+  <meta name="description" content="Explore the history of Indian constitutional amendments on an interactive timeline. Visualize amendments from 1951 to present with detailed summaries and affected articles.">
   <link rel="canonical" href="https://lawlens.web.app/timeline.html">
   <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lawlens.web.app/timeline.html">
+  <meta property="og:title" content="Indian Constitutional Amendment Timeline">
+  <meta property="og:description" content="Explore the history of Indian constitutional amendments on an interactive timeline.">
+  <meta property="og:image" content="https://lawlens.web.app/logo.png">
+  <meta property="og:site_name" content="LawLens">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/ui-enhancements.css">
-  <style>
-    .timeline-filter-row{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;}
-    .timeline-filter{padding:0.4rem 0.9rem;border:1px solid var(--border-color);border-radius:999px;font-size:0.82rem;cursor:pointer;background:var(--bg-secondary);color:var(--text-secondary);transition:all 0.2s;}
-    .timeline-filter:hover,.timeline-filter.active{border-color:var(--accent-primary);background:var(--accent-glow);color:var(--accent-primary);}
-    .timeline-search{width:100%;padding:0.75rem 1rem;border-radius:var(--radius-lg);font-size:0.9rem;margin-bottom:1rem;background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-primary);}
-    .timeline-vertical{position:relative;padding-left:3rem;}
-    .timeline-year-group{margin-bottom:2rem;position:relative;}
-    .timeline-year-marker{position:absolute;left:-3rem;top:0;display:flex;align-items:center;gap:0.75rem;}
-    .timeline-year-dot{width:14px;height:14px;border-radius:50%;background:var(--accent-primary);border:3px solid var(--bg-primary);box-shadow:0 0 0 2px var(--accent-primary);z-index:1;}
-    .timeline-year-label{font-size:1.2rem;font-weight:700;color:var(--accent-primary);white-space:nowrap;}
-    .timeline-year-events{display:flex;flex-direction:column;gap:0.75rem;padding-left:1.5rem;border-left:2px solid var(--border-color);padding-top:0.5rem;}
-    .timeline-event{display:flex;gap:0.75rem;padding:0.85rem 1rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);cursor:pointer;transition:all 0.2s;}
-    .timeline-event:hover{border-color:var(--accent-primary);transform:translateX(4px);}
-    .event-badge{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
-    .event-content{flex:1;min-width:0;}
-    .event-title{font-weight:600;font-size:0.9rem;color:var(--text-primary);margin-bottom:0.25rem;}
-    .event-summary{font-size:0.82rem;color:var(--text-tertiary);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-  </style>
 </head>
 <body>
   <div class="app-layout">
@@ -87,55 +76,58 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
     <main class="main-content">
       <div class="top-nav">
         <div class="top-nav-left">
           <button class="hamburger" id="hamburger"><i data-lucide="menu" style="width:20px;height:20px;"></i></button>
-          <h2 style="font-size:1.1rem;font-weight:600;">Timeline</h2>
+          <h2 style="font-size:1.1rem;font-weight:600;">Amendment Timeline</h2>
         </div>
         <div class="top-nav-right">
           <button class="theme-toggle" title="Toggle theme"></button>
         </div>
       </div>
       <div class="page-content" id="timelinePage">
-        <div style="padding:2rem;max-width:1000px;margin:0 auto;">
-          <div style="margin-bottom:2rem;">
-            <h1 style="font-size:1.8rem;font-weight:700;margin-bottom:0.5rem;color:var(--text-primary);"><i data-lucide="calendar"></i> Constitutional Timeline</h1>
-            <p style="color:var(--text-secondary);font-size:0.95rem;">Verified data from official sources � not AI-generated</p>
-          </div>
+        <div class="page-header">
+          <h1>Constitutional Amendment Timeline</h1>
+          <p>Explore the history of constitutional amendments with visual navigation</p>
+        </div>
 
-          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
-            <div style="display:flex;flex-direction:column;gap:0.35rem;">
-              <label for="startYear" style="font-size:0.8rem;color:var(--text-secondary);">From</label>
-              <input id="startYear" type="number" min="1950" max="2025" value="1950" class="input" style="width:100px;">
-            </div>
-            <div style="display:flex;flex-direction:column;gap:0.35rem;">
-              <label for="endYear" style="font-size:0.8rem;color:var(--text-secondary);">To</label>
-              <input id="endYear" type="number" min="1950" max="2025" value="2025" class="input" style="width:100px;">
-            </div>
-            <div style="display:flex;align-items:flex-end;">
-              <button id="generateBtn" class="btn btn-primary"><i data-lucide="refresh-cw"></i> Load</button>
-            </div>
+        <div class="timeline-controls" style="display:flex;gap:var(--spacing-md);margin-bottom:var(--spacing-xl);flex-wrap:wrap;align-items:center;">
+          <div style="flex:1;min-width:200px;">
+            <input type="text" id="timelineSearch" placeholder="Search amendments..." style="width:100%;padding:0.7rem 1rem;border-radius:var(--radius-md);">
           </div>
-
-          <div class="timeline-filter-row">
-            <button class="timeline-filter active" data-category="all">All</button>
-            <button class="timeline-filter" data-category="amendment"><i data-lucide="file-text"></i> Amendments</button>
-            <button class="timeline-filter" data-category="judgment"><i data-lucide="gavel"></i> Judgments</button>
-            <button class="timeline-filter" data-category="act"><i data-lucide="scroll-text"></i> Acts</button>
-            <button class="timeline-filter" data-category="emergency"><i data-lucide="alert-triangle"></i> Emergency</button>
+          <div style="display:flex;gap:var(--spacing-sm);">
+            <button class="btn btn-outline btn-sm decade-btn" data-decade="1950">1950s</button>
+            <button class="btn btn-outline btn-sm decade-btn" data-decade="1960">1960s</button>
+            <button class="btn btn-outline btn-sm decade-btn" data-decade="1970">1970s</button>
+            <button class="btn btn-outline btn-sm decade-btn" data-decade="1980">1980s</button>
+            <button class="btn btn-outline btn-sm decade-btn" data-decade="1990">1990s</button>
+            <button class="btn btn-outline btn-sm decade-btn" data-decade="2000">2000s</button>
+            <button class="btn btn-outline btn-sm decade-btn" data-decade="2010">2010s</button>
+            <button class="btn btn-outline btn-sm decade-btn" data-decade="2020">2020s</button>
+            <button class="btn btn-ghost btn-sm" id="clearDecadeBtn" style="display:none;">Clear</button>
           </div>
+        </div>
 
-          <input type="text" id="timelineSearch" class="timeline-search" placeholder="Search timeline... (e.g., GST, Article 21, 1975)">
+        <div class="timeline-container" style="position:relative;padding-left:32px;">
+          <div class="timeline-line" style="position:absolute;left:15px;top:0;bottom:0;width:2px;background:var(--border-color);"></div>
+          <div id="timelineItems" style="display:flex;flex-direction:column;gap:var(--spacing-xl);"></div>
+        </div>
 
-          <div id="timelineContainer" style="position:relative;">
-            <div id="timelineLoading" style="display:none;text-align:center;padding:3rem;color:var(--text-secondary);">
-              <div class="spinner"></div>
-              <p style="margin-top:1rem;">Loading verified data...</p>
-            </div>
-            <div id="timelineItems"></div>
+        <div id="timelineEmpty" style="display:none;text-align:center;padding:var(--spacing-2xl);color:var(--text-tertiary);">
+          <i data-lucide="calendar" style="width:48px;height:48px;margin-bottom:var(--spacing-md);opacity:0.3;"></i>
+          <h3>No amendments found</h3>
+          <p>Try adjusting your search or filters</p>
+        </div>
+
+        <div id="amendmentDetail" style="display:none;background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:var(--spacing-xl);margin-top:var(--spacing-xl);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--spacing-md);">
+            <h2 id="detailTitle" style="font-size:1.3rem;"></h2>
+            <button class="btn btn-ghost btn-sm" id="closeDetail"><i data-lucide="x" style="width:18px;height:18px;"></i></button>
           </div>
+          <div id="detailMeta" style="display:flex;gap:var(--spacing-lg);margin-bottom:var(--spacing-md);flex-wrap:wrap;"></div>
+          <div id="detailContent" style="white-space:pre-wrap;line-height:1.7;"></div>
         </div>
       </div>
     </main>
@@ -146,4 +138,3 @@
   <script src="./js/timeline.js"></script>
 </body>
 </html>
-

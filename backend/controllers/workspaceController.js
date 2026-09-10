@@ -19,11 +19,12 @@ exports.listWorkspaces = getUserWorkspaces;
 exports.createWorkspace = async (req, res, next) => {
   try {
     const { title, description } = req.body || {};
-    if (!title || !title.trim()) {
+    const workspaceName = title || (req.body && req.body.name);
+    if (!workspaceName || !workspaceName.trim()) {
       return res.status(400).json({ error: 'Workspace title is required', code: 'TITLE_REQUIRED' });
     }
     const workspace = await db.insertOne('workspaces', {
-      title: title.trim(),
+      title: workspaceName.trim(),
       description: description ? description.trim() : '',
       createdBy: req.user.id,
       documents: [],

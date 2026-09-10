@@ -47,6 +47,7 @@ Studio.Modules.register('ai-config', () => {
             <div class="studio-form-group">
               <label class="studio-form-label">Model</label>
               <select class="studio-form-input studio-form-select" id="aiModel">
+                <option value="llama-3.1-8b-instant" ${_config?.model === 'llama-3.1-8b-instant' ? 'selected' : ''}>Llama 3.1 8B (Fast)</option>
                 <option value="llama-3.3-70b-versatile" ${_config?.model === 'llama-3.3-70b-versatile' ? 'selected' : ''}>Llama 3.3 70B</option>
                 <option value="llama-3.1-8b-instant" ${_config?.model === 'llama-3.1-8b-instant' ? 'selected' : ''}>Llama 3.1 8B</option>
                 <option value="mixtral-8x7b-32768" ${_config?.model === 'mixtral-8x7b-32768' ? 'selected' : ''}>Mixtral 8x7B</option>

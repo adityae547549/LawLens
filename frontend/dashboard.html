@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="./favicon-128.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard � Research, Bookmarks & Legal Tools | LawLens</title>
-  <meta name="description" content="Your LawLens dashboard � access research, bookmarks, and legal tools.">
+  <title>Dashboard — LawLens</title>
+  <meta name="description" content="Your LawLens dashboard — access research, bookmarks, and legal tools.">
   <link rel="canonical" href="https://lawlens.web.app/dashboard.html">
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +70,7 @@
       <div class="sidebar-footer">
         <a href="#" class="nav-item" id="logoutBtn"><i data-lucide="log-out" class="nav-icon"></i> Logout</a>
       </div>
-      </aside>
+    </aside>
 
     <main class="main-content">
       <div class="top-nav">
@@ -84,7 +84,6 @@
       </div>
 
       <div class="page-content" id="dashboardPage">
-        <!-- Hero Section -->
         <div class="dh-hero" id="dhHero">
           <div class="dh-hero-bg"></div>
           <div class="dh-hero-content">
@@ -97,40 +96,24 @@
             </div>
 
             <div class="dh-search" id="dhSearch">
-              <div class="dh-search-icon">
-                <i data-lucide="search" style="width:20px;height:20px;"></i>
-              </div>
+              <div class="dh-search-icon"><i data-lucide="search" style="width:20px;height:20px;"></i></div>
               <input type="text" id="dhSearchInput" class="dh-search-input" placeholder="Ask LawLens anything about Indian law..." autocomplete="off">
               <div class="dh-search-shortcut">?</div>
             </div>
 
             <div class="dh-hero-actions" id="dhHeroActions">
-              <a href="./chat.html" class="dh-chip dh-chip-primary">
-                <i data-lucide="message-square" style="width:16px;height:16px;"></i>
-                New Chat
-              </a>
-              <a href="./search.html" class="dh-chip">
-                <i data-lucide="file-search" style="width:16px;height:16px;"></i>
-                Search Documents
-              </a>
-              <a href="./constitution.html" class="dh-chip">
-                <i data-lucide="book-open" style="width:16px;height:16px;"></i>
-                Browse Constitution
-              </a>
+              <a href="./chat.html" class="dh-chip dh-chip-primary"><i data-lucide="message-square" style="width:16px;height:16px;"></i> New Chat</a>
+              <a href="./search.html" class="dh-chip"><i data-lucide="file-search" style="width:16px;height:16px;"></i> Search Documents</a>
+              <a href="./constitution.html" class="dh-chip"><i data-lucide="book-open" style="width:16px;height:16px;"></i> Browse Constitution</a>
             </div>
           </div>
         </div>
 
-        <!-- Continue Working -->
         <div class="dh-section" id="dhContinueSection" style="display:none;">
-          <div class="dh-section-header">
-            <h3 class="dh-section-title">Continue Working</h3>
-          </div>
+          <div class="dh-section-header"><h3 class="dh-section-title">Continue Working</h3></div>
           <div class="dh-continue" id="dhContinue">
             <div class="dh-continue-card" id="dhContinueCard">
-              <div class="dh-continue-icon">
-                <i data-lucide="message-square" style="width:24px;height:24px;"></i>
-              </div>
+              <div class="dh-continue-icon"><i data-lucide="message-square" style="width:24px;height:24px;"></i></div>
               <div class="dh-continue-body">
                 <div class="dh-continue-title" id="dhContinueTitle">Continue last conversation</div>
                 <div class="dh-continue-meta" id="dhContinueMeta">Tap to resume</div>
@@ -140,60 +123,33 @@
           </div>
         </div>
 
-        <!-- Quick Actions -->
         <div class="dh-section">
-          <div class="dh-section-header">
-            <h3 class="dh-section-title">Quick Actions</h3>
-          </div>
+          <div class="dh-section-header"><h3 class="dh-section-title">Quick Actions</h3></div>
           <div class="dh-actions-grid" id="dhActionsGrid"></div>
         </div>
 
-        <!-- Learning Progress -->
         <div class="dh-section">
           <div class="dh-section-header">
             <h3 class="dh-section-title">Your Progress</h3>
-            <a href="./study.html" class="dh-section-link">View all ?</a>
+            <a href="./study.html" class="dh-section-link">View all</a>
           </div>
           <div class="dh-progress" id="dhProgress">
             <div class="dh-progress-ring-card" id="dhXpCard">
               <svg class="dh-ring" viewBox="0 0 100 100">
-                <defs>
-                  <linearGradient id="dhGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#6366f1"/>
-                    <stop offset="100%" stop-color="#8b5cf6"/>
-                  </linearGradient>
-                </defs>
+                <defs><linearGradient id="dhGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6d5dfc"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs>
                 <circle class="dh-ring-bg" cx="50" cy="50" r="42"/>
                 <circle class="dh-ring-fill" id="dhXpRing" cx="50" cy="50" r="42" stroke-dasharray="263.89" stroke-dashoffset="263.89"/>
               </svg>
-              <div class="dh-ring-label">
-                <span class="dh-ring-value" id="dhXpValue">0</span>
-                <span class="dh-ring-meta">XP</span>
-              </div>
+              <div class="dh-ring-label"><span class="dh-ring-value" id="dhXpValue">0</span><span class="dh-ring-meta">XP</span></div>
             </div>
-            <div class="dh-progress-stat">
-              <div class="dh-progress-stat-icon"><i data-lucide="target" style="width:20px;height:20px;"></i></div>
-              <div class="dh-progress-stat-value" id="dhLevelValue">Lv.1</div>
-              <div class="dh-progress-stat-label">Level</div>
-            </div>
-            <div class="dh-progress-stat">
-              <div class="dh-progress-stat-icon"><i data-lucide="flame" style="width:20px;height:20px;"></i></div>
-              <div class="dh-progress-stat-value" id="dhStreakValue">0d</div>
-              <div class="dh-progress-stat-label">Streak</div>
-            </div>
-            <div class="dh-progress-stat">
-              <div class="dh-progress-stat-icon"><i data-lucide="star" style="width:20px;height:20px;"></i></div>
-              <div class="dh-progress-stat-value" id="dhDailyValue">0/0</div>
-              <div class="dh-progress-stat-label">Daily</div>
-            </div>
+            <div class="dh-progress-stat"><div class="dh-progress-stat-icon"><i data-lucide="target" style="width:20px;height:20px;"></i></div><div class="dh-progress-stat-value" id="dhLevelValue">Lv.1</div><div class="dh-progress-stat-label">Level</div></div>
+            <div class="dh-progress-stat"><div class="dh-progress-stat-icon"><i data-lucide="flame" style="width:20px;height:20px;"></i></div><div class="dh-progress-stat-value" id="dhStreakValue">0d</div><div class="dh-progress-stat-label">Streak</div></div>
+            <div class="dh-progress-stat"><div class="dh-progress-stat-icon"><i data-lucide="star" style="width:20px;height:20px;"></i></div><div class="dh-progress-stat-value" id="dhDailyValue">0/0</div><div class="dh-progress-stat-label">Daily</div></div>
           </div>
         </div>
 
-        <!-- Recommended -->
         <div class="dh-section" id="dhRecommendedSection">
-          <div class="dh-section-header">
-            <h3 class="dh-section-title">Recommended for You</h3>
-          </div>
+          <div class="dh-section-header"><h3 class="dh-section-title">Recommended for You</h3></div>
           <div class="dh-recommended" id="dhRecommended">
             <div class="dh-recommended-card skeleton-card"></div>
             <div class="dh-recommended-card skeleton-card"></div>
@@ -201,21 +157,15 @@
           </div>
         </div>
 
-        <!-- Recent Activity -->
         <div class="dh-section">
-          <div class="dh-section-header">
-            <h3 class="dh-section-title">Recent Activity</h3>
-          </div>
+          <div class="dh-section-header"><h3 class="dh-section-title">Recent Activity</h3></div>
           <div class="dh-activity" id="dhActivity">
             <div class="dh-activity-empty">
-              <div class="dh-activity-empty-icon">
-                <i data-lucide="clock" style="width:32px;height:32px;opacity:0.4;"></i>
-              </div>
+              <div class="dh-activity-empty-icon"><i data-lucide="clock" style="width:32px;height:32px;opacity:0.4;"></i></div>
               <p>No activity yet. Start by asking a legal question.</p>
             </div>
           </div>
         </div>
-
       </div>
     </main>
   </div>
