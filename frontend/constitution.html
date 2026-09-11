@@ -19,6 +19,110 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/ui-enhancements.css">
+  <style>
+    .constitution-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 320px;
+      gap: var(--spacing-xl);
+      height: calc(100vh - 200px);
+      min-height: 500px;
+    }
+    .constitution-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .constitution-panel-header {
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    .constitution-panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-xs);
+    }
+    .constitution-panel-footer {
+      padding: var(--spacing-md);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+    .constitution-main {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow-y: auto;
+      padding: var(--spacing-lg);
+    }
+    .constitution-empty {
+      text-align: center;
+      padding: var(--spacing-2xl);
+      color: var(--text-tertiary);
+    }
+    .constitution-close-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      padding: 4px;
+      min-width: 36px;
+      min-height: 36px;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+    }
+    .constitution-close-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .constitution-mobile-toggles {
+      display: none;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+    }
+
+    @media (max-width: 1024px) {
+      .constitution-layout {
+        grid-template-columns: 200px 1fr 240px;
+        gap: var(--spacing-md);
+        height: calc(100vh - 160px);
+        min-height: 400px;
+      }
+    }
+    @media (max-width: 768px) {
+      .constitution-layout {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: 0;
+        gap: var(--spacing-md);
+      }
+      .constitution-panel {
+        display: none;
+        min-height: 300px;
+        max-height: 50vh;
+      }
+      .constitution-panel.active {
+        display: flex;
+      }
+      .constitution-main {
+        min-height: 400px;
+      }
+      .constitution-close-btn {
+        display: flex;
+      }
+      .constitution-mobile-toggles {
+        display: flex;
+      }
+      .constitution-mobile-toggles .btn {
+        flex: 1;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="app-layout">
@@ -93,18 +197,19 @@
           <p>Browse, search, and understand the Constitution with AI assistance</p>
         </div>
 
-        <div style="display:grid;grid-template-columns:280px 1fr 320px;gap:var(--spacing-xl);height:calc(100vh - 200px);min-height:600px;" id="constitutionLayout">
+        <div class="constitution-layout" id="constitutionLayout">
           <!-- Left: Parts List -->
-          <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;">
-            <div style="padding:var(--spacing-md);border-bottom:1px solid var(--border-color);">
-              <input type="text" id="partsSearch" placeholder="Search parts..." style="width:100%;padding:0.6rem 0.8rem;border-radius:var(--radius-md);font-size:0.85rem;">
+          <div class="constitution-panel" id="partsPanel">
+            <div class="constitution-panel-header">
+              <input type="text" id="partsSearch" placeholder="Search parts..." class="form-input" style="padding:0.6rem 0.8rem;font-size:0.85rem;">
+              <button class="btn btn-sm constitution-close-btn" id="closePartsBtn" aria-label="Close"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
             </div>
-            <div id="partsList" style="flex:1;overflow-y:auto;padding:var(--spacing-xs);"></div>
+            <div id="partsList" class="constitution-panel-body"></div>
           </div>
 
           <!-- Center: Article View -->
-          <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);overflow-y:auto;padding:var(--spacing-lg);" id="articleView">
-            <div style="text-align:center;padding:var(--spacing-2xl);color:var(--text-tertiary);">
+          <div class="constitution-main" id="articleView">
+            <div class="constitution-empty">
               <i data-lucide="book-open" style="width:48px;height:48px;margin-bottom:var(--spacing-md);opacity:0.3;"></i>
               <h3>Select a part from the left</h3>
               <p>Or use the search bar to find specific articles</p>
@@ -112,12 +217,15 @@
           </div>
 
           <!-- Right: AI Assistant -->
-          <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;">
-            <div style="padding:var(--spacing-md);border-bottom:1px solid var(--border-color);display:flex;align-items:center;gap:var(--spacing-sm);">
-              <div style="width:32px;height:32px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;"><i data-lucide="bot" style="width:18px;height:18px;color:white;"></i></div>
-              <div><div style="font-weight:600;font-size:0.9rem;">AI Assistant</div><div style="font-size:0.75rem;color:var(--text-tertiary);">Ask about the Constitution</div></div>
+          <div class="constitution-panel constitution-ai-panel" id="aiPanel">
+            <div class="constitution-panel-header">
+              <div style="display:flex;align-items:center;gap:var(--spacing-sm);">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;"><i data-lucide="bot" style="width:18px;height:18px;color:white;"></i></div>
+                <div><div style="font-weight:600;font-size:0.9rem;">AI Assistant</div><div style="font-size:0.75rem;color:var(--text-tertiary);">Ask about the Constitution</div></div>
+              </div>
+              <button class="btn btn-sm constitution-close-btn" id="closeAiBtn" aria-label="Close"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
             </div>
-            <div id="aiMessages" style="flex:1;overflow-y:auto;padding:var(--spacing-md);display:flex;flex-direction:column;gap:var(--spacing-md);">
+            <div id="aiMessages" class="constitution-panel-body" style="display:flex;flex-direction:column;gap:var(--spacing-md);">
               <div style="background:var(--bg-secondary);border-radius:var(--radius-md);padding:var(--spacing-md);font-size:0.85rem;">
                 <p style="margin-bottom:var(--spacing-sm);">I can help you understand the Indian Constitution. Try asking:</p>
                 <ul style="margin:0;padding-left:var(--spacing-md);color:var(--text-secondary);">
@@ -127,11 +235,17 @@
                 </ul>
               </div>
             </div>
-            <form id="aiChatForm" style="padding:var(--spacing-md);border-top:1px solid var(--border-color);display:flex;gap:var(--spacing-sm);">
-              <input type="text" id="aiChatInput" placeholder="Ask about the Constitution..." style="flex:1;padding:0.6rem 0.8rem;border-radius:var(--radius-md);font-size:0.85rem;">
+            <form id="aiChatForm" class="constitution-panel-footer">
+              <input type="text" id="aiChatInput" placeholder="Ask about the Constitution..." class="form-input" style="flex:1;padding:0.6rem 0.8rem;font-size:0.85rem;">
               <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="send" style="width:16px;height:16px;"></i></button>
             </form>
           </div>
+        </div>
+
+        <!-- Mobile toggle buttons -->
+        <div class="constitution-mobile-toggles" id="constitutionToggles">
+          <button class="btn btn-secondary btn-sm" id="showPartsBtn"><i data-lucide="list" style="width:16px;height:16px;"></i> Parts</button>
+          <button class="btn btn-secondary btn-sm" id="showAiBtn"><i data-lucide="bot" style="width:16px;height:16px;"></i> AI</button>
         </div>
       </div>
     </main>

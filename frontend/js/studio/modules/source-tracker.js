@@ -174,7 +174,7 @@ Studio.Modules.register('source-tracker', () => {
 
         ${Studio.UI.section('Pending Changes', pendingHtml)}
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:12px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(480px,100%),1fr));gap:12px;">
           ${sourceCards}
         </div>`;
     },

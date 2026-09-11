@@ -1,4 +1,4 @@
-/* ═══ Dashboard — Clean, Modern, Beginner-Friendly ═══ */
+/* ═══ Dashboard — Clean, Modern, Responsive ═══ */
 
 #dashboardPage { max-width: 960px; padding-bottom: var(--spacing-3xl); }
 
@@ -13,13 +13,13 @@
 .dh-greeting-wave { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; animation: dhWave 2s ease-in-out infinite; }
 @keyframes dhWave { 0%, 100% { transform: rotate(0deg); } 15% { transform: rotate(14deg); } 30% { transform: rotate(-8deg); } 40% { transform: rotate(14deg); } 50% { transform: rotate(-4deg); } 60% { transform: rotate(10deg); } 70%, 100% { transform: rotate(0deg); } }
 .dh-greeting-text { font-size: 0.95rem; color: var(--text-secondary); font-weight: 500; }
-.dh-greeting-name { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-top: 0.15rem; }
+.dh-greeting-name { font-size: clamp(1.2rem, 3vw, 1.75rem); font-weight: 700; letter-spacing: -0.02em; margin-top: 0.15rem; }
 
 /* Search */
 .dh-search { display: flex; align-items: center; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 0 var(--spacing-md); margin-bottom: var(--spacing-lg); transition: all 0.3s; backdrop-filter: blur(12px); }
 .dh-search:focus-within { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow), 0 8px 32px rgba(0, 0, 0, 0.1); }
 .dh-search-icon { color: var(--text-tertiary); display: flex; align-items: center; margin-right: var(--spacing-sm); flex-shrink: 0; }
-.dh-search-input { flex: 1; background: transparent; border: none; padding: 1rem 0; color: var(--text-primary); font-size: 1rem; font-family: var(--font-primary); outline: none; }
+.dh-search-input { flex: 1; background: transparent; border: none; padding: 1rem 0; color: var(--text-primary); font-size: 1rem; font-family: var(--font-primary); outline: none; min-width: 0; }
 .dh-search-input::placeholder { color: var(--text-tertiary); }
 .dh-search-input:focus { box-shadow: none; border: none; }
 .dh-search-shortcut { background: var(--bg-tertiary); color: var(--text-tertiary); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-family: var(--font-mono); border: 1px solid var(--border-color); flex-shrink: 0; }
@@ -55,7 +55,7 @@
 .dh-continue-card:hover .dh-continue-arrow { transform: translateX(4px); color: var(--accent-primary); }
 
 /* Quick Actions */
-.dh-actions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--spacing-sm); }
+.dh-actions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100px, 100%), 1fr)); gap: var(--spacing-sm); }
 .dh-action-card {
   display: flex; flex-direction: column; align-items: center; gap: var(--spacing-sm);
   padding: var(--spacing-lg) var(--spacing-sm); background: var(--bg-card);
@@ -70,7 +70,7 @@
 
 /* Learning Progress */
 .dh-progress { display: grid; grid-template-columns: auto 1fr 1fr 1fr; gap: var(--spacing-md); align-items: center; }
-.dh-progress-ring-card { position: relative; width: 110px; height: 110px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+.dh-progress-ring-card { position: relative; width: 110px; height: 110px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .dh-ring { width: 100px; height: 100px; transform: rotate(-90deg); }
 .dh-ring-bg { fill: none; stroke: var(--bg-tertiary); stroke-width: 6; }
 .dh-ring-fill { fill: none; stroke: url(#dhGradient); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 1s var(--ease-out); animation: dhRingPulse 3s ease-in-out infinite; }
@@ -86,7 +86,7 @@
 .dh-progress-stat-label { font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 500; }
 
 /* Recommended */
-.dh-recommended { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--spacing-md); }
+.dh-recommended { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: var(--spacing-md); }
 .dh-recommended-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: var(--spacing-lg); text-decoration: none; color: var(--text-primary); transition: all 0.25s; position: relative; overflow: hidden; }
 .dh-recommended-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-primary); opacity: 0; transition: opacity 0.3s; }
 .dh-recommended-card:hover { border-color: var(--accent-primary); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); }
@@ -114,10 +114,11 @@
 .back-to-top.visible { opacity: 1; pointer-events: auto; }
 .back-to-top:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(109, 93, 252, 0.4); }
 
+/* ═══ Responsive ═══ */
 @media (max-width: 768px) {
   #dashboardPage { max-width: 100%; }
   .dh-hero { padding: var(--spacing-xl) var(--spacing-md); margin-bottom: var(--spacing-lg); }
-  .dh-greeting-name { font-size: 1.35rem; }
+  .dh-greeting { flex-wrap: wrap; }
   .dh-greeting-wave { width: 40px; height: 40px; }
   .dh-search { border-radius: var(--radius-md); }
   .dh-search-shortcut { display: none; }
@@ -132,10 +133,13 @@
   .dh-recommended { grid-template-columns: 1fr; gap: var(--spacing-sm); }
   .dh-activity-time { display: none; }
 }
+
 @media (max-width: 480px) {
   .dh-greeting-wave { width: 36px; height: 36px; }
   .dh-greeting-name { font-size: 1.2rem; }
   .dh-actions-grid { grid-template-columns: repeat(4, 1fr); }
   .dh-progress { grid-template-columns: 1fr; }
   .dh-progress-ring-card { grid-column: span 1; }
+  .dh-continue-card { padding: var(--spacing-sm) var(--spacing-md); }
+  .dh-section-header { flex-wrap: wrap; gap: 0.5rem; }
 }

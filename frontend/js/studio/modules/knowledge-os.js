@@ -112,7 +112,7 @@ Studio.Modules.register('knowledge-os', () => {
           ${Studio.UI.btn('Add Section', { icon: 'plus', size: 'sm', id: 'addSectionBtn' })}
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:280px 1fr 280px;gap:16px;">
+      <div style="display:grid;grid-template-columns:minmax(min(280px,100%),1fr) minmax(min(280px,100%),1fr) minmax(min(280px,100%),1fr);gap:16px;">
         <!-- Hierarchy Tree -->
         <div class="studio-section" style="max-height:600px;overflow-y:auto;">
           <div class="studio-section-header" style="padding:10px 14px;">

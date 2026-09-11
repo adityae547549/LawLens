@@ -30,7 +30,7 @@ Studio.Modules.register('cases', () => {
           <div class="studio-module-actions">
             <div style="position:relative;">
               <i data-lucide="search" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-tertiary);"></i>
-              <input class="studio-form-input" id="caseSearch" placeholder="Search cases..." value="${_searchQuery}" style="padding-left:28px;width:220px;padding:6px 10px 6px 28px;font-size:0.82rem;">
+              <input class="studio-form-input" id="caseSearch" placeholder="Search cases..." value="${_searchQuery}" style="padding-left:28px;min-width:0;padding:6px 10px 6px 28px;font-size:0.82rem;">
             </div>
           </div>
         </div>

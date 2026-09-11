@@ -89,7 +89,7 @@ Studio.Modules.register('audit-logs', () => {
           <div class="studio-section-header">
             <span class="studio-section-title">Activity Trail</span>
             <div style="display:flex;gap:8px;">
-              <select class="studio-form-input studio-form-select" id="auditEntityFilter" style="width:140px;padding:5px 8px;font-size:0.78rem;">
+              <select class="studio-form-input studio-form-select" id="auditEntityFilter" style="min-width:0;padding:5px 8px;font-size:0.78rem;">
                 <option value="">All Entities</option>
                 <option value="knowledge" ${_filter.entity === 'knowledge' ? 'selected' : ''}>Knowledge</option>
                 <option value="graph" ${_filter.entity === 'graph' ? 'selected' : ''}>Graph</option>
@@ -98,7 +98,7 @@ Studio.Modules.register('audit-logs', () => {
                 <option value="page" ${_filter.entity === 'page' ? 'selected' : ''}>Page</option>
                 <option value="settings" ${_filter.entity === 'settings' ? 'selected' : ''}>Settings</option>
               </select>
-              <select class="studio-form-input studio-form-select" id="auditActionFilter" style="width:140px;padding:5px 8px;font-size:0.78rem;">
+              <select class="studio-form-input studio-form-select" id="auditActionFilter" style="min-width:0;padding:5px 8px;font-size:0.78rem;">
                 <option value="">All Actions</option>
                 <option value="create" ${_filter.action === 'create' ? 'selected' : ''}>Create</option>
                 <option value="update" ${_filter.action === 'update' ? 'selected' : ''}>Update</option>

@@ -269,7 +269,7 @@ Studio.Modules.register('graph', () => {
           </div>
         </div>
         ${renderLegend()}
-        <div style="display:grid;grid-template-columns:1fr 280px;gap:16px;margin-top:16px;">
+        <div style="display:grid;grid-template-columns:1fr minmax(min(280px,100%),1fr);gap:16px;margin-top:16px;">
           <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;position:relative;">
             <canvas id="graphCanvas" style="width:100%;height:500px;cursor:grab;"></canvas>
             <div style="position:absolute;bottom:12px;left:12px;display:flex;gap:4px;">

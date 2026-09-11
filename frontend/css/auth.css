@@ -54,7 +54,8 @@
 .password-toggle {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   background: none; border: none; color: var(--text-tertiary);
-  cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; padding: 4px; min-width: 44px; min-height: 44px;
+  display: flex; align-items: center; justify-content: center;
 }
 .password-toggle:hover { color: var(--text-secondary); }
 
@@ -65,6 +66,7 @@
   background: var(--bg-card); color: var(--text-primary);
   font-size: 0.95rem; font-weight: 500; cursor: pointer;
   transition: all var(--transition);
+  min-height: 48px;
 }
 .google-btn:hover { background: var(--bg-hover); border-color: var(--text-tertiary); }
 
@@ -77,4 +79,6 @@
 
 @media (max-width: 480px) {
   .auth-card { padding: var(--spacing-lg); }
+  .auth-page { padding: var(--spacing-sm); }
+  .auth-header h1 { font-size: 1.4rem; }
 }

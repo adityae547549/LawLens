@@ -82,14 +82,14 @@ Studio.Modules.register('background-jobs', () => {
           <div class="studio-section-header">
             <span class="studio-section-title">Job Queue</span>
             <div style="display:flex;gap:8px;">
-              <select class="studio-form-input studio-form-select" id="jobStatusFilter" style="width:130px;padding:5px 8px;font-size:0.78rem;">
+              <select class="studio-form-input studio-form-select" id="jobStatusFilter" style="min-width:0;padding:5px 8px;font-size:0.78rem;">
                 <option value="">All Status</option>
                 <option value="queued" ${_filter.status === 'queued' ? 'selected' : ''}>Queued</option>
                 <option value="running" ${_filter.status === 'running' ? 'selected' : ''}>Running</option>
                 <option value="completed" ${_filter.status === 'completed' ? 'selected' : ''}>Completed</option>
                 <option value="failed" ${_filter.status === 'failed' ? 'selected' : ''}>Failed</option>
               </select>
-              <select class="studio-form-input studio-form-select" id="jobTypeFilter" style="width:130px;padding:5px 8px;font-size:0.78rem;">
+              <select class="studio-form-input studio-form-select" id="jobTypeFilter" style="min-width:0;padding:5px 8px;font-size:0.78rem;">
                 <option value="">All Types</option>
                 <option value="import" ${_filter.type === 'import' ? 'selected' : ''}>Import</option>
                 <option value="sync" ${_filter.type === 'sync' ? 'selected' : ''}>Sync</option>
