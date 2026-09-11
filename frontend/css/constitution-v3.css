@@ -1,0 +1,464 @@
+/* ═══════════════════════════════════════════════════════════════
+   LAWLENS CONSTITUTION EXPLORER v3
+   Specialized legal reading environment
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── CONSTITUTION LAYOUT ─── */
+.constitution-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── NAVIGATION PANEL ─── */
+.constitution-nav {
+  width: 300px;
+  background: var(--bg-secondary);
+  border-right: var(--border-width) solid var(--border-primary);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.constitution-nav-header {
+  padding: var(--space-4);
+  border-bottom: var(--border-width) solid var(--border-secondary);
+}
+
+.constitution-nav-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.constitution-search {
+  position: relative;
+}
+
+.constitution-search input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  padding-left: 36px;
+  background: var(--bg-primary);
+  border: var(--border-width) solid var(--border-primary);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-default);
+}
+
+.constitution-search input:focus {
+  border-color: var(--border-focus);
+}
+
+.constitution-search input::placeholder {
+  color: var(--text-quaternary);
+}
+
+.constitution-search-icon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-quaternary);
+}
+
+.constitution-nav-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-2);
+}
+
+.constitution-part {
+  margin-bottom: var(--space-2);
+}
+
+.constitution-part-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background var(--duration-fast) var(--ease-default);
+}
+
+.constitution-part-header:hover {
+  background: var(--bg-hover);
+}
+
+.constitution-part-header.expanded {
+  color: var(--accent-primary);
+}
+
+.constitution-part-header i {
+  transition: transform var(--duration-fast) var(--ease-default);
+}
+
+.constitution-part-header.expanded i {
+  transform: rotate(90deg);
+}
+
+.constitution-articles {
+  display: none;
+  padding-left: var(--space-4);
+}
+
+.constitution-articles.expanded {
+  display: block;
+}
+
+.constitution-article {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+.constitution-article:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.constitution-article.active {
+  background: var(--accent-muted);
+  color: var(--accent-primary);
+  font-weight: var(--weight-medium);
+}
+
+.constitution-article-num {
+  font-weight: var(--weight-semibold);
+  color: var(--text-tertiary);
+  min-width: 40px;
+}
+
+/* ─── MAIN READING AREA ─── */
+.constitution-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.constitution-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-primary);
+  border-bottom: var(--border-width) solid var(--border-secondary);
+  flex-shrink: 0;
+}
+
+.constitution-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.constitution-header-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.constitution-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ─── ARTICLE READING ─── */
+.constitution-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-8);
+  display: flex;
+  justify-content: center;
+}
+
+.constitution-article-content {
+  max-width: var(--reading-width);
+  width: 100%;
+}
+
+.constitution-article-header {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: var(--border-width) solid var(--border-secondary);
+}
+
+.constitution-article-number {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-2);
+}
+
+.constitution-article-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.02em;
+}
+
+.constitution-article-meta {
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.constitution-article-text {
+  font-size: var(--text-base);
+  line-height: var(--leading-loose);
+  color: var(--text-secondary);
+}
+
+.constitution-article-text p {
+  margin-bottom: var(--space-4);
+}
+
+.constitution-article-text .clause {
+  display: block;
+  padding-left: var(--space-6);
+  margin-bottom: var(--space-3);
+  position: relative;
+}
+
+.constitution-article-text .clause::before {
+  content: attr(data-clause);
+  position: absolute;
+  left: 0;
+  font-weight: var(--weight-semibold);
+  color: var(--text-tertiary);
+}
+
+.constitution-article-text .definition {
+  background: var(--color-legal-muted);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--color-legal);
+  border-radius: var(--radius-md);
+  margin: var(--space-4) 0;
+}
+
+.constitution-article-text .cross-reference {
+  color: var(--accent-primary);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+
+.constitution-article-text .cross-reference:hover {
+  color: var(--accent-secondary);
+}
+
+/* ─── AI EXPLANATION PANEL ─── */
+.constitution-explain {
+  width: 320px;
+  background: var(--bg-secondary);
+  border-left: var(--border-width) solid var(--border-primary);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.constitution-explain-header {
+  padding: var(--space-4);
+  border-bottom: var(--border-width) solid var(--border-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.constitution-explain-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.constitution-explain-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+
+.constitution-explain-section {
+  margin-bottom: var(--space-6);
+}
+
+.constitution-explain-section-title {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-3);
+}
+
+.constitution-explain-text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.constitution-related {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.constitution-related-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-hover);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+.constitution-related-item:hover {
+  background: var(--accent-muted);
+  color: var(--accent-primary);
+}
+
+.constitution-ask-ai {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.constitution-ask-ai input {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-primary);
+  border: var(--border-width) solid var(--border-primary);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.constitution-ask-ai input:focus {
+  border-color: var(--border-focus);
+}
+
+.constitution-ask-ai button {
+  padding: var(--space-2) var(--space-3);
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+/* ─── ARTICLE NAVIGATION ─── */
+.constitution-nav-footer {
+  padding: var(--space-4);
+  border-top: var(--border-width) solid var(--border-secondary);
+  display: flex;
+  gap: var(--space-2);
+}
+
+.constitution-nav-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-hover);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+.constitution-nav-btn:hover {
+  background: var(--accent-muted);
+  color: var(--accent-primary);
+}
+
+.constitution-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .constitution-nav {
+    display: none;
+  }
+  
+  .constitution-nav.open {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: var(--z-overlay);
+    box-shadow: var(--shadow-2xl);
+  }
+  
+  .constitution-explain {
+    display: none;
+  }
+  
+  .constitution-explain.open {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-overlay);
+    box-shadow: var(--shadow-2xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .constitution-content {
+    padding: var(--space-4);
+  }
+  
+  .constitution-article-title {
+    font-size: var(--text-2xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .constitution-content {
+    padding: var(--space-3);
+  }
+  
+  .constitution-header {
+    padding: var(--space-3);
+  }
+}

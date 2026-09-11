@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./favicon-128.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — LawLens</title>
+  <meta name="description" content="Customize your LawLens experience.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/design-system.css">
+  <link rel="stylesheet" href="./css/shell.css">
+  <link rel="stylesheet" href="./css/pages-v3.css">
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
+        </button>
+        <div class="topbar-left">
+          <h1 class="topbar-title">Settings</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i data-lucide="moon" style="width:18px;height:18px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="page">
+        <div class="page-container">
+          <div class="page-header">
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Customize your LawLens experience</p>
+          </div>
+
+          <div style="max-width:600px;display:flex;flex-direction:column;gap:var(--space-6);">
+            <div class="content-card">
+              <h3 class="content-card-title" style="margin-bottom:var(--space-4);">Appearance</h3>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                  <div style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary);">Theme</div>
+                  <div style="font-size:var(--text-xs);color:var(--text-tertiary);">Choose dark or light mode</div>
+                </div>
+                <div style="display:flex;gap:var(--space-2);">
+                  <button class="search-mode-btn active" data-theme="dark">Dark</button>
+                  <button class="search-mode-btn" data-theme="light">Light</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 class="content-card-title" style="margin-bottom:var(--space-4);">AI Preferences</h3>
+              <div class="form-group" style="margin-bottom:var(--space-4);">
+                <label class="form-label">Default Explain Level</label>
+                <select class="input" id="explainLevel">
+                  <option value="simple">Simple</option>
+                  <option value="standard" selected>Standard</option>
+                  <option value="detailed">Detailed</option>
+                  <option value="expert">Expert</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Search Mode</label>
+                <select class="input" id="searchMode">
+                  <option value="legal" selected>Legal Database</option>
+                  <option value="web">Web Search</option>
+                  <option value="hybrid">Hybrid</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 class="content-card-title" style="margin-bottom:var(--space-4);">Account</h3>
+              <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+                <a href="./profile.html" class="btn btn-secondary" style="justify-content:flex-start;">
+                  <i data-lucide="user" style="width:16px;height:16px;"></i>
+                  Edit Profile
+                </a>
+                <button class="btn btn-danger" id="deleteAccountBtn" style="justify-content:flex-start;">
+                  <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+                  Delete Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" class="sidebar-logo">
+        <div class="sidebar-brand">
+          <span class="sidebar-brand-name">LawLens</span>
+          <span class="sidebar-brand-tagline">Legal Research</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav"></nav>
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item" id="sidebarLogoutBtn">
+          <i data-lucide="log-out" class="nav-item-icon"></i>
+          <span class="nav-item-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/settings.js"></script>
+</body>
+</html>

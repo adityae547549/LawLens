@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./favicon-128.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LawLens — AI Legal Research for Indian Law | Free Legal Research Tool</title>
+  <meta name="description" content="LawLens is a free AI-powered legal research tool for Indian law. Get accurate, cited answers from the Indian Constitution, IPC, CPC, and case law. Search, summarize, and study Indian legal sources with AI assistance.">
+  <meta name="keywords" content="AI legal research India, Indian law AI, Indian Constitution AI, legal research assistant India, Indian legal research tool, law research AI, Indian law search, constitutional law India, legal citations India">
+  <link rel="canonical" href="https://lawlens.web.app/">
+  <meta name="robots" content="index, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/design-system.css">
+  <link rel="stylesheet" href="./css/landing-v3.css">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lawlens.web.app/">
+  <meta property="og:title" content="LawLens — AI Legal Research for Indian Law">
+  <meta property="og:description" content="Free AI-powered legal research tool for Indian law. Get cited answers from the Constitution, IPC, CPC, and case law.">
+  <meta property="og:image" content="https://lawlens.web.app/logo.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="LawLens">
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@LawLensAI">
+  <meta name="twitter:title" content="LawLens — AI Legal Research for Indian Law">
+  <meta name="twitter:description" content="Free AI-powered legal research tool for Indian law. Get cited answers from the Constitution, IPC, CPC, and case law.">
+  <meta name="twitter:image" content="https://lawlens.web.app/logo.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "LawLens",
+    "url": "https://lawlens.web.app",
+    "description": "AI-powered legal research platform for Indian law with cited answers from the Constitution, IPC, CPC, and case law.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    },
+    "featureList": [
+      "AI-powered legal research",
+      "Indian Constitution explorer",
+      "Legal document search",
+      "Constitutional article comparison",
+      "Amendment timeline visualization",
+      "Legal document summarizer",
+      "AI-powered quizzes and flashcards"
+    ],
+    "screenshot": "https://lawlens.web.app/logo.png",
+    "softwareHelp": "https://lawlens.web.app/trust.html"
+  }
+  </script>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <img src="./logo.png" alt="LawLens" class="loading-logo">
+    <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">
+        <img src="./logo.png" alt="LawLens" class="nav-logo">
+        <span class="nav-name">LawLens</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How it Works</a>
+        <a href="#trust" class="nav-link">Trust</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <i data-lucide="sun" style="width:18px;height:18px;"></i>
+        </button>
+        <a href="./login.html" class="nav-login">Login</a>
+        <a href="./register.html" class="nav-cta">Get Started Free</a>
+        <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Menu">
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          AI Legal Research for India
+        </div>
+        <h1 class="hero-title">
+          Understand Indian law<br>
+          <span class="hero-title-accent">with AI assistance</span>
+        </h1>
+        <p class="hero-description">
+          Ask legal questions in plain English. Get accurate answers backed by official legal documents with source citations.
+        </p>
+        <div class="hero-actions">
+          <a href="./register.html" class="btn btn-primary btn-xl">
+            <i data-lucide="search" style="width:20px;height:20px;"></i>
+            Start Researching
+          </a>
+          <a href="./constitution.html" class="btn btn-secondary btn-xl">
+            <i data-lucide="book-open" style="width:20px;height:20px;"></i>
+            Explore Constitution
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value">3,000+</span>
+            <span class="hero-stat-label">Indexed Sources</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">20+</span>
+            <span class="hero-stat-label">Legal Documents</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">23</span>
+            <span class="hero-stat-label">Languages</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-preview">
+        <div class="preview-window">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="preview-title">LawLens AI Chat</span>
+          </div>
+          <div class="preview-content">
+            <div class="preview-message user">
+              <div class="preview-message-content">Explain Article 21.</div>
+            </div>
+            <div class="preview-message ai">
+              <div class="preview-avatar">L</div>
+              <div class="preview-message-content">
+                <div class="preview-text" id="previewText"></div>
+                <div class="preview-citations" id="previewCitations" style="display:none;">
+                  <div class="preview-citation">
+                    <i data-lucide="book-open" style="width:12px;height:12px;"></i>
+                    <span>Constitution of India · Part III · Article 21</span>
+                    <span class="source-badge">Official Source</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Promises -->
+  <section class="promises" id="promises">
+    <div class="container">
+      <div class="promises-grid">
+        <div class="promise-card">
+          <div class="promise-icon">
+            <i data-lucide="message-square" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="promise-title">Ask</h3>
+          <p class="promise-description">Type any legal question in plain English. No legal jargon required.</p>
+        </div>
+        <div class="promise-card">
+          <div class="promise-icon">
+            <i data-lucide="search" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="promise-title">Search</h3>
+          <p class="promise-description">Find relevant articles, sections, and case law from official sources.</p>
+        </div>
+        <div class="promise-card">
+          <div class="promise-icon">
+            <i data-lucide="lightbulb" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="promise-title">Understand</h3>
+          <p class="promise-description">Get clear explanations with citations to primary legal documents.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Features</span>
+        <h2 class="section-title">Built for legal research</h2>
+        <p class="section-subtitle">Not another generic AI chatbot. Purpose-built for Indian law.</p>
+      </div>
+      
+      <div class="features-showcase">
+        <!-- AI Research -->
+        <div class="feature-story">
+          <div class="feature-story-content">
+            <span class="feature-story-badge">AI Research</span>
+            <h3 class="feature-story-title">Ask questions, get cited answers</h3>
+            <p class="feature-story-description">
+              Ask natural language questions about Indian law. Get accurate answers with source citations from the Constitution, IPC, CPC, and case law.
+            </p>
+            <ul class="feature-story-list">
+              <li>Source citations for every fact</li>
+              <li>Confidence scores</li>
+              <li>Multiple explain levels</li>
+            </ul>
+          </div>
+          <div class="feature-story-visual">
+            <div class="feature-preview chat-preview">
+              <div class="feature-preview-header">AI Chat</div>
+              <div class="feature-preview-body">
+                <div class="feature-preview-msg user">What is Article 14?</div>
+                <div class="feature-preview-msg ai">
+                  <div class="ai-badge">AI</div>
+                  Article 14 guarantees equality before law...
+                  <div class="feature-preview-citation">
+                    <i data-lucide="book-open" style="width:12px;height:12px;"></i>
+                    Constitution · Article 14
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legal Search -->
+        <div class="feature-story reverse">
+          <div class="feature-story-content">
+            <span class="feature-story-badge">Legal Search</span>
+            <h3 class="feature-story-title">Find relevant legal documents</h3>
+            <p class="feature-story-description">
+              Hybrid semantic and keyword search across thousands of legal documents. Find the exact articles and sections you need.
+            </p>
+            <ul class="feature-story-list">
+              <li>Semantic + keyword search</li>
+              <li>Source filtering</li>
+              <li>Relevance ranking</li>
+            </ul>
+          </div>
+          <div class="feature-story-visual">
+            <div class="feature-preview search-preview">
+              <div class="feature-preview-header">Legal Search</div>
+              <div class="feature-preview-body">
+                <div class="feature-preview-search">
+                  <i data-lucide="search" style="width:16px;height:16px;"></i>
+                  <span>right to privacy India</span>
+                </div>
+                <div class="feature-preview-results">
+                  <div class="feature-preview-result">
+                    <span class="source-badge">Constitution</span>
+                    <span>Article 21 - Right to Life</span>
+                  </div>
+                  <div class="feature-preview-result">
+                    <span class="source-badge">Case Law</span>
+                    <span>Puttaswamy v. Union of India</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Constitution -->
+        <div class="feature-story">
+          <div class="feature-story-content">
+            <span class="feature-story-badge">Constitution Explorer</span>
+            <h3 class="feature-story-title">Navigate the Constitution</h3>
+            <p class="feature-story-description">
+              Browse Parts, Chapters, and Articles with AI-powered explanations. Understand complex legal text in simple language.
+            </p>
+            <ul class="feature-story-list">
+              <li>Structured navigation</li>
+              <li>AI explanations</li>
+              <li>Related articles</li>
+            </ul>
+          </div>
+          <div class="feature-story-visual">
+            <div class="feature-preview constitution-preview">
+              <div class="feature-preview-header">Constitution</div>
+              <div class="feature-preview-body">
+                <div class="feature-preview-article">
+                  <span class="feature-preview-article-num">Article 21</span>
+                  <span class="feature-preview-article-title">Protection of Life and Personal Liberty</span>
+                </div>
+                <div class="feature-preview-explain">
+                  <div class="ai-badge">AI Explanation</div>
+                  <p>This article guarantees that no person shall be deprived of their life or personal liberty except according to procedure established by law.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">How It Works</span>
+        <h2 class="section-title">From question to understanding</h2>
+        <p class="section-subtitle">Powered by Retrieval-Augmented Generation (RAG) for maximum accuracy.</p>
+      </div>
+      
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3 class="step-title">Ask a question</h3>
+            <p class="step-description">Type your legal question in plain English.</p>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3 class="step-title">LawLens researches</h3>
+            <p class="step-description">AI searches across official legal documents.</p>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3 class="step-title">Review cited answer</h3>
+            <p class="step-description">Get an answer with source citations.</p>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3 class="step-title">Continue researching</h3>
+            <p class="step-description">Save, bookmark, or ask follow-up questions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="trust" id="trust">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Trust & Accuracy</span>
+        <h2 class="section-title">Built on verifiable sources</h2>
+        <p class="section-subtitle">Every answer includes citations to official legal documents.</p>
+      </div>
+      
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-icon">
+            <i data-lucide="book-open" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="trust-title">Source Citations</h3>
+          <p class="trust-description">Every fact is traced back to its source. Click any citation to view the original document.</p>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon">
+            <i data-lucide="shield-check" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="trust-title">Official Documents</h3>
+          <p class="trust-description">Grounded in the Constitution, IPC, CPC, and curated case law. Not hallucinated.</p>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon">
+            <i data-lucide="eye" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="trust-title">Transparent</h3>
+          <p class="trust-description">Confidence scores and source labels. Know what's AI-generated vs. primary text.</p>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon">
+            <i data-lucide="alert-triangle" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="trust-title">Not Legal Advice</h3>
+          <p class="trust-description">LawLens is a research tool, not a lawyer. Always consult a qualified professional.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="use-cases" id="use-cases">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Who Uses LawLens</span>
+        <h2 class="section-title">Built for different needs</h2>
+      </div>
+      
+      <div class="use-cases-grid">
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i data-lucide="graduation-cap" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="use-case-title">Students</h3>
+          <p class="use-case-description">Study constitutional law, prepare for exams, and understand legal concepts with AI-powered explanations.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i data-lucide="search" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="use-case-title">Researchers</h3>
+          <p class="use-case-description">Find relevant articles, compare laws, and build research with cited sources.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i data-lucide="briefcase" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="use-case-title">Professionals</h3>
+          <p class="use-case-description">Quick legal research, document analysis, and case preparation assistance.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">
+            <i data-lucide="users" style="width:24px;height:24px;"></i>
+          </div>
+          <h3 class="use-case-title">Citizens</h3>
+          <p class="use-case-description">Understand your rights, explore the Constitution, and learn about Indian law.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">FAQ</span>
+        <h2 class="section-title">Frequently asked questions</h2>
+      </div>
+      
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How accurate is LawLens?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;"></i>
+          </button>
+          <div class="faq-answer">
+            <p>LawLens uses RAG (Retrieval-Augmented Generation). Each answer includes citations back to sources. It is far less prone to hallucination than a plain chatbot, but always verify against cited primary sources.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Does it give legal advice?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;"></i>
+          </button>
+          <div class="faq-answer">
+            <p>No. LawLens is a research tool, not a lawyer. It explains legal documents in simple language with citations. Always consult a qualified legal professional for advice.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Which documents are supported?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;"></i>
+          </button>
+          <div class="faq-answer">
+            <p>PDF, DOCX (Word), TXT, JSON, and Markdown files are supported for document upload and analysis.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is my data private?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. Your documents and conversations are per-account and protected by Firebase Authentication. Never shared with third parties.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2 class="final-cta-title">Start with a legal question</h2>
+      <p class="final-cta-description">Ask LawLens anything about Indian law. Get cited answers in seconds.</p>
+      <a href="./register.html" class="btn btn-primary btn-xl">
+        <i data-lucide="search" style="width:20px;height:20px;"></i>
+        Start Researching Free
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-name">LawLens</div>
+          <p class="footer-brand-description">India's AI Legal Research Assistant. Ask questions naturally, get cited answers.</p>
+        </div>
+        <div class="footer-column">
+          <div class="footer-column-title">Product</div>
+          <a href="#features" class="footer-link">Features</a>
+          <a href="#how-it-works" class="footer-link">How it Works</a>
+          <a href="./register.html" class="footer-link">Get Started</a>
+          <a href="./login.html" class="footer-link">Login</a>
+        </div>
+        <div class="footer-column">
+          <div class="footer-column-title">Research</div>
+          <a href="./constitution.html" class="footer-link">Constitution</a>
+          <a href="./search.html" class="footer-link">Legal Search</a>
+          <a href="./timeline.html" class="footer-link">Timeline</a>
+          <a href="./compare.html" class="footer-link">Compare</a>
+        </div>
+        <div class="footer-column">
+          <div class="footer-column-title">Learning</div>
+          <a href="./study.html" class="footer-link">Study Hub</a>
+          <a href="./quiz.html" class="footer-link">Quiz</a>
+          <a href="./flashcards.html" class="footer-link">Flashcards</a>
+        </div>
+        <div class="footer-column">
+          <div class="footer-column-title">Trust</div>
+          <a href="./trust.html" class="footer-link">Trust & Safety</a>
+          <a href="./feedback.html" class="footer-link">Feedback</a>
+          <a href="./sitemap.xml" class="footer-link">Sitemap</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">&copy; 2026 LawLens. All rights reserved.</div>
+        <div class="footer-legal">
+          <a href="./trust.html">Trust</a>
+          <a href="./feedback.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/landing.js"></script>
+</body>
+</html>

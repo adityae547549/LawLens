@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./favicon-128.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documents — LawLens</title>
+  <meta name="description" content="Upload and manage legal documents for AI analysis.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/design-system.css">
+  <link rel="stylesheet" href="./css/shell.css">
+  <link rel="stylesheet" href="./css/pages-v3.css">
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
+        </button>
+        <div class="topbar-left">
+          <h1 class="topbar-title">Documents</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i data-lucide="moon" style="width:18px;height:18px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="page">
+        <div class="page-container">
+          <div class="page-header">
+            <h1 class="page-title">Your Documents</h1>
+            <p class="page-subtitle">Upload and manage legal documents for AI analysis</p>
+          </div>
+
+          <div class="upload-zone" id="uploadZone">
+            <div class="upload-zone-icon">
+              <i data-lucide="upload-cloud" style="width:32px;height:32px;"></i>
+            </div>
+            <div class="upload-zone-title">Upload documents</div>
+            <div class="upload-zone-description">Drag and drop files or click to browse</div>
+            <div class="upload-zone-formats">Supported: PDF, DOCX, TXT, JSON, Markdown</div>
+            <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt,.json,.md" style="display:none;">
+          </div>
+
+          <div style="margin-top:var(--space-8);">
+            <div class="content-card-header">
+              <h2 class="content-card-title">Recent Documents</h2>
+            </div>
+            <div class="document-list" id="documentList">
+              <div class="empty-state">
+                <div class="empty-state-icon">
+                  <i data-lucide="file" style="width:32px;height:32px;"></i>
+                </div>
+                <div class="empty-state-title">No documents yet</div>
+                <div class="empty-state-description">Upload your first document to get started</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" class="sidebar-logo">
+        <div class="sidebar-brand">
+          <span class="sidebar-brand-name">LawLens</span>
+          <span class="sidebar-brand-tagline">Legal Research</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav"></nav>
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item" id="sidebarLogoutBtn">
+          <i data-lucide="log-out" class="nav-item-icon"></i>
+          <span class="nav-item-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/documents.js"></script>
+</body>
+</html>

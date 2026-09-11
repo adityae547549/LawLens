@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./favicon-128.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Hub — LawLens</title>
+  <meta name="description" content="Learn Indian law with AI-powered quizzes and flashcards.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/design-system.css">
+  <link rel="stylesheet" href="./css/shell.css">
+  <link rel="stylesheet" href="./css/pages-v3.css">
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
+        </button>
+        <div class="topbar-left">
+          <h1 class="topbar-title">Study Hub</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i data-lucide="moon" style="width:18px;height:18px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="page">
+        <div class="page-container">
+          <div class="study-hero">
+            <h1 class="study-hero-title">Learn Indian Law</h1>
+            <p class="study-hero-subtitle">Build your legal knowledge with AI-powered learning</p>
+            <div class="study-stats">
+              <div class="study-stat">
+                <div class="study-stat-value" id="xpValue">0</div>
+                <div class="study-stat-label">XP Earned</div>
+              </div>
+              <div class="study-stat">
+                <div class="study-stat-value" id="levelValue">Lv.1</div>
+                <div class="study-stat-label">Level</div>
+              </div>
+              <div class="study-stat">
+                <div class="study-stat-value" id="streakValue">0d</div>
+                <div class="study-stat-label">Streak</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(min(250px, 100%), 1fr));gap:var(--space-6);">
+            <a href="./quiz.html" class="content-card" style="text-decoration:none;">
+              <div class="content-card-icon">
+                <i data-lucide="brain" style="width:24px;height:24px;"></i>
+              </div>
+              <h3 class="content-card-title" style="margin-top:var(--space-4);">AI Quiz</h3>
+              <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-top:var(--space-2);">Test your knowledge with adaptive questions</p>
+            </a>
+            <a href="./flashcards.html" class="content-card" style="text-decoration:none;">
+              <div class="content-card-icon">
+                <i data-lucide="layers" style="width:24px;height:24px;"></i>
+              </div>
+              <h3 class="content-card-title" style="margin-top:var(--space-4);">Flashcards</h3>
+              <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-top:var(--space-2);">Review key concepts with spaced repetition</p>
+            </a>
+            <a href="./constitution.html" class="content-card" style="text-decoration:none;">
+              <div class="content-card-icon">
+                <i data-lucide="book-open" style="width:24px;height:24px;"></i>
+              </div>
+              <h3 class="content-card-title" style="margin-top:var(--space-4);">Constitution</h3>
+              <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-top:var(--space-2);">Explore articles with AI explanations</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" class="sidebar-logo">
+        <div class="sidebar-brand">
+          <span class="sidebar-brand-name">LawLens</span>
+          <span class="sidebar-brand-tagline">Legal Research</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav"></nav>
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item" id="sidebarLogoutBtn">
+          <i data-lucide="log-out" class="nav-item-icon"></i>
+          <span class="nav-item-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/study.js"></script>
+</body>
+</html>

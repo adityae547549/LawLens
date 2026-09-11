@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./favicon-128.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — LawLens</title>
+  <meta name="description" content="Your LawLens dashboard. Continue your legal research, manage documents, and track your learning progress.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/design-system.css">
+  <link rel="stylesheet" href="./css/shell.css">
+  <link rel="stylesheet" href="./css/dashboard-v3.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Topbar -->
+      <header class="topbar">
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
+        </button>
+        
+        <div class="topbar-left">
+          <h1 class="topbar-title">Dashboard</h1>
+        </div>
+        
+        <div class="topbar-right">
+          <button class="topbar-action" aria-label="Notifications">
+            <i data-lucide="bell" style="width:18px;height:18px;"></i>
+          </button>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i data-lucide="moon" style="width:18px;height:18px;"></i>
+          </button>
+          <div class="dropdown" id="userDropdown">
+            <div class="sidebar-user" onclick="document.getElementById('userDropdown').classList.toggle('open')">
+              <div class="sidebar-user-avatar" id="userAvatar">U</div>
+            </div>
+            <div class="dropdown-menu">
+              <a href="./profile.html" class="dropdown-item">
+                <i data-lucide="user" style="width:14px;height:14px;"></i>
+                Profile
+              </a>
+              <a href="./settings.html" class="dropdown-item">
+                <i data-lucide="settings" style="width:14px;height:14px;"></i>
+                Settings
+              </a>
+              <div class="divider"></div>
+              <a href="#" class="dropdown-item" id="logoutBtn">
+                <i data-lucide="log-out" style="width:14px;height:14px;"></i>
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="page">
+        <div class="dashboard">
+          <!-- Greeting -->
+          <div class="dashboard-greeting">
+            <h2 class="dashboard-greeting-text">
+              Good morning, <span class="dashboard-greeting-name" id="userName">Researcher</span>
+            </h2>
+            <p class="dashboard-greeting-subtitle">What would you like to research today?</p>
+          </div>
+
+          <!-- Research Composer -->
+          <div class="research-composer">
+            <textarea 
+              class="research-composer-input" 
+              id="searchInput"
+              placeholder="Ask LawLens anything about Indian law..."
+              rows="2"
+            ></textarea>
+            <div class="research-composer-footer">
+              <div class="research-composer-suggestions">
+                <button class="research-suggestion" data-query="What is Article 21?">Article 21</button>
+                <button class="research-suggestion" data-query="Explain the right to privacy">Right to Privacy</button>
+                <button class="research-suggestion" data-query="What are Fundamental Rights?">Fundamental Rights</button>
+                <button class="research-suggestion" data-query="Latest constitutional amendments">Recent Amendments</button>
+              </div>
+              <div class="research-composer-actions">
+                <button class="btn btn-ghost btn-sm" id="uploadBtn">
+                  <i data-lucide="paperclip" style="width:16px;height:16px;"></i>
+                </button>
+                <button class="btn btn-primary btn-sm" id="searchBtn">
+                  <i data-lucide="search" style="width:16px;height:16px;"></i>
+                  Research
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Continue Research -->
+          <div class="continue-research" id="continueSection" style="display:none;">
+            <div class="continue-card" id="continueCard">
+              <div class="continue-icon">
+                <i data-lucide="message-square" style="width:24px;height:24px;"></i>
+              </div>
+              <div class="continue-content">
+                <div class="continue-title" id="continueTitle">Continue your research</div>
+                <div class="continue-meta" id="continueMeta">Last active: Just now</div>
+              </div>
+              <div class="continue-arrow">
+                <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions">
+            <a href="./chat.html" class="quick-action">
+              <div class="quick-action-icon">
+                <i data-lucide="message-square" style="width:24px;height:24px;"></i>
+              </div>
+              <div class="quick-action-title">AI Chat</div>
+              <div class="quick-action-description">Ask legal questions</div>
+            </a>
+            <a href="./search.html" class="quick-action">
+              <div class="quick-action-icon">
+                <i data-lucide="search" style="width:24px;height:24px;"></i>
+              </div>
+              <div class="quick-action-title">Legal Search</div>
+              <div class="quick-action-description">Find legal documents</div>
+            </a>
+            <a href="./constitution.html" class="quick-action">
+              <div class="quick-action-icon">
+                <i data-lucide="book-open" style="width:24px;height:24px;"></i>
+              </div>
+              <div class="quick-action-title">Constitution</div>
+              <div class="quick-action-description">Explore articles</div>
+            </a>
+            <a href="./documents.html" class="quick-action">
+              <div class="quick-action-icon">
+                <i data-lucide="file" style="width:24px;height:24px;"></i>
+              </div>
+              <div class="quick-action-title">Documents</div>
+              <div class="quick-action-description">Upload & analyze</div>
+            </a>
+          </div>
+
+          <!-- Recommended -->
+          <div class="dashboard-section">
+            <div class="dashboard-section-header">
+              <h3 class="dashboard-section-title">Recommended</h3>
+              <a href="./study.html" class="dashboard-section-link">
+                View all
+                <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+              </a>
+            </div>
+            <div class="recommended-grid" id="recommendedGrid">
+              <a href="./quiz.html" class="recommended-card">
+                <div class="recommended-icon">
+                  <i data-lucide="brain" style="width:20px;height:20px;"></i>
+                </div>
+                <div class="recommended-title">Take a Quiz</div>
+                <div class="recommended-description">Test your legal knowledge with AI-powered questions</div>
+              </a>
+              <a href="./flashcards.html" class="recommended-card">
+                <div class="recommended-icon">
+                  <i data-lucide="layers" style="width:20px;height:20px;"></i>
+                </div>
+                <div class="recommended-title">Review Flashcards</div>
+                <div class="recommended-description">Strengthen your understanding of key concepts</div>
+              </a>
+              <a href="./constitution.html" class="recommended-card">
+                <div class="recommended-icon">
+                  <i data-lucide="book-open" style="width:20px;height:20px;"></i>
+                </div>
+                <div class="recommended-title">Explore Constitution</div>
+                <div class="recommended-description">Browse fundamental rights and duties</div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="dashboard-section">
+            <div class="dashboard-section-header">
+              <h3 class="dashboard-section-title">Recent Activity</h3>
+              <a href="./history.html" class="dashboard-section-link">
+                View all
+                <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+              </a>
+            </div>
+            <div class="activity-list" id="activityList">
+              <div class="dashboard-empty">
+                <div class="dashboard-empty-icon">
+                  <i data-lucide="clock" style="width:32px;height:32px;"></i>
+                </div>
+                <div class="dashboard-empty-title">No activity yet</div>
+                <div class="dashboard-empty-description">Start by asking LawLens a legal question</div>
+                <a href="./chat.html" class="btn btn-primary">
+                  <i data-lucide="message-square" style="width:16px;height:16px;"></i>
+                  Start Researching
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Learning Progress -->
+          <div class="dashboard-section">
+            <div class="dashboard-section-header">
+              <h3 class="dashboard-section-title">Learning Progress</h3>
+              <a href="./study.html" class="dashboard-section-link">
+                Continue learning
+                <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+              </a>
+            </div>
+            <div class="learning-stats">
+              <div class="learning-stat">
+                <div class="learning-stat-value" id="xpValue">0</div>
+                <div class="learning-stat-label">XP Earned</div>
+              </div>
+              <div class="learning-stat">
+                <div class="learning-stat-value" id="levelValue">Lv.1</div>
+                <div class="learning-stat-label">Current Level</div>
+              </div>
+              <div class="learning-stat">
+                <div class="learning-stat-value" id="streakValue">0d</div>
+                <div class="learning-stat-label">Day Streak</div>
+              </div>
+              <div class="learning-stat">
+                <div class="learning-stat-value" id="quizValue">0/5</div>
+                <div class="learning-stat-label">Daily Challenge</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar (generated by JS) -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" class="sidebar-logo">
+        <div class="sidebar-brand">
+          <span class="sidebar-brand-name">LawLens</span>
+          <span class="sidebar-brand-tagline">Legal Research</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav" id="sidebarNav">
+        <!-- Generated by JS -->
+      </nav>
+      
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item" id="sidebarLogoutBtn">
+          <i data-lucide="log-out" class="nav-item-icon"></i>
+          <span class="nav-item-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/dashboard.js"></script>
+</body>
+</html>

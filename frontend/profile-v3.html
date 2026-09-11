@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./favicon-128.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — LawLens</title>
+  <meta name="description" content="Manage your LawLens profile and account settings.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/design-system.css">
+  <link rel="stylesheet" href="./css/shell.css">
+  <link rel="stylesheet" href="./css/pages-v3.css">
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
+        </button>
+        <div class="topbar-left">
+          <h1 class="topbar-title">Profile</h1>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <i data-lucide="moon" style="width:18px;height:18px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="page">
+        <div class="page-container">
+          <div class="page-header">
+            <h1 class="page-title">Profile</h1>
+            <p class="page-subtitle">Manage your account information</p>
+          </div>
+
+          <div class="content-card" style="max-width:600px;">
+            <div style="display:flex;align-items:center;gap:var(--space-4);margin-bottom:var(--space-6);">
+              <div class="avatar avatar-xl" id="profileAvatar">U</div>
+              <div>
+                <div style="font-size:var(--text-xl);font-weight:var(--weight-semibold);color:var(--text-primary);" id="profileName">User</div>
+                <div style="font-size:var(--text-sm);color:var(--text-tertiary);" id="profileEmail">user@example.com</div>
+              </div>
+            </div>
+
+            <form id="profileForm">
+              <div class="form-group" style="margin-bottom:var(--space-4);">
+                <label class="form-label">Name</label>
+                <input type="text" class="input" id="nameInput" placeholder="Your name">
+              </div>
+              <div class="form-group" style="margin-bottom:var(--space-6);">
+                <label class="form-label">Email</label>
+                <input type="email" class="input" id="emailInput" placeholder="Your email" disabled>
+              </div>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="./logo.png" alt="LawLens" class="sidebar-logo">
+        <div class="sidebar-brand">
+          <span class="sidebar-brand-name">LawLens</span>
+          <span class="sidebar-brand-tagline">Legal Research</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav"></nav>
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item" id="sidebarLogoutBtn">
+          <i data-lucide="log-out" class="nav-item-icon"></i>
+          <span class="nav-item-label">Logout</span>
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <script src="./js/utils.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/nav.js"></script>
+  <script src="./js/profile.js"></script>
+</body>
+</html>

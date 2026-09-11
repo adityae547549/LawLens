@@ -84,8 +84,8 @@ async function registerWithBackend(idToken) {
 document.addEventListener('DOMContentLoaded', async () => {
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
-  const googleLoginBtn = document.getElementById('googleLoginBtn');
-  const googleRegisterBtn = document.getElementById('googleRegisterBtn');
+  const googleLoginBtn = document.getElementById('googleLoginBtn') || document.getElementById('googleLogin');
+  const googleRegisterBtn = document.getElementById('googleRegisterBtn') || document.getElementById('googleRegister');
 
   const firebaseReady = await initFirebase();
 
@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         Utils.showToast('Authentication is not configured', 'error');
         return;
       }
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
+      const email = (document.getElementById('loginEmail') || document.getElementById('email')).value.trim();
+      const password = (document.getElementById('loginPassword') || document.getElementById('password')).value;
       const submitBtn = loginForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.textContent;
       submitBtn.disabled = true;
@@ -174,10 +174,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         Utils.showToast('Authentication is not configured', 'error');
         return;
       }
-      const name = document.getElementById('registerName').value.trim();
-      const email = document.getElementById('registerEmail').value.trim();
-      const password = document.getElementById('registerPassword').value;
-      const confirm = document.getElementById('registerConfirm').value;
+      const name = (document.getElementById('registerName') || document.getElementById('name')).value.trim();
+      const email = (document.getElementById('registerEmail') || document.getElementById('email')).value.trim();
+      const password = (document.getElementById('registerPassword') || document.getElementById('password')).value;
+      const confirm = (document.getElementById('registerConfirm') || document.getElementById('confirmPassword')).value;
 
       if (password !== confirm) {
         Utils.showToast('Passwords do not match', 'error');
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  const pwInput = document.getElementById('registerPassword');
+  const pwInput = document.getElementById('registerPassword') || document.getElementById('password');
   const strengthBar = document.getElementById('passwordStrengthBar');
   if (pwInput && strengthBar) {
     pwInput.addEventListener('input', () => {
