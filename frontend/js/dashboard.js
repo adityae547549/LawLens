@@ -80,7 +80,7 @@ const DH_ACTIONS = [
   { icon: 'brain', label: 'Quiz', href: './quiz.html' },
   { icon: 'graduation-cap', label: 'Study Hub', href: './study.html' },
   { icon: 'layers', label: 'Flashcards', href: './flashcards.html' },
-  { icon: 'columns-2', label: 'Compare', href: './compare.html' },
+  { icon: 'columns', label: 'Compare', href: './compare.html' },
   { icon: 'calendar', label: 'Timeline', href: './timeline.html' },
   { icon: 'scale', label: 'Legal Research', href: './legal-research.html' },
   { icon: 'file-text', label: 'Summarizer', href: './summarizer.html' },

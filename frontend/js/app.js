@@ -43,12 +43,12 @@ function loadLucideIcons() {
     return;
   }
   const script = document.createElement('script');
-  script.src = 'https://unpkg.com/lucide@0.300.0/dist/umd/lucide.min.js';
+  script.src = './vendor/lucide.min.js';
   script.onload = () => {
     if (window.lucide) window.lucide.createIcons();
   };
   script.onerror = () => {
-    console.warn('Lucide icons failed to load from CDN');
+    console.warn('Lucide icons failed to load');
   };
   document.head.appendChild(script);
 }
