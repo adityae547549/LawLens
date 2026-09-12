@@ -4,7 +4,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 /* ─── APP LAYOUT ─── */
-.app {
+.app, .app-layout {
   display: flex;
   min-height: 100vh;
   background: var(--bg-primary);
@@ -47,7 +47,7 @@
   flex-direction: column;
 }
 
-.sidebar-brand-name {
+.sidebar-brand-name, .sidebar-title {
   font-size: var(--text-base);
   font-weight: var(--weight-bold);
   color: var(--text-primary);
@@ -73,7 +73,7 @@
   margin-bottom: var(--space-4);
 }
 
-.nav-section-label {
+.nav-section-label, .nav-section-title {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -124,14 +124,14 @@
   border-radius: var(--radius-full);
 }
 
-.nav-item-icon {
+.nav-item-icon, .nav-icon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
   opacity: 0.7;
 }
 
-.nav-item.active .nav-item-icon {
+.nav-item.active .nav-item-icon, .nav-item.active .nav-icon {
   opacity: 1;
 }
 
